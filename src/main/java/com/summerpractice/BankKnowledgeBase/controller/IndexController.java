@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @Controller
 public class IndexController {
@@ -19,12 +20,13 @@ public class IndexController {
     }
     @PostMapping("/uploadfile")
     public String uploadFile(@RequestParam(name = "file",required = true) MultipartFile file){
-
+        ArrayList<ArrayList<String>> ans = null;
         try {
-            ExcelReader.readExcel((FileInputStream) file.getInputStream(),file.getOriginalFilename());
-        } catch (IOException e) {
+            ans = ExcelReader.readExcel(file);
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println(ans.toString());
         return "Index";
     }
 }
