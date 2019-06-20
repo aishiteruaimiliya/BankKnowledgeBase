@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div align="center">
+        <form action="/uploadfile" method="post" enctype="multipart/form-data">
+            <input type="text" placeholder="username">
+            <input type="password" placeholder="password">
+            <input type="file" name="file">
+            <input type="submit">
+        </form>
+    </div>
+
+</body>
+</html>
