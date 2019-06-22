@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,7 +41,7 @@ public class UserRequestController {
         //save数据
         return "结果";
     }
-    @RequestMapping("/getmyKnowledgeByType")
+    @RequestMapping("/getMyKnowledgeByType")
     public String getMyknowlegeByType(Model model){
         return "数据";
     }
@@ -58,17 +59,21 @@ public class UserRequestController {
         return "";
     }
     @RequestMapping("/getRecommend")
-    public String getRecomment(){
+    public String getRecommend(){
         return "";
     }
     @PostMapping("/doLogin")
-    public String login(@RequestParam(name = "account",required = true) String account,
-                        @RequestParam(name = "password",required = true) String password){
+    public ModelAndView login(@RequestParam(name = "account",required = true) String account,
+                              @RequestParam(name = "password",required = true) String password,
+                              HttpServletRequest request,ModelAndView modelAndView){
         NormalUser normalUser=normalUserServiceI.login(account,password);
         if(normalUser!=null){
-            return "userHomePage";
+            modelAndView.addObject("user",normalUser);
+            modelAndView.setViewName("userHomePage");
+            return modelAndView;
         }else {
-           return "Login";
+            modelAndView.setViewName("login");
+            return modelAndView;
         }
     }
 }

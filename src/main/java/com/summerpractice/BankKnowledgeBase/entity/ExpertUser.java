@@ -35,4 +35,8 @@ public class ExpertUser extends User {
     public void setDepartment(Department department) {
         this.department = department;
     }
+    public void setDepartment(int dep_id){
+        if(this.department==null) department=new Department();
+        this.department.setDepId(dep_id);
+    }
 }

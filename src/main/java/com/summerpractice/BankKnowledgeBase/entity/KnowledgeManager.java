@@ -47,4 +47,9 @@ public class KnowledgeManager extends User {
         this.department = department;
     }
     public KnowledgeManager(){}
+
+    public void setDepartment(int dep_id){
+        if(this.department==null) department=new Department();
+        this.department.setDepId(dep_id);
+    }
 }

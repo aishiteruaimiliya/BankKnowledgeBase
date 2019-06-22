@@ -26,6 +26,7 @@ public class Department {
      * 四个级别的机构
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "depId")
     private int depId;
     @Column(name = "first")
@@ -36,7 +37,7 @@ public class Department {
     private String third;
     @Column(name = "fourth")
     private String fourth;
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
 
     public Department() {

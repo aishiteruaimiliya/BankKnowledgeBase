@@ -49,4 +49,8 @@ public class NormalUser extends User {
     }
     public NormalUser(){
     }
+    public void setDepartment(int dep_id){
+        if(this.department==null) department=new Department();
+        this.department.setDepId(dep_id);
+    }
 }

@@ -14,5 +14,7 @@ import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NormalUserDAO extends JpaRepository<NormalUser,Integer> {
-    NormalUser findByAccountAndPassword(String account,String password);
+    NormalUser findByAccountAndPasswordAndDisable(String account,String password,boolean disable);
+    NormalUser findByDisableFalseAndId(int id);
+
 }

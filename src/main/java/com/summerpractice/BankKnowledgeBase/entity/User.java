@@ -42,14 +42,14 @@ import java.io.Serializable;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected long id;
+    protected int id;
     @Column(name = "name")
     protected String name;
     @Column(name = "account")
     protected String account;
     @Column(name = "password")
     protected String password;
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     protected boolean disable;
 
     public User() {
@@ -79,7 +79,7 @@ public class User implements Serializable {
                 '}';
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
