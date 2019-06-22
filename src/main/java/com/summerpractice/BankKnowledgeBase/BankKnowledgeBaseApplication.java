@@ -1,9 +1,14 @@
 package com.summerpractice.BankKnowledgeBase;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-@MapperScan("com.summerpratice.BankBankKnowledgeBase.dao")
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@ComponentScan(basePackages = {"com.summerpractice"})
+@EntityScan(basePackages = {"com.summerpractice.BankKnowledgeBase.entity"})
+@EnableJpaRepositories("com.summerpractice.BankKnowledgeBase.dao")
 @SpringBootApplication
 public class BankKnowledgeBaseApplication {
 
