@@ -1,3 +1,13 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
 
 import org.hibernate.annotations.Cascade;
@@ -35,7 +45,7 @@ public class Knowledge {
     @ManyToOne
     @JoinColumn(name = "judge_id")
     private ExpertUser expertUser;
-    @Column(name = "clicked")
+    @Column(name = "clicked",columnDefinition = "int default 0")
     private int clicked;
     @Column(name = "status")
     private String status;
@@ -46,6 +56,9 @@ public class Knowledge {
     @ManyToMany(targetEntity = NormalUser.class,mappedBy = "favorite")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<NormalUser> normalUsers=new ArrayList<>();
+
+    @OneToMany(targetEntity = NormalUser.class)
+    private List<Comment> comments=new ArrayList<>();
 
     public String getTitle() {
         return title;

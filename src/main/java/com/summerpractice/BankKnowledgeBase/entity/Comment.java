@@ -1,6 +1,10 @@
-package com.summerpractice.BankKnowledgeBase.entity;
+/*
+ * author:huangping
+ *
+ */
 
-import org.hibernate.annotations.GenericGenerator;
+
+package com.summerpractice.BankKnowledgeBase.entity;
 
 import javax.persistence.*;
 
@@ -18,9 +22,15 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     private int commentId;
+    /**
+     * 一个知识对应多条评论
+     */
     @ManyToOne
     @JoinColumn(name = "know_id")
     private Knowledge knowledge;
+    /***
+     * 一个用户对应多条评论
+     */
     @ManyToOne
     @JoinColumn(name = "normal_id")
     private NormalUser normaluser;

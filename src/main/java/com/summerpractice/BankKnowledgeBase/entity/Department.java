@@ -1,3 +1,10 @@
+/*
+ * author:huangping
+ *
+ */
+
+
+
 package com.summerpractice.BankKnowledgeBase.entity;
 //    depId int auto_increment primary key,
 //    first varchar(20) not null,
@@ -15,6 +22,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "department")
 public class Department {
+    /***
+     * 四个级别的机构
+     */
     @Id
     @Column(name = "depId")
     private int depId;

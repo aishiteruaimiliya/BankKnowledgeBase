@@ -1,3 +1,13 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.service;
 
 import com.summerpractice.BankKnowledgeBase.dao.NormalUserDAO;
@@ -12,7 +22,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     @Override
     public NormalUser login(String account, String password) {
         NormalUser normalUser=normalUserDAO.findByAccountAndPassword(account,password);
-        if(password.equals(normalUser.getPassword())){
+        if(normalUser!=null&&password.equals(normalUser.getPassword())){
             return normalUser;
         }
         return null;

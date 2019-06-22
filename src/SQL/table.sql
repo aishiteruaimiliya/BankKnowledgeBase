@@ -67,13 +67,13 @@ create table knowledge(
 	knowId int auto_increment primary key,
     title varchar(50) not null,
     detail text not null,
-    typeid int,
+    typeId int,
     digest varchar(20),
     from_user_id int not null,
     judge_id int not null,
     clicked int default 0,
     status varchar(20) not null,
-	foreign key (typeid) references knowledgetype(typeid),
+	foreign key (typeId) references knowledgetype(typeId),
     foreign key (from_user_id) references normalUser(normal_id),
     foreign key(judge_id) references expectUser(expect_id),
     disable tinyint(1) default false
@@ -88,10 +88,10 @@ create table favorite(
 );
 create table user_click_knowledgetype(
 	normal_user_id int,
-    typeid int ,
+    typeId int ,
     times int default 0,
-    primary key(normal_user_id,typeid),
-    foreign key (typeid) references knowledgetype(typeid),
+    primary key(normal_user_id,typeId),
+    foreign key (typeId) references knowledgetype(typeId),
     foreign key (normal_user_id) references normalUser(normal_id),
     disable tinyint(1) default false
 );

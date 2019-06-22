@@ -1,10 +1,9 @@
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
-//create table systemManager(
-//        systemManager_id int  auto_increment primary key,
-//        account varchar(20) unique ,
-//        name varchar(20),
-//        password varchar(40)
-//        );
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

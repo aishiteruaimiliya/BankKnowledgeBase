@@ -1,3 +1,10 @@
+/*
+ * author:huangping
+ *
+ */
+
+
+
 package com.summerpractice.BankKnowledgeBase.entity;
 
 //todo 产生的联系

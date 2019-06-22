@@ -1,3 +1,13 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
 
 import javax.persistence.*;
