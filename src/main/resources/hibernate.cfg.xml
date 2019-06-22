@@ -1,4 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!--
+  ~ author:huangping
+  ~
+  -->
+
 <!DOCTYPE hibernate-configuration PUBLIC
     "-//Hibernate/Hibernate Configuration DTD//EN"
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">

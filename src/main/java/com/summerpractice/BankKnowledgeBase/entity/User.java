@@ -1,12 +1,42 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
 
 
-import org.hibernate.validator.constraints.EAN;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
+/**
+ * author:huangping
+ */
 
 @MappedSuperclass
 public class User implements Serializable {

@@ -1,3 +1,13 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
 //create table knowledgetype(
 ////        typeid int auto_increment primary key,

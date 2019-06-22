@@ -1,3 +1,13 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.controller;
 
 import com.summerpractice.BankKnowledgeBase.entity.Department;
@@ -23,7 +33,7 @@ public class IndexController {
     @GetMapping("/")
     public String index(){
         departmentServiceI.getAll();
-        return "Index";
+        return "userHomePage";
     }
     @PostMapping("/uploadfile")
     public String uploadFile(@RequestParam(name = "file",required = true) MultipartFile file){
@@ -39,7 +49,7 @@ public class IndexController {
            }
            System.out.println("一层");
        }
-        return "Index";
+        return "userHomePage";
     }
     @PostMapping("/addDept")
     public String addDept(@RequestParam(name = "first",required = true) String first,
@@ -48,7 +58,7 @@ public class IndexController {
                           @RequestParam(name = "fourth",required = true) String fourth){
 
         departmentServiceI.addDepartment(new Department(first,second,third,fourth));
-        return "Index";
+        return "userHomePage";
     }
     @GetMapping("/manageDept")
     public String manage(){
@@ -61,18 +71,18 @@ public class IndexController {
                           @RequestParam(name = "fourth",required = true) String fourth){
 
         departmentServiceI.updateInfo(new Department(first,second,third,fourth));
-        return "Index";
+        return "userHomePage";
     }
     @GetMapping("/login")
     public String showloginPage(){
-        return "userLogin";
+        return "Login";
     }
     @PostMapping("/dologin")
     public String dologin(@RequestParam(name = "account",required = true) String account,
                           @RequestParam(name = "password",required = true) String password){
         NormalUser normalUser=normalUserServiceI.login(account,password);
         if(normalUser==null){
-            return "Index";
+            return "userHomePage";
         }else {
             System.out.print(normalUser.getDepartment().toString());
             return manage();

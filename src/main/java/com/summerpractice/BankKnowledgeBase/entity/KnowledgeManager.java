@@ -1,13 +1,27 @@
+/*
+ * author:huangping
+ *
+ */
+
+/*
+ * author:huangping
+ *
+ */
+
 package com.summerpractice.BankKnowledgeBase.entity;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "knowledge_manager")
 public class KnowledgeManager extends User {
-    //todo
+
+    /**
+     * 一个部门包含多个知识管理员
+     */
     @ManyToOne
     @JoinColumn(name = "dep_id")
     private Department department;
