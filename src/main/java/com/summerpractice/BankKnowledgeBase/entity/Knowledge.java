@@ -16,7 +16,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//know_id int auto_increment primary key,
+//knowId int auto_increment primary key,
 //        title varchar(50) not null,
 //        detail text not null,
 //        typeid int,
@@ -31,10 +31,12 @@ import java.util.List;
 @Entity
 @Table(name = "knowledge")
 public class Knowledge {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "know_id")
+    private int knowId;
     @Column(name = "title")
     private String title;
-    @Id
-    private int know_id;
     @Column(name = "detail")
     private String detail;
     @Column(name = "digest")
@@ -51,11 +53,22 @@ public class Knowledge {
     private String status;
     //todo 映射
     //一对多
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
+    @ManyToOne(targetEntity = KnowledgeType.class)
+    @JoinColumn(name = "type_id")
+    private int typeId;
     @ManyToMany(targetEntity = NormalUser.class,mappedBy = "favorite")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<NormalUser> normalUsers=new ArrayList<>();
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
 
     @OneToMany(targetEntity = NormalUser.class)
     private List<Comment> comments=new ArrayList<>();
@@ -68,12 +81,12 @@ public class Knowledge {
         this.title = title;
     }
 
-    public int getKnow_id() {
-        return know_id;
+    public int getKnowId() {
+        return knowId;
     }
 
-    public void setKnow_id(int know_id) {
-        this.know_id = know_id;
+    public void setKnowId(int knowId) {
+        this.knowId = knowId;
     }
 
     public String getDetail() {

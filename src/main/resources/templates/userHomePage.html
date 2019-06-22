@@ -17,12 +17,18 @@
 </head>
 <body>
     <div align="center">
-        <form action="/uploadfile" method="post" enctype="multipart/form-data">
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-            <input type="file" name="file">
-            <input type="submit">
-        </form>
+        <table>
+            <tr>
+                <td>用户名</td>
+                <td>密码</td>
+                <td>账号</td>
+            </tr>
+            <tr>
+                <td th:text="${user.name}">用户名</td>
+                <td th:text="${user.password}">密码</td>
+                <td th:text="${user.account}">账号</td>
+            </tr>
+        </table>
     </div>
 
 </body>

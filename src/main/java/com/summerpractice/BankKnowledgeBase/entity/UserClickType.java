@@ -29,7 +29,7 @@ public class UserClickType implements Serializable {
     }
 
     //用户对应不同类型的知识的点击次数
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
 
     @Column(name = "times",columnDefinition = "int default 0")

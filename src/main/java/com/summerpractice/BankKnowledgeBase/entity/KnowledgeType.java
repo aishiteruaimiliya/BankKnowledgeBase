@@ -14,10 +14,7 @@ package com.summerpractice.BankKnowledgeBase.entity;
 ////        typecontent varchar(20) not null
 ////        );
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 知识类型
@@ -26,15 +23,26 @@ import javax.persistence.Table;
 @Table(name = "knowledge_type")
 public class KnowledgeType {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "type_id")
     private int typeid;
     @Column(name = "typecontent")
     private String typecontent;
     //node  content childid
+    @Column(name = "pre_column_id")
+    private int preTypeId;
     @Column(name = "next_type_id")
     private int nextTypeId;
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
+
+    public int getPreTypeId() {
+        return preTypeId;
+    }
+
+    public void setPreTypeId(int preTypeId) {
+        this.preTypeId = preTypeId;
+    }
 
     public int getTypeid() {
         return typeid;

@@ -20,13 +20,14 @@ import javax.persistence.*;
 @Table(name = "comment")
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "comment_id")
     private int commentId;
     /**
      * 一个知识对应多条评论
      */
     @ManyToOne
-    @JoinColumn(name = "know_id")
+    @JoinColumn(name = "knowId")
     private Knowledge knowledge;
     /***
      * 一个用户对应多条评论
@@ -38,7 +39,7 @@ public class Comment {
     private int star;
     @Column(name = "content")
     private String content;
-    @Column(name = "disable")
+    @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
 
     public boolean isDisable() {
