@@ -62,7 +62,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
-    public boolean addFavorite(NormalUser normalUser, int knowId) {
+    public boolean addFavorite(NormalUser normalUser, String knowId) {
         Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowId);
         if(knowledge!=null){
             knowledge.getNormalUsers().add(normalUser);
@@ -79,7 +79,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
-    public boolean deleteFavorite(NormalUser normalUser, int knowid) {
+    public boolean deleteFavorite(NormalUser normalUser, String knowid) {
         Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowid);
         if(knowledge!=null){
             try{
@@ -96,34 +96,42 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> getRecommend(NormalUser normalUser) {
-        UserClickTypePK userClickTypePK=new UserClickTypePK();
-        userClickTypePK.setUserId(normalUser);
-        List<UserClickType> userClickType=userClickTypeDAO.findAllByDisableFalseAndUserClickTypePKOrderByTimes(userClickTypePK);
-        if(userClickType.size()>1){
-            try{
-                return knowledgeDAO.findAllByDisableAndTypeId(false,userClickType.get(0).getUserClickTypePK().getTypeId().getTypeid());
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
         return null;
     }
 
     @Override
     public List<Knowledge> getKnowledgeByType(KnowledgeType knowledgeType) {
-        List<Knowledge> knowledges=knowledgeDAO.findAllByDisableAndTypeId(false,knowledgeType.getTypeid());
-        return knowledges;
+        return null;
     }
+
+//    @Override
+//    public List<Knowledge> getRecommend(NormalUser normalUser) {
+//        UserClickTypePK userClickTypePK=new UserClickTypePK();
+//        userClickTypePK.setUserId(normalUser);
+//        List<UserClickType> userClickType=userClickTypeDAO.findAllByDisableFalseAndUserClickTypePKOrderByTimes(userClickTypePK);
+//        if(userClickType.size()>1){
+//            try{
+//                return knowledgeDAO.findAllByDisableAndTypeId(false,userClickType.get(0).getUserClickTypePK().getTypeId().getTypeid());
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//        return null;
+//    }
+
+//    @Override
+//    public List<Knowledge> getKnowledgeByType(KnowledgeType knowledgeType) {
+//        return knowledgeDAO.findAllByDisableAndTypeId(false,knowledgeType.getTypeid());
+//    }
 
     @Override
     public List<KnowledgeType> getKnowledgeType(KnowledgeType knowledgeType) {
-        List<KnowledgeType> knowledges=knowledgeTypeDAO.findAllByPreTypeId(knowledgeType.getTypeid());
-        return knowledges;
+        return knowledgeTypeDAO.findAllByPreTypeId(knowledgeType.getTypeid());
     }
 
     @Override
-    public List<Knowledge> getFavorite(int id) {
+    public List<Knowledge> getFavorite(String id) {
         NormalUser normalUser=normalUserDAO.findByDisableFalseAndId(id);
         return normalUser.getFavorite();
     }
@@ -134,7 +142,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
-    public boolean changePassword(int id, String oldPass, String newPass) {
+    public boolean changePassword(String id, String oldPass, String newPass) {
         NormalUser normalUser=normalUserDAO.findByDisableFalseAndId(id);
         if(normalUser!=null&&normalUser.getPassword().equals(oldPass)){
             normalUser.setPassword(newPass);
@@ -144,10 +152,10 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
                 e.printStackTrace();
                 return false;
             }
+            return true;
 
         }else {
             return false;
         }
-        return false;
     }
 }

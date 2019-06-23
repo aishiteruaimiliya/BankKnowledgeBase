@@ -14,6 +14,8 @@ package com.summerpractice.BankKnowledgeBase.entity;
 ////        typecontent varchar(20) not null
 ////        );
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /**
@@ -23,32 +25,25 @@ import javax.persistence.*;
 @Table(name = "knowledge_type")
 public class KnowledgeType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "type_id")
-    private int typeid;
+    @GenericGenerator(strategy = "uuid",name = "myuuid")
+    @GeneratedValue(generator = "myuuid")
+    @Column(name = "type_id",length = 50)
+    private String typeid;
     @Column(name = "typecontent")
     private String typecontent;
     //node  content childid
     @Column(name = "pre_column_id")
-    private int preTypeId;
+    private String preTypeId;
     @Column(name = "next_type_id")
-    private int nextTypeId;
+    private String nextTypeId;
     @Column(name = "disable",columnDefinition = "tinyint(1) default false")
     private boolean disable;
 
-    public int getPreTypeId() {
-        return preTypeId;
-    }
-
-    public void setPreTypeId(int preTypeId) {
-        this.preTypeId = preTypeId;
-    }
-
-    public int getTypeid() {
+    public String getTypeid() {
         return typeid;
     }
 
-    public void setTypeid(int typeid) {
+    public void setTypeid(String typeid) {
         this.typeid = typeid;
     }
 
@@ -60,11 +55,19 @@ public class KnowledgeType {
         this.typecontent = typecontent;
     }
 
-    public int getNextTypeId() {
+    public String getPreTypeId() {
+        return preTypeId;
+    }
+
+    public void setPreTypeId(String preTypeId) {
+        this.preTypeId = preTypeId;
+    }
+
+    public String getNextTypeId() {
         return nextTypeId;
     }
 
-    public void setNextTypeId(int nextTypeId) {
+    public void setNextTypeId(String nextTypeId) {
         this.nextTypeId = nextTypeId;
     }
 
@@ -76,12 +79,7 @@ public class KnowledgeType {
         this.disable = disable;
     }
 
-    public KnowledgeType(String typecontent, int nextTypeId, boolean disable) {
-        this.typecontent = typecontent;
-        this.nextTypeId = nextTypeId;
-        this.disable = disable;
-    }
-
     public KnowledgeType() {
     }
+
 }

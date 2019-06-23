@@ -49,8 +49,19 @@ public class NormalUser extends User {
     }
     public NormalUser(){
     }
-    public void setDepartment(int dep_id){
+    public void setDepartment(String dep_id){
         if(this.department==null) department=new Department();
         this.department.setDepId(dep_id);
+    }
+
+    @Override
+    public String toString() {
+        return "NormalUser{" +
+                "favorite=" + favorite +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

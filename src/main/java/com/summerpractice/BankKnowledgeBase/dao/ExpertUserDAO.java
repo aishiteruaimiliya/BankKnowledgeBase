@@ -9,4 +9,5 @@ import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExpertUserDAO extends JpaRepository<ExpertUser,Integer> {
+    ExpertUser findAllByDisableFalseAndAccount(String account);
 }

@@ -9,8 +9,8 @@ package com.summerpractice.BankKnowledgeBase.entity;
 
 //todo 产生的联系
 public class Favorite {
-    private int userId;
-    private int knowId;
+    private String userId;
+    private String knowId;
     private boolean disable;
     public boolean isDisable() {
         return disable;
@@ -19,24 +19,24 @@ public class Favorite {
     public void setDisable(boolean disable) {
         this.disable = disable;
     }
-    public Favorite(int userId, int knowId) {
+    public Favorite(String userId, String knowId) {
         this.userId = userId;
         this.knowId = knowId;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getKnowId() {
+    public String getKnowId() {
         return knowId;
     }
 
-    public void setKnowId(int knowId) {
+    public void setKnowId(String knowId) {
         this.knowId = knowId;
     }
 }

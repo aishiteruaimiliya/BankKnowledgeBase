@@ -14,13 +14,11 @@ import org.junit.Test;
 
 
 
-public abstract class BaseTest {
+public  class BaseTest {
     @Test
-    public abstract void insert();
-    @Test
-    public abstract void delete();
-    @Test
-    public abstract void findByID();
-    @Test
-    public abstract void update();
+    public  void insert(){
+        String i="1.0";
+        System.out.print(Integer.parseInt(i.split("\\.")[0]));
+    }
+
 }

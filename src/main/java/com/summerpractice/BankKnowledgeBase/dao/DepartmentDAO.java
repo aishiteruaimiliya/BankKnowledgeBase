@@ -18,9 +18,12 @@ import java.util.List;
 public interface DepartmentDAO extends JpaRepository<Department,Integer> {
     List<Department> getAllByDisable(boolean disable);
     List<Department> findByFirstAndDisable(String first,boolean disable);
-    Department findByDepIdAndDisable(int id,boolean disable);
-    void deleteAllByFirst(String first);
-    void deleteAllBySecond(String second);
-    void deleteAllByThird(String third);
-    void deleteAllByFourth(String fourth);
+    Department findByDepIdAndDisable(String id,boolean disable);
+    List<Department>  findAllByDisableFalseAndFirst(String first);
+    List<Department>  findAllByDisableFalseAndSecond(String second);
+    List<Department> findAllByDisableFalseAndThird(String third);
+    List<Department> findAllByDisableFalseAndFourth(String fourth);
+    List<Department> getFirstByDisableFalse();
+    List<Department> getAllByDisableFalse();
+    Department findDepartmentByDepIdAndDisableFalse(String id);
 }

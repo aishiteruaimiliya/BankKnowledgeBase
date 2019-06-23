@@ -1,0 +1,40 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/adminRequest/adduser" method="post" >
+        <label>请选择机构：</label><select th:each="dept:${departments}" name="selected">
+            <option  th:value="${dept.depId}" th:text="${dept.first}"></option>
+        </select><br/>
+        <input type="text" placeholder="用户名" name="username"/><br/>
+        <input type="text" placeholder="账号" name="account"/><br/>
+        <input type="text" placeholder="密码" name="password"/><br/>
+        <input type="text" placeholder="确认密码" name="confirm"/><br/>
+        <select name="userType">
+            <option value="1">普通用户</option>
+            <option value="2">知识管理员</option>
+            <option value="3">专家</option>
+            <option value="4">系统管理员</option>
+        </select><br/>
+        <input type="submit" value="确认添加"/>
+    </form>
+    <form action="/adduser" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="批量添加">
+        <label>请选择机构：</label>
+        <select th:each="dept:${departments}" name="selected">
+        <option  th:value="${dept.depId}" th:text="${dept.first}"></option>
+        </select><br/>
+    </form>
+    <img src="/static/image/sample.png"  alt="实例表格图片">
+</body>
+</html>

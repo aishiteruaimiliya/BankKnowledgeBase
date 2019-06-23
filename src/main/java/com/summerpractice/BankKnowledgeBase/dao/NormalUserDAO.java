@@ -15,6 +15,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NormalUserDAO extends JpaRepository<NormalUser,Integer> {
     NormalUser findByAccountAndPasswordAndDisable(String account,String password,boolean disable);
-    NormalUser findByDisableFalseAndId(int id);
-
+    NormalUser findByDisableFalseAndId(String id);
+    NormalUser findAllByDisableFalseAndAccount(String account);
 }

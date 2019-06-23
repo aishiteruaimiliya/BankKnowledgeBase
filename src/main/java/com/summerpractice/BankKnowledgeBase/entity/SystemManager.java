@@ -18,4 +18,15 @@ public class SystemManager extends User {
         super(name, account, password);
     }
     public SystemManager(){}
+
+    @Override
+    public String toString() {
+        return "SystemManager{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", disable=" + disable +
+                '}';
+    }
 }

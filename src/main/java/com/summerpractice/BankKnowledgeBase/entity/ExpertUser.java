@@ -35,8 +35,29 @@ public class ExpertUser extends User {
     public void setDepartment(Department department) {
         this.department = department;
     }
-    public void setDepartment(int dep_id){
+    public void setDepartment(String dep_id){
         if(this.department==null) department=new Department();
         this.department.setDepId(dep_id);
+    }
+
+    @Override
+    public String toString() {
+        return "ExpertUser{" +
+                "department=" + department +
+                ", knowledgeType=" + knowledgeType +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", disable=" + disable +
+                '}';
+    }
+
+    public KnowledgeType getKnowledgeType() {
+        return knowledgeType;
+    }
+
+    public void setKnowledgeType(KnowledgeType knowledgeType) {
+        this.knowledgeType = knowledgeType;
     }
 }

@@ -43,7 +43,7 @@ public interface NormalUserServiceI {
      * @param knowId 知识id
      * @return 是否添加成功
      */
-    public boolean addFavorite(NormalUser normalUser,int knowId);
+    public boolean addFavorite(NormalUser normalUser,String knowId);
 
     /***
      * 删除收藏夹
@@ -51,7 +51,7 @@ public interface NormalUserServiceI {
      * @param knowid 知识id
      * @return 是否删除成功
      */
-    public boolean deleteFavorite(NormalUser normalUser,int knowid);
+    public boolean deleteFavorite(NormalUser normalUser,String knowid);
 
     /***
      * 根据用户查询推荐知识
@@ -79,9 +79,9 @@ public interface NormalUserServiceI {
      * @param normalUser 用户
      * @return 用户的收藏夹的知识
      */
-    public List<Knowledge> getFavorite(int id);
+    public List<Knowledge> getFavorite(String id);
 
     public List<KnowledgeType> getFirstLayer();
 
-    public  boolean changePassword(int id,String oldPass,String newPass);
+    public  boolean changePassword(String id,String oldPass,String newPass);
 }

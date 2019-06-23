@@ -80,25 +80,26 @@ public class ExcelReader {
     public static ArrayList<User> parseUserFromArray(ArrayList<ArrayList<String>> arrayLists){
         ArrayList<User> users=new ArrayList<>();
         for(ArrayList<String> user:arrayLists){
-           switch (user.get(user.size()-1)){
+//            System.out.println(user.toString());
+//            System.out.println("size:"+user.size());
+           switch (user.get(user.size()-1).split("\\.")[0]){
                /**
                 * 导入的excel的最后一位为标识符 1普通用户 2专家用户 3 知识管理员 4 系统管理员
-                * excel 第一行为名字 第二行为账号 第三行为密码 第四行为 机构号 若为管理员，则为标识符,第五行为身份标识
+                * excel 第一列为名字 第二列为账号 第三列为密码 第四列为机构号 若为管理员，则为标识符,第五列为身份标识
                 */
                case "1":
                    NormalUser normalUser=new NormalUser();
                    normalUser.setName(user.get(0));
                    normalUser.setAccount(user.get(1));
                    normalUser.setPassword(user.get(2));
-                   normalUser.setDepartment(Integer.parseInt(user.get(3)));
                    users.add(normalUser);
+//                   System.out.print(normalUser.toString());
                    break;
                case "2":
                    ExpertUser expertUser=new ExpertUser();
                    expertUser.setName(user.get(0));
                    expertUser.setAccount(user.get(1));
                    expertUser.setPassword(user.get(2));
-                   expertUser.setDepartment(Integer.parseInt(user.get(3)));
                    users.add(expertUser);
                    break;
                case "3":
@@ -106,7 +107,6 @@ public class ExcelReader {
                    knowledgeManager.setName(user.get(0));
                    knowledgeManager.setAccount(user.get(1));
                    knowledgeManager.setPassword(user.get(2));
-                   knowledgeManager.setDepartment(Integer.parseInt(user.get(3)));
                    users.add(knowledgeManager);
                    break;
                case "4":

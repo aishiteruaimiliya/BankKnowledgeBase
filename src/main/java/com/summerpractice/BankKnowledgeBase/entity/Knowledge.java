@@ -11,6 +11,7 @@
 package com.summerpractice.BankKnowledgeBase.entity;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,9 +33,10 @@ import java.util.List;
 @Table(name = "knowledge")
 public class Knowledge {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "know_id")
-    private int knowId;
+    @GenericGenerator(strategy = "uuid",name = "myuuid")
+    @GeneratedValue(generator = "myuuid")
+    @Column(name = "know_id",length = 50)
+    private String knowId;
     @Column(name = "title")
     private String title;
     @Column(name = "detail")
@@ -57,17 +59,25 @@ public class Knowledge {
     private boolean disable;
     @ManyToOne(targetEntity = KnowledgeType.class)
     @JoinColumn(name = "type_id")
-    private int typeId;
+    private KnowledgeType knowledgeType;
     @ManyToMany(targetEntity = NormalUser.class,mappedBy = "favorite")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<NormalUser> normalUsers=new ArrayList<>();
 
-    public int getTypeId() {
-        return typeId;
+    public KnowledgeType getTypeId() {
+        return knowledgeType;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
+    public void setTypeId(KnowledgeType knowledgeType) {
+        this.knowledgeType = knowledgeType;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @OneToMany(targetEntity = NormalUser.class)
@@ -81,11 +91,11 @@ public class Knowledge {
         this.title = title;
     }
 
-    public int getKnowId() {
+    public String getKnowId() {
         return knowId;
     }
 
-    public void setKnowId(int knowId) {
+    public void setKnowId(String knowId) {
         this.knowId = knowId;
     }
 
