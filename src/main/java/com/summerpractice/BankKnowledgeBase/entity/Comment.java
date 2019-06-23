@@ -6,6 +6,8 @@
 
 package com.summerpractice.BankKnowledgeBase.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /***
@@ -20,9 +22,10 @@ import javax.persistence.*;
 @Table(name = "comment")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "comment_id")
-    private int commentId;
+    @GenericGenerator(strategy = "uuid",name = "myuuid")
+    @GeneratedValue(generator = "myuuid")
+    @Column(name = "comment_id",length = 50)
+    private String commentId;
     /**
      * 一个知识对应多条评论
      */
@@ -50,11 +53,11 @@ public class Comment {
         this.disable = disable;
     }
 
-    public int getCommentId() {
+    public String getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(String commentId) {
         this.commentId = commentId;
     }
 

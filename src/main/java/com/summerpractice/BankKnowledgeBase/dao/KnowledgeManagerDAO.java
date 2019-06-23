@@ -9,4 +9,5 @@ import com.summerpractice.BankKnowledgeBase.entity.KnowledgeManager;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface KnowledgeManagerDAO extends JpaRepository<KnowledgeManager,Integer> {
+    public KnowledgeManager findAllByDisableFalseAndAccount(String account);
 }

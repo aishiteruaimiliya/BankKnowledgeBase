@@ -31,6 +31,8 @@
 package com.summerpractice.BankKnowledgeBase.entity;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -41,9 +43,11 @@ import java.io.Serializable;
 @MappedSuperclass
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected int id;
-    @Column(name = "name")
+    @GenericGenerator(strategy = "uuid",name = "myuuid")
+    @GeneratedValue(generator = "myuuid")
+    @Column(name = "id",length = 50)
+    protected String id;
+    @Column(name = "name",columnDefinition = "varchar(50) unique not null")
     protected String name;
     @Column(name = "account")
     protected String account;
@@ -79,11 +83,11 @@ public class User implements Serializable {
                 '}';
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

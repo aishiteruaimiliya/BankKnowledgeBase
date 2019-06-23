@@ -6,4 +6,5 @@ insert into normal_user(id, account, disable, name, password, dep_id) VALUES
     (1,'123',false,'zs','123',1),
     (2,'456',false,'hp','123',1),
     (3,'789',false,'gy','123',1),
-    (4,'987',false,'szr','123',1)
+    (4,'987',false,'szr','123',1);
+select * from normal_user;

@@ -18,7 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller("/userRequest")
+@Controller
+@RequestMapping("/userRequest")
 public class UserRequestController {
     @Autowired
     DepartmentServiceI departmentServiceI;
@@ -68,6 +69,7 @@ public class UserRequestController {
                               HttpServletRequest request,ModelAndView modelAndView){
         NormalUser normalUser=normalUserServiceI.login(account,password);
         if(normalUser!=null){
+            request.getSession().setAttribute("user",normalUser);
             modelAndView.addObject("user",normalUser);
             modelAndView.setViewName("userHomePage");
             return modelAndView;

@@ -10,10 +10,10 @@ import java.io.Serializable;
 import java.util.Objects;
 @Embeddable
 public class UserClickTypePK implements Serializable {
-    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
+    @ManyToOne(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private NormalUser userId;
-    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name = "type_id")
     private KnowledgeType typeId;
 

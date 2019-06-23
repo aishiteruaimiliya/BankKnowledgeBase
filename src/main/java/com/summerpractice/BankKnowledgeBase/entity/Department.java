@@ -12,6 +12,8 @@ package com.summerpractice.BankKnowledgeBase.entity;
 //    third varchar(20),
 //    fourth varchar(20)
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 /***
@@ -26,9 +28,10 @@ public class Department {
      * 四个级别的机构
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "depId")
-    private int depId;
+    @GenericGenerator(strategy = "uuid",name = "myuuid")
+    @GeneratedValue(generator = "myuuid")
+    @Column(name = "depId",length = 50)
+    private String depId;
     @Column(name = "first")
     private String first;
     @Column(name = "second")
@@ -71,11 +74,11 @@ public class Department {
         this.first = first;
     }
 
-    public int getDepId() {
+    public String getDepId() {
         return depId;
     }
 
-    public void setDepId(int depId) {
+    public void setDepId(String depId) {
         this.depId = depId;
     }
 
@@ -122,7 +125,7 @@ public class Department {
                 '}';
     }
 
-    public Department(int depId, String first, String second, String third, String fourth, boolean disable) {
+    public Department(String depId, String first, String second, String third, String fourth, boolean disable) {
         this.depId = depId;
         this.first = first;
         this.second = second;

@@ -7,6 +7,8 @@ package com.summerpractice.BankKnowledgeBase.controller;
 
 import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import com.summerpractice.BankKnowledgeBase.entity.User;
+import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-
-@Controller("/user")
+@Controller
+@RequestMapping("/user")
 public class UserShowPageController {
     /**
      * 去往登录页面
      * @return
      */
-    @GetMapping(name = "/login")
+    @Autowired
+    NormalUserServiceI normalUserServiceI;
+
+    @RequestMapping(value = "/login",method =RequestMethod.GET)
     public String showLogin(){
         return "Login";
     }
@@ -31,12 +36,16 @@ public class UserShowPageController {
      * @return
      */
     @GetMapping("/favorite")
-    public String showMyFavorite(HttpServletRequest request){
+    public ModelAndView showMyFavorite(HttpServletRequest request,ModelAndView modelAndView){
         User user= (User) request.getSession().getAttribute("user");
-        if(user instanceof NormalUser)
-            return "UserFavorite";
-        else
-            return "Login";
+        if(user instanceof NormalUser){
+            modelAndView.setViewName("Favorite");
+            modelAndView.addObject("knows", normalUserServiceI.getFavorite(user.getId()));
+        }
+        else{
+            modelAndView.setViewName("Login");
+        }
+        return modelAndView;
     }
     @GetMapping("/showMyKnowledge")
     public String showMyKnowledge(HttpServletRequest request){

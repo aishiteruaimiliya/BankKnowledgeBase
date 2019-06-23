@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface KnowledgeTypeDAO extends JpaRepository<KnowledgeType,Integer> {
-    List<KnowledgeType> findAllByPreTypeId(int pretypeid);
+    List<KnowledgeType> findAllByPreTypeId(String pretypeid);
     List<KnowledgeType> findAllByPreTypeIdIsNull();
 }

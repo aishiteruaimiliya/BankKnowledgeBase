@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentServiceI {
@@ -28,23 +27,21 @@ public class DepartmentServiceImpl implements DepartmentServiceI {
     }
 
     @Override
-    public Department findById(int id) {
+    public Department findById(String id) {
         return departmentDAO.findByDepIdAndDisable(id,false);
     }
 
 
     @Override
     public void updateInfo(Department department) {
-        department.setDepId(0);
-        Optional<Department> temp=departmentDAO.findById(department.getDepId());
-
-        if(temp.isPresent())
-            departmentDAO.save(department);
-        else try {
-            throw new Exception("数据不存在");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       Department department1=departmentDAO.findByDepIdAndDisable(department.getDepId(),false);
+       if(department1!=null){
+           try{
+               departmentDAO.save(department);
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+       }
     }
 
     @Override
@@ -59,23 +56,24 @@ public class DepartmentServiceImpl implements DepartmentServiceI {
     }
 
     @Override
-    public void deleteAllByFirst(String first) {
-        departmentDAO.deleteAllByFirst(first);
+    public void deleleDepartment(Department department) {
+        department.setDisable(true);
+        updateInfo(department);
     }
 
     @Override
-    public void deleteAllBySecond(String second) {
-        departmentDAO.deleteAllBySecond(second);
+    public void changeFourth(Department department) {
+        Department department1=departmentDAO.findByDepIdAndDisable(department.getDepId(),false);
+        if(department1!=null){
+            department1.setFourth(department.getFourth());
+            try{
+                departmentDAO.save(department1);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
-    @Override
-    public void deleteAllByThird(String third) {
-        departmentDAO.deleteAllByThird(third);
-    }
-
-    @Override
-    public void deleteAllByFourth(String fourth) {
-        departmentDAO.deleteAllByFourth(fourth);
-    }
 
 }
