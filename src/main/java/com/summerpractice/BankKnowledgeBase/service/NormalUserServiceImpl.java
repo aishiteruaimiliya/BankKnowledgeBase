@@ -29,11 +29,23 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     UserClickTypeDAO userClickTypeDAO;
     @Autowired
     KnowledgeTypeDAO knowledgeTypeDAO;
+    @Autowired
+    KnowledgeManagerDAO knowledgeManagerDAO;
+    @Autowired
+    ExpertUserDAO expertUserDAO;
     @Override
-    public NormalUser login(String account, String password) {
+    public User login(String account, String password) {
         NormalUser normalUser=normalUserDAO.findByAccountAndPasswordAndDisable(account,password,false);
+        ExpertUser expertUser=expertUserDAO.findAllByDisableFalseAndAccount(account);
+        KnowledgeManager knowledgeManager=knowledgeManagerDAO.findAllByDisableFalseAndAccount(account);
         if(normalUser!=null&&password.equals(normalUser.getPassword())){
             return normalUser;
+        }
+        if(expertUser!=null&&password.equals(expertUser.getPassword())){
+            return expertUser;
+        }
+        if(knowledgeManager!=null&&password.equals(knowledgeManager.getPassword())){
+            return knowledgeManager;
         }
         return null;
     }
