@@ -5,7 +5,9 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
 import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
+import com.summerpractice.BankKnowledgeBase.entity.User;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
 import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,15 +69,18 @@ public class UserRequestController {
     public ModelAndView login(@RequestParam(name = "account",required = true) String account,
                               @RequestParam(name = "password",required = true) String password,
                               HttpServletRequest request,ModelAndView modelAndView){
-        NormalUser normalUser=normalUserServiceI.login(account,password);
-        if(normalUser!=null){
-            request.getSession().setAttribute("user",normalUser);
-            modelAndView.addObject("user",normalUser);
+
+        User usr=normalUserServiceI.login(account,password);
+        modelAndView.setViewName("Login");
+        request.getSession().setAttribute("user",usr);
+        modelAndView.addObject("user",usr);
+        if(usr instanceof NormalUser){
             modelAndView.setViewName("userHomePage");
-            return modelAndView;
+        }else if( usr instanceof ExpertUser) {
+           modelAndView.setViewName("expertUserHomePage");
         }else {
-            modelAndView.setViewName("login");
-            return modelAndView;
+            modelAndView.setViewName("knowledgeHomePage");
         }
+        return modelAndView;
     }
 }

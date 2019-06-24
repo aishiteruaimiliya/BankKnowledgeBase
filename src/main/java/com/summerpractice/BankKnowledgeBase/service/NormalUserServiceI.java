@@ -21,7 +21,7 @@ public interface NormalUserServiceI {
      * @param password 登陆密码
      * @return 是否存在用户
      */
-    public NormalUser login(String account,String password);
+    public User login(String account,String password);
 
     /**
      * 添加评论
