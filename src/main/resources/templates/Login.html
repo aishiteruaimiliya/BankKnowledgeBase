@@ -9,16 +9,57 @@
   -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>用户登录</title>
+    <link th:href="@{/static/css/style.css}" href="../static/css/style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- -->
+    <script>var __links = document.querySelectorAll('a');function __linkClick(e) { parent.window.postMessage(this.href, '*');} ;for (var i = 0, l = __links.length; i < l; i++) {if ( __links[i].getAttribute('data-t') == '_blank' ) { __links[i].addEventListener('click', __linkClick, false);}}</script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script>$(document).ready(function(c) {
+        $('.alert-close').on('click', function(c){
+            $('.message').fadeOut('slow', function(c){
+                $('.message').remove();
+            });
+        });
+    });
+    </script>
 </head>
 <body>
-    <form action="/userRequest/doLogin" method="post">
-        <input type="text" placeholder="用户账号" name="account"><br/>
-        <input type="password" placeholder="密码" name="password"><br/>
-        <input type="submit" value="登录">
-    </form>
+<!-- contact-form -->
+<div class="message warning">
+    <div class="inset">
+        <div class="login-head">
+            <h1>用户登录</h1>
+            <div class="alert-close"> </div>
+        </div>
+        <form action="/userRequest/doLogin" method="post">
+            <li>
+                <input type="text" class="text" name="account" value="用户名" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}"><a href="#" class=" icon user"></a>
+            </li>
+            <div class="clear"> </div>
+            <li>
+                <input type="password" name="password" value="密码" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"> <a href="#" class="icon lock"></a>
+            </li>
+            <div class="clear"> </div>
+            <div class="submit">
+                <input type="submit" value="登录">
+                <div class="clear">  </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+</div>
+<div class="clear"> </div>
+<!--- footer --->
+<div class="footer">
+    <p>Copyright &copy; 山东大学软件学院银行知识库一组.</p>
+</div>
 </body>
 </html>
