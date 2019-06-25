@@ -77,7 +77,7 @@ public class UserRequestController {
         }else if(usr instanceof KnowledgeManager){
             modelAndView.setViewName("knowledgeHomePage");
         }else {
-            modelAndView.addObject("msg","用户不存在！请重新输入！");
+            modelAndView.addObject("msg","登录信息输入有误");
         }
         return modelAndView;
     }
