@@ -13,4 +13,7 @@ import java.util.List;
 public interface KnowledgeTypeDAO extends JpaRepository<KnowledgeType,Integer> {
     List<KnowledgeType> findAllByPreTypeId(String pretypeid);
     List<KnowledgeType> findAllByPreTypeIdIsNull();
+    KnowledgeType findByDisableFalseAndTypeid(String typeid);
+    List<KnowledgeType> findAllByDisableFalseAndPreTypeId(String typeid);
+    List<KnowledgeType> findAllByDisableFalseAndNextTypeIdIsNull();
 }

@@ -81,4 +81,8 @@ public class IndexController {
         normalUser.setFavorite(knowledges);
         normalUserDAO.save(normalUser);
     }
+    @GetMapping("/firstLayer")
+    public String get(){
+        return "getFirstLayer";
+    }
 }

@@ -1,0 +1,59 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <script th:src="@{/static/js/jquery.min.js}"></script>-->
+    <script th:src="@{/static/js/angu.min.js}"></script>
+<!--    <script src="../static/js/angu.min.js"></script>-->
+<!--    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>-->
+</head>
+<body>
+   <div ng-app="myApp" ng-controller="siteCtrl">
+
+        <select name="typeid" ng-change="changed()" ng-model="value">
+            <option ng-repeat="x in types" value="{{x.typeid}}">
+                {{ x.typecontent}}
+                {{value}}
+            </option>
+        </select>
+
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('siteCtrl', function($scope, $http) {
+            $http({
+                method: 'GET',
+                url: '/userRequest/firstLayer'
+            }).then(function successCallback(response) {
+                $scope.types = response.data;
+                console.log(response.data);
+            }, function errorCallback(response) {
+                // 请求失败执行代码
+            });
+            $scope.changed=function () {
+                $http({
+                    method: 'GET',
+                    url: '/userRequest/getTypeByType',
+                    params: {
+                        typeId: $scope.value
+                    }
+                }).then(function successCallback(response) {
+                    if(response.data.length===0)
+                        $scope.types = response.data;
+                    console.log(response.data);
+                }, function errorCallback(response) {
+
+                });
+            }
+        });
+    </script>
+</body>
+</html>

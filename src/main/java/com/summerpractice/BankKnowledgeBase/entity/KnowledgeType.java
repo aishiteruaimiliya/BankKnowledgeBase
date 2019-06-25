@@ -82,4 +82,14 @@ public class KnowledgeType {
     public KnowledgeType() {
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"typeid\":\"")
+                .append(typeid).append('\"');
+        sb.append(",\"typecontent\":\"")
+                .append(typecontent).append('\"');
+        sb.append('}');
+        return sb.toString();
+    }
 }

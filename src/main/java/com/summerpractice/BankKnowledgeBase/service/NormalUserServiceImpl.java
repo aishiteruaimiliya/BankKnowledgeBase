@@ -33,6 +33,12 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     KnowledgeManagerDAO knowledgeManagerDAO;
     @Autowired
     ExpertUserDAO expertUserDAO;
+
+    @Autowired
+    RecmmendDAO recmmendDAO;
+
+    @Autowired
+    RankBoardDAO rankBoardDAO;
     @Override
     public User login(String account, String password) {
         NormalUser normalUser=normalUserDAO.findByAccountAndPasswordAndDisable(account,password,false);
@@ -108,12 +114,17 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> getRecommend(NormalUser normalUser) {
-        return null;
+        return recmmendDAO.findAllByRecommendPK_NormalUser(normalUser).getRecommendPK().getRecommend();
     }
 
     @Override
     public List<Knowledge> getKnowledgeByType(KnowledgeType knowledgeType) {
-        return null;
+        return knowledgeDAO.findAllByDisableFalseAndKnowledgeType(knowledgeType);
+    }
+
+    @Override
+    public List<KnowledgeType> getKnowledgeTypeByPreID(String typeid) {
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(typeid);
     }
 
 //    @Override
@@ -169,5 +180,43 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public KnowledgeType findKnowlegeTypeById(String typeid) {
+
+        return knowledgeTypeDAO.findByDisableFalseAndTypeid(typeid);
+    }
+
+    @Override
+    public List<KnowledgeType> findnextKnowlegeTypeByPreId(String pretypeid) {
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(pretypeid);
+    }
+
+    @Override
+    public List<Comment> getCommentByKnowledge(Knowledge knowledge) {
+        return commentDAO.findAllByDisableFalseAndKnowledge(knowledge);
+    }
+
+    @Override
+    public List<Comment> getCommentByKnowledgeId(String knowId) {
+        Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowId);
+        if(knowledge==null) return null;
+        return commentDAO.findAllByDisableFalseAndKnowledge(knowledge);
+    }
+
+    @Override
+    public List<Knowledge> searchByKeyWord(String keyword) {
+        return knowledgeDAO.findAllByDisableFalseAndDigestLikeOrTitleLikeOrDetailLike(keyword,keyword,keyword);
+    }
+
+    @Override
+    public List<KnowledgeType> getLastLayer() {
+        return knowledgeTypeDAO.findAllByDisableFalseAndNextTypeIdIsNull();
+    }
+
+    @Override
+    public List<RankBoard> getRankBoard() {
+        return rankBoardDAO.findAll();
     }
 }
