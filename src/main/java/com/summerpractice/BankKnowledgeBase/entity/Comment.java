@@ -99,4 +99,21 @@ public class Comment {
         this.disable = disable;
     }
     public Comment(){}
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"commentId\":\"")
+                .append(commentId).append('\"');
+        sb.append(",\"knowledge\":")
+                .append(knowledge);
+        sb.append(",\"normaluser\":")
+                .append(normaluser);
+        sb.append(",\"star\":")
+                .append(star);
+        sb.append(",\"content\":\"")
+                .append(content).append('\"');
+        sb.append('}');
+        return sb.toString();
+    }
 }

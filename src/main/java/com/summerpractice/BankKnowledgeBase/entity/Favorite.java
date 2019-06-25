@@ -39,4 +39,6 @@ public class Favorite {
     public void setKnowId(String knowId) {
         this.knowId = knowId;
     }
+
+
 }

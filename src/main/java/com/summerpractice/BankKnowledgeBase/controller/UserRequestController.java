@@ -5,17 +5,13 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
-import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
-import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
-import com.summerpractice.BankKnowledgeBase.entity.User;
+import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
 import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,9 +74,61 @@ public class UserRequestController {
             modelAndView.setViewName("userHomePage");
         }else if( usr instanceof ExpertUser) {
            modelAndView.setViewName("expertUserHomePage");
-        }else {
+        }else if(usr instanceof KnowledgeManager){
             modelAndView.setViewName("knowledgeHomePage");
+        }else {
+            modelAndView.addObject("msg","用户不存在！请重新输入！");
         }
         return modelAndView;
+    }
+    @ResponseBody
+    @RequestMapping("/addknowledge.do")
+    public String  addKnowledge(@RequestParam(name = "title",required = true)String title,
+                                @RequestParam(name = "digest",required = true)String digest,
+                                @RequestParam(name = "detail",required = true)String detail,
+                                @RequestParam(name = "typeid",required = true)String typeid
+                                ,HttpServletRequest request){
+        NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
+
+        if(normalUser==null) return "failed";
+
+        try{
+            Knowledge knowledge=new Knowledge();
+            knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeid));
+            knowledge.setNormalUser(normalUser);
+            knowledge.setStatus("未审批");
+            knowledge.setTitle(title);
+            knowledge.setDetail(detail);
+            knowledge.setDigest(digest);
+            normalUserServiceI.addKnowledge(knowledge);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "failed";
+        }
+        return "success";
+    }
+
+    @ResponseBody
+    @RequestMapping("/firstLayer")
+    public String getFirstLayer(HttpServletRequest request){
+        NormalUser normalUser=verifyUser(request);
+//        if(normalUser==null) return "404";
+
+        return normalUserServiceI.getFirstLayer().toString();
+
+    }
+    @ResponseBody
+    @RequestMapping(value = "/getTypeByType",method = RequestMethod.GET)
+    public String getTypeByType(@RequestParam(name = "typeId",required = true) String typeid,HttpServletRequest request){
+//        NormalUser normalUser=verifyUser(request);
+//        if (normalUser == null) {
+//            return "404";
+//        }
+        return normalUserServiceI.findnextKnowlegeTypeByPreId(typeid).toString();
+
+    }
+
+    private NormalUser verifyUser(HttpServletRequest request){
+        return (NormalUser) request.getSession().getAttribute("user");
     }
 }

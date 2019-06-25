@@ -8,6 +8,11 @@
   ~
   -->
 
+<!--
+  ~ author:huangping
+  ~
+  -->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
@@ -46,6 +51,7 @@
             <li>
                 <input type="password" name="password" value="密码" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"> <a href="#" class="icon lock"></a>
             </li>
+            <a th:text="${msg!=null?msg:''}"></a>
             <div class="clear"> </div>
             <div class="submit">
                 <input type="submit" value="登录">
