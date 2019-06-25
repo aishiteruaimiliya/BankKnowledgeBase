@@ -1,0 +1,1 @@
+[KnowledgeType{typeid='297e33a46b87f9eb016b87fa17970002', typecontent='jieck', preTypeId='null', nextTypeId='null'}]

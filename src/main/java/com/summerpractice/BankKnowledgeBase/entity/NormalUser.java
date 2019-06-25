@@ -56,12 +56,14 @@ public class NormalUser extends User {
 
     @Override
     public String toString() {
-        return "NormalUser{" +
-                "favorite=" + favorite +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"id\":\"")
+                .append(id).append('\"');
+        sb.append(",\"name\":\"")
+                .append(name).append('\"');
+        sb.append(",\"account\":\"")
+                .append(account).append('\"');
+        sb.append('}');
+        return sb.toString();
     }
 }

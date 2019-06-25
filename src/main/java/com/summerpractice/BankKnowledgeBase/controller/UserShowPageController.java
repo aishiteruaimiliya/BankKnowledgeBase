@@ -5,6 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.summerpractice.BankKnowledgeBase.entity.KnowledgeType;
 import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import com.summerpractice.BankKnowledgeBase.entity.User;
 import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @Controller
 @RequestMapping("/user")
 public class UserShowPageController {
@@ -59,11 +62,21 @@ public class UserShowPageController {
     public ModelAndView showHomePage(HttpServletRequest request,ModelAndView modelAndView){
         NormalUser user= (NormalUser) modelAndView.getModel().get("user");
         if(user==null)
-            return new ModelAndView("NOTFOUND");
+            return new ModelAndView("ERROR");
         request.getSession().setAttribute("user",user);
         modelAndView.setViewName("userHomePage");
         return modelAndView;
     }
-
-
+    @GetMapping(value = "/addKnowledge")
+    public ModelAndView showAddKnowledgePage(HttpServletRequest request,ModelAndView modelAndView){
+        NormalUser user=(NormalUser)request.getSession().getAttribute("user");
+        if(user==null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
+        List<KnowledgeType> knowledgeTypes=normalUserServiceI.getFirstLayer();
+        modelAndView.addObject("types",knowledgeTypes);
+        modelAndView.setViewName("addKnowledgePage");
+        return modelAndView;
+    }
 }

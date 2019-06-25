@@ -5,8 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.service;
 
-import com.summerpractice.BankKnowledgeBase.entity.Department;
-import com.summerpractice.BankKnowledgeBase.entity.User;
+import com.summerpractice.BankKnowledgeBase.entity.*;
 
 import java.util.List;
 
@@ -28,8 +27,33 @@ public interface AdminServiceI {
 
     List<Department> getDepartmentByFourth(String fourth);
 
+    boolean addDepartment(Department Department);
+
+    boolean deleteDepartment(String departmentId);
+
+    boolean changeDepartment(Department department);
+
     List<Department> getFirst();
 
     List<Department> getAll();
     Department findDepartmentByID(String id);
+
+    List<User> findUserByDepartment(Department department);
+
+    List<User> findNormalUserByDepartment(Department department);
+
+    List<User> findExpertUserByDepartment(Department department);
+
+    List<User> findKnowledgeManagerByDepartment(Department department);
+
+    User findNormalUserByAccount(String Account);
+
+    User findExpertUserByAccount(String Account);
+
+    User findKnowledgeManagerByAccount(String Account);
+
+    boolean deleteUser(String account);
+
+    boolean changeUser(User user);
+
 }

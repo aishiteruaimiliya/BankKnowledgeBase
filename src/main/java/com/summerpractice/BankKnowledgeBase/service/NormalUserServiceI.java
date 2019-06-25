@@ -21,7 +21,8 @@ public interface NormalUserServiceI {
      * @param password 登陆密码
      * @return 是否存在用户
      */
-    public NormalUser login(String account,String password);
+    public User login(String account,String password);
+
 
     /**
      * 添加评论
@@ -72,6 +73,7 @@ public interface NormalUserServiceI {
      * @param knowledgeType 知识类别
      * @return 下一个级别的知识类别
      */
+    public List<KnowledgeType> getKnowledgeTypeByPreID(String typeid);
     public List<KnowledgeType> getKnowledgeType(KnowledgeType knowledgeType);
 
     /***
@@ -84,4 +86,17 @@ public interface NormalUserServiceI {
     public List<KnowledgeType> getFirstLayer();
 
     public  boolean changePassword(String id,String oldPass,String newPass);
+
+    public KnowledgeType findKnowlegeTypeById(String typeid);
+    public List<KnowledgeType> findnextKnowlegeTypeByPreId(String pretypeid);
+
+    public List<Comment> getCommentByKnowledge(Knowledge knowledge);
+
+    public List<Comment> getCommentByKnowledgeId(String knowId);
+
+    public List<Knowledge> searchByKeyWord(String keyword);
+
+    public List<KnowledgeType> getLastLayer();
+
+    public List<RankBoard> getRankBoard();
 }

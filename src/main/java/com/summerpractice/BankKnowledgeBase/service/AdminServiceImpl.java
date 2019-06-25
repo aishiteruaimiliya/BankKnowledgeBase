@@ -10,6 +10,8 @@ import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -112,6 +114,39 @@ public class AdminServiceImpl implements AdminServiceI {
     }
 
     @Override
+    public boolean addDepartment(Department department) {
+        try{
+            departmentDAO.save(department);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteDepartment(String departmentId) {
+        Department department=departmentDAO.findDepartmentByDepIdAndDisableFalse(departmentId);
+        department.setDisable(true);
+        try{
+            departmentDAO.save(department);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean changeDepartment(Department department) {
+        try{
+            departmentDAO.save(department);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public List<Department> getFirst() {
         return departmentDAO.getFirstByDisableFalse();
     }
@@ -124,5 +159,102 @@ public class AdminServiceImpl implements AdminServiceI {
     @Override
     public Department findDepartmentByID(String id) {
         return departmentDAO.findDepartmentByDepIdAndDisableFalse(id);
+    }
+
+    /**
+     * 根据机构查询人员
+     * @param department
+     * @return
+     */
+    @Override
+    public List<User> findUserByDepartment(Department department) {
+        List<User> ans=new ArrayList<>();
+        Collections.copy(ans,normalUserDAO.findAllByDisableFalseAndDepartment(department));
+        Collections.copy(ans,expertUserDAO.findAllByDisableFalseAndDepartment(department));
+        Collections.copy(ans,knowledgeManagerDAO.findAllByDisableFalseAndDepartment(department));
+        return ans;
+    }
+
+    @Override
+    public List<User> findNormalUserByDepartment(Department department) {
+        return normalUserDAO.findAllByDisableFalseAndDepartment(department);
+    }
+
+    @Override
+    public List<User> findExpertUserByDepartment(Department department) {
+        return expertUserDAO.findAllByDisableFalseAndDepartment(department);
+    }
+
+    @Override
+    public List<User> findKnowledgeManagerByDepartment(Department department) {
+        return knowledgeManagerDAO.findAllByDisableFalseAndDepartment(department);
+    }
+
+    @Override
+    public User findNormalUserByAccount(String Account) {
+        return normalUserDAO.findAllByDisableFalseAndAccount(Account);
+    }
+
+    @Override
+    public User findExpertUserByAccount(String Account) {
+        return expertUserDAO.findAllByDisableFalseAndAccount(Account);
+    }
+
+    @Override
+    public User findKnowledgeManagerByAccount(String Account) {
+        return systemManagerDAO.findAllByDisableFalseAndAccount(Account);
+    }
+
+    @Override
+    public boolean deleteUser(String account) {
+        try{
+            User user=normalUserDAO.findAllByDisableFalseAndAccount(account);
+            if(user==null) {
+                user = expertUserDAO.findAllByDisableFalseAndAccount(account);
+                if (user == null) {
+                    user = systemManagerDAO.findAllByDisableFalseAndAccount(account);
+                    if (user == null) {
+                        return false;
+                    } else {
+                        user.setDisable(false);
+                        systemManagerDAO.save((SystemManager) user);
+                        return true;
+                    }
+                } else {
+                    user.setDisable(false);
+                    expertUserDAO.save((ExpertUser) (user));
+                    return true;
+                }
+            }
+            else {
+                user.setDisable(false);
+                normalUserDAO.save((NormalUser)user);
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean changeUser(User user) {
+        try{
+            if(user instanceof NormalUser){
+                normalUserDAO.save((NormalUser)user);
+            }else if(user instanceof ExpertUser){
+                expertUserDAO.save((ExpertUser)user);
+            }else if(user instanceof SystemManager){
+                systemManagerDAO.save((SystemManager)user);
+            }else {
+                return false;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

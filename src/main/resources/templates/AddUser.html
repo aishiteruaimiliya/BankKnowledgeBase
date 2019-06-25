@@ -27,7 +27,7 @@
         </select><br/>
         <input type="submit" value="确认添加"/>
     </form>
-    <form action="/adduser" method="post" enctype="multipart/form-data">
+    <form action="/adminRequest/uploadFile" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <input type="submit" value="批量添加">
         <label>请选择机构：</label>
@@ -35,6 +35,7 @@
         <option  th:value="${dept.depId}" th:text="${dept.first}"></option>
         </select><br/>
     </form>
+    <a>excel表格格式如下：</a><br/>
     <img src="/static/image/sample.png"  alt="实例表格图片">
 </body>
 </html>
