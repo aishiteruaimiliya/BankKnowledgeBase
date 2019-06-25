@@ -13,25 +13,117 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link th:href="@{/static/css/UserHomePage.css}" href="../static/css/UserHomePage.css" rel="stylesheet">
+    <title>用户主页</title>
 </head>
 <body>
-    <div align="center">
-        <table>
-            <a href="/user/favorite">我的收藏</a><br/>
-            <a href="/user/showMyKnowledge">我的知识</a>
-            <tr>
-                <td>用户名</td>
-                <td>密码</td>
-                <td>账号</td>
-            </tr>
-            <tr>
-                <td th:text="${user.name}">用户名</td>
-                <td th:text="${user.password}">密码</td>
-                <td th:text="${user.account}">账号</td>
-            </tr>
-        </table>
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="inner">
+        <nav>
+            <ul>
+                <h1>用户主页</h1>
+                <li><a href="#intro">个人信息</a></li>
+                <li><a href="#one">我的贡献</a></li>
+                <li><a href="#three">修改密码</a></li>
+            </ul>
+        </nav>
     </div>
+</section>
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Intro -->
+    <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <table>
+
+
+                <tr>
+                    <td>用户名</td>
+                    <td>密码</td>
+                    <td>账号</td>
+                </tr>
+                <tr>
+                    <td th:text="${user.name}">用户名</td>
+                    <td th:text="${user.password}">密码</td>
+                    <td th:text="${user.account}">账号</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- One -->
+    <section id="one" class="wrapper style2 spotlights">
+        <div class="inner">
+            <a href="/user/favorite">我的收藏</a><br/>
+        </div>
+    </section>
+
+    <!-- Two -->
+    <section id="two" class="wrapper style3 fade-up">
+        <div class="inner">
+            <a href="/user/showMyKnowledge">我的知识</a>
+        </div>
+    </section>
+
+    <!占空>
+    <section class="wrapper style2 spotlights">
+        <div class="inner">
+            <p> </p>
+        </div>
+    </section>
+    <section class="wrapper style3 fade-up">
+        <div class="inner">
+            <p> </p>
+        </div>
+    </section>
+    <section class="wrapper style2 spotlights">
+        <div class="inner">
+            <p> </p>
+        </div>
+    </section>
+
+    <!-- Three -->
+    <section id="three" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <h1>修改密码</h1>
+            <form>
+                <li>
+                    <p>原密码</p>
+                    <input type="password" name="原密码">
+                </li>
+                <p> </p>
+                <li>
+                    <p>新密码</p>
+                    <input type="password" name="新密码">
+                </li>
+                <p> </p>
+                <li>
+                    <p>确认新密码</p>
+                    <input type="password" name="确认新密码">
+                </li>
+                <p> </p>
+                <li>
+                    <input type="submit" value="提交">
+                </li>
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer" class="wrapper style1-alt">
+    <div class="inner">
+        <ul class="menu">
+            <li>&copy; All rights reserved.</li>
+            <li>银行知识库系统</li>
+      </ul>  
+    </div>
+</footer>
 
 </body>
 </html>
