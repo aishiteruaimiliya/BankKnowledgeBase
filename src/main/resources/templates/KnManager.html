@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>知识管理员系统</title>
+    <link type="text/css" rel="stylesheet" href="../static/css/KnManager.css" th:href="@{../static/css/KnManager.css}">
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="inner">
+        <nav>
+            <ul>
+                <li><a href="#intro">主页</a></li>
+                <li><a href="#one">知识维度管理</a></li>
+                <li><a href="#two">专家管理</a></li>
+                <li><a href="#three">知识统计</a></li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Intro -->
+    <section id="intro" class="wrapper style1 fullscreen fade-up">
+        <div class="inner">
+            <h1>知识管理</h1>
+            <p>欢迎您，您当前的身份是知识管理员，请进行相关知识系统的管理</a>.</p>
+            <ul class="actions">
+                <li><a href="#one" class="button scrolly">进入知识维度管理</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- One -->
+    <section id="one" class="wrapper style2 spotlights">
+            <table class="typelist">
+                <thead>
+                <tr>
+                    <th class="tlh1" style="width:200px">维度编号</th>
+                    <th class="tlh2">维度名称</th>
+                    <th class="tlh3">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>1</td>
+                    <td></td>
+                    <td><button class="modify">修改</button>
+                        <button class="modify" type="button" onclick="alert('删除成功！')">删除</button></td></tr>
+                <tr><td>2</td>
+                    <td></td>
+                    <td><button class="modify">修改</button>
+                        <button class="modify" type="button" onclick="alert('删除成功！')">删除</button></td></tr>
+                <tr><td>3</td>
+                    <td></td>
+                    <td><button class="modify">修改</button>
+                        <button class="modify" type="button" onclick="alert('删除成功！')">删除</button></td></tr>
+                <tr><td>4</td>
+                    <td></td>
+                    <td><button class="modify">修改</button>
+                        <button class="modify" type="button" onclick="alert('删除成功！')">删除</button></td></tr>
+                <tr><td>5</td>
+                    <td></td>
+                    <td><button class="modify">修改</button>
+                        <button class="modify" type="button" onclick="alert('删除成功！')">删除</button></td></tr>
+                </tbody>
+            </table>
+            <div class="pagebar">
+                <span><a href="">上一页</a></span>
+                <a href="">1</a>
+                <a href="">2</a>
+                <a href="">3</a>
+                <a href="">4</a>
+                <span><a href="">下一页</a></span>
+            </div>
+            <div><p> </p></div>
+            <div class="addtype"><button>添加一项新的知识维度</button></div>
+    </section>
+
+
+    <!-- Two -->
+    <section id="two" class="wrapper style3 fade-up">
+        <div class="inner">
+            <table class="typelist">
+                <thead>
+                <tr>
+                    <th class="tlh1" style="width:200px">专家编号</th>
+                    <th class="tlh2">专家名称</th>
+                    <th class="tlh3">所在维度</th>
+                    <th class="tlh4">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button>修改维度</button></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button>修改维度</button></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button>修改维度</button></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button>修改维度</button></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td>
+                    <td><button>修改维度</button></td></tr>
+                </tbody>
+            </table>
+            <div class="pagebar">
+                <span><a href="">上一页</a></span>
+                <a href="">1</a>
+                <a href="">2</a>
+                <a href="">3</a>
+                <a href="">4</a>
+                <span><a href="">下一页</a></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Three -->
+    <section id="three" class="wrapper style1 fade-up">
+        <div class="inner">
+            <button type="button" onclick="alert('刷新成功')">刷新点击量</button>
+            <table class="typelist">
+                <thead>
+                <tr>
+                    <th class="tlh1" style="width:200px">知识编号</th>
+                    <th class="tlh2">知识内容</th>
+                    <th class="tlh3">点击量</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td></td>
+                    <td></td>
+                    <td></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td></tr>
+                <tr><td></td>
+                    <td></td>
+                    <td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer" class="wrapper style1-alt">
+    <div class="inner">
+        <ul class="menu">
+            <li>&copy; 银行知识库1组 All rights reserved.</li>
+        </ul>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
