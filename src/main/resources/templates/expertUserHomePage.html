@@ -11,6 +11,13 @@
     <title>Title</title>
 </head>
 <body>
-    <a th:text="'您好！专家'+${user.name}"></a>
+    <div>
+        <a th:text="'您好！专家'+${user.name}" style="margin-left: 0"></a>
+        <menu>
+            <li><a href="/expertUser/showKnowledge">未审批知识浏览</a></li>
+            <li><a href="/expertUser/showJudged">已审批知识浏览</a></li>
+            <li><a href="/expertUser/showchangePass">修改密码</a></li>
+        </menu>
+    </div>
 </body>
 </html>

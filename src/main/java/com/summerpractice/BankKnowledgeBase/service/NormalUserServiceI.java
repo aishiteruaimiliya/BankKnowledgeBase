@@ -30,6 +30,7 @@ public interface NormalUserServiceI {
      * @return 是否成功
      */
     public boolean addComment(Comment  comment);
+    public boolean addComment(Comment comment,String know_id);
 
     /**
      * 添加知识
@@ -99,4 +100,14 @@ public interface NormalUserServiceI {
     public List<KnowledgeType> getLastLayer();
 
     public List<RankBoard> getRankBoard();
+
+    public ExpertUser findExpertUserByTypeId(String typeid);
+
+    public List<Knowledge> findKnowledgeByNormalUser(String account);
+
+    public List<Knowledge> findKnowledgeByKeyWord(String keyword);
+
+    public Knowledge getCaogaoByID(String userid);
+
+    public boolean addCaogao(String userid,Knowledge knowledge);
 }

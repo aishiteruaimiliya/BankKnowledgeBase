@@ -79,4 +79,9 @@ public class UserShowPageController {
         modelAndView.setViewName("addKnowledgePage");
         return modelAndView;
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().removeAttribute("user");
+        return "redirect:/user/login";
+    }
 }

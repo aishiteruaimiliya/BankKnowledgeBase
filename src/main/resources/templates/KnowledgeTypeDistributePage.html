@@ -1,0 +1,24 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <form action="/knowledgeManager/distribute">
+            <select  name="expertId">
+                <option th:value="${expert.id}" th:each="expert:${experts}" th:text="${expert.name}"></option>
+            </select>
+            <select  name="typeId">
+                <option th:value="${type.typeid}" th:each="type:${types}" th:text="${type.typecontent}"></option>
+            </select>
+            <input type="submit" value="分配">
+        </form>
+</body>
+</html>

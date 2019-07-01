@@ -9,33 +9,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script th:src="@{/static/js/angu.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}" src="../static/js/jquery.min.js"></script>
+    <script>
+        function f(obj) {
+            if(obj.value=="3"){
+                document.getElementById('type').style.visibility="visible";
+            }else {
+                document.getElementById('type').style.visibility="hidden";
+            }
+        }
+    </script>
 </head>
 <body>
-    <form action="/adminRequest/adduser" method="post" >
-        <label>请选择机构：</label><select th:each="dept:${departments}" name="selected">
-            <option  th:value="${dept.depId}" th:text="${dept.first}"></option>
+    <a href="/admin/ShowLogin">返回上一级</a>
+    <div >
+        <form action="/adminRequest/adduser" method="post" onsubmit="msubmit()">
+            <label>请选择机构：</label><select  name="selected">
+            <option th:each="dept:${departments}"  th:value="${dept.depId}" th:text="${dept.first}+${dept.second==null?'':dept.second}+${dept.third==null?'':dept.third}+${dept.fourth==null?'':dept.fourth}"></option>
         </select><br/>
-        <input type="text" placeholder="用户名" name="username"/><br/>
-        <input type="text" placeholder="账号" name="account"/><br/>
-        <input type="text" placeholder="密码" name="password"/><br/>
-        <input type="text" placeholder="确认密码" name="confirm"/><br/>
-        <select name="userType">
-            <option value="1">普通用户</option>
-            <option value="2">知识管理员</option>
-            <option value="3">专家</option>
-            <option value="4">系统管理员</option>
-        </select><br/>
-        <input type="submit" value="确认添加"/>
-    </form>
-    <form action="/adminRequest/uploadFile" method="post" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="批量添加">
-        <label>请选择机构：</label>
-        <select th:each="dept:${departments}" name="selected">
-        <option  th:value="${dept.depId}" th:text="${dept.first}"></option>
-        </select><br/>
-    </form>
-    <a>excel表格格式如下：</a><br/>
-    <img src="/static/image/sample.png"  alt="实例表格图片">
+            <input type="text" placeholder="用户名" name="username"/><br/>
+            <input type="text" placeholder="账号" name="account"/><br/>
+            <input type="text" placeholder="密码" name="password"/><br/>
+            <input type="text" placeholder="确认密码" name="confirm"/><br/>
+            <select name="userType"  id="myselect" onchange="f(this)">
+                <option value="1">普通用户</option>
+                <option value="2">知识管理员</option>
+                <option value="3">专家</option>
+            </select><br/>
+            <select name="typeId" style="visibility: hidden" id="type">
+                <option th:text="${type.typecontent}" th:each="type:${types}" th:value="${type.typeid}"></option>
+            </select>
+            <input type="submit" value="确认添加"/>
+        </form>
+        <form action="/adminRequest/uploadFile" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="批量添加">
+            <label>请选择机构：</label>
+            <select  name="selected">
+                <option th:each="dept:${departments}"  th:value="${dept.depId}" th:text="${dept.first}+${dept.second==null?'':dept.second}+${dept.third==null?'':dept.third}+${dept.fourth==null?'':dept.fourth}"></option>
+            </select><br/>
+        </form>
+        <a>excel表格格式如下：</a><br/>
+        <img src="/static/image/sample.png"  alt="实例表格图片">
+    </div>
 </body>
 </html>

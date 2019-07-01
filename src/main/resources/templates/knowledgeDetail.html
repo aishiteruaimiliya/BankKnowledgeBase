@@ -1,0 +1,22 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="/expertUser/showKnowledge">返回主页</a>
+    <label>标题</label><h1 th:text="${knowledge.title}"></h1><br/>
+    <label>详细内容</label><p th:text="${knowledge.detail}"></p><br/>
+    <label>摘要</label><p  th:text="${knowledge.digest}"></p><br/>
+    <label>状态</label><p th:text="${knowledge.status}"></p><br/>
+    <label>上传者</label><p th:text="${knowledge.normalUser.name}"></p>
+    <a th:href="'/expertUserRequest/delete?know_id='+${knowledge.knowId}">删除</a>
+</body>
+</html>

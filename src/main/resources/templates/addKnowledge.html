@@ -1,0 +1,41 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        // 提交日志
+        $(".submit_btn button").click(function() {
+            var writeForm=$('#myform');
+            writeForm.attr('action','/userRequest/addKnowledge');
+            writeForm.submit();
+        });
+        $(".save_caogao button").click(function() {
+            var writeForm=$('#myform');
+            writeForm.attr('action','/userRequest/addCaogao');
+            writeForm.submit();
+        });
+    </script>
+</head>
+<body>
+    <div align="center">
+        <a href="/user/myHome">返回</a>
+        <form method="post"  id="myform">
+            <input  name="title" type="text" minlength="25" placeholder="标题"><br/>
+            <input name="digest" type="text" minlength="25" placeholder="摘要" height="50px"><br/>
+            <input name="detail" type="text" minlength="50" placeholder="详细知识" height="60px"><br/>
+            <select th:each="" name="typeid">
+                <option></option>
+            </select><br/>
+            <button class="submit_btn">提交</button>
+            <button class="save_caogao">存为草稿</button>
+        </form>
+    </div>
+</body>
+</html>
