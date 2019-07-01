@@ -17,5 +17,9 @@ public interface ExpertUserServiceI {
 
     public boolean judgeKnowledge(Knowledge knowledge,String status);
 
-    public boolean batchJudgeKnowledge(List<Knowledge> knowledges,String status);
+    public boolean batchJudgeKnowledge(List<String> knowledgeIds,String status);
+
+    public Knowledge findKnowledgeById(String id);
+
+    public List<Knowledge> findKnowledgeByStatusAndType(String status,String expertId);
 }

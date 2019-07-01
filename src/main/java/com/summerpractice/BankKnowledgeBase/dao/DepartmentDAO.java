@@ -26,4 +26,6 @@ public interface DepartmentDAO extends JpaRepository<Department,Integer> {
     List<Department> getFirstByDisableFalse();
     List<Department> getAllByDisableFalse();
     Department findDepartmentByDepIdAndDisableFalse(String id);
+
+    List<Department> findAllByDisableFalseAndFirstLikeOrSecondLikeOrThirdLikeOrFourthLike(String first,String second,String third,String fourth);
 }

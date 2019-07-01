@@ -1,0 +1,31 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>知识标题</td>
+            <td>知识状态</td>
+            <td>贡献者</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="knowledge:${knows}">
+            <td >
+                <a th:text="${knowledge.title}" th:href="'/expertUser/showDetail?know_id='+${knowledge.knowId}"></a></td>
+            <td th:text="${knowledge.status}"></td>
+            <td th:text="${knowledge.normalUser.name}"></td>
+            <td><a th:href="'/expertUserRequest/accept.do?know_id='+${knowledge.knowId}">审批</a>
+                <a th:href="'/expertUserRequest/rejectK?know_id='+${knowledge.knowId}">驳回</a>
+        </tr>
+    </table>
+</body>
+</html>

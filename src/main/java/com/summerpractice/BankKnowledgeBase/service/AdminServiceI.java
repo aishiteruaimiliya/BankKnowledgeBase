@@ -56,4 +56,24 @@ public interface AdminServiceI {
 
     boolean changeUser(User user);
 
+    List<Department> findDepartmentsByKeyword(String first,String second,String third,String fourth);
+
+    List<Department> getAllDept();
+
+    SystemManager login(String account, String password);
+
+    List<NormalUser> getNormalUser();
+
+    List<ExpertUser> getExpertUser();
+
+    List<KnowledgeManager> getKnowledgeManager();
+
+    List<NormalUser> findNormalUserByKeyword(String keyword);
+
+    List<ExpertUser> findExpertUserByKeyword(String keyword);
+
+    List<KnowledgeManager> findKnowledgeManagerByKeyword(String keyword);
+
+    boolean recoveryUser(String account);
+
 }

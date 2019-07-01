@@ -9,6 +9,7 @@ import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
 import com.summerpractice.BankKnowledgeBase.entity.KnowledgeType;
 
 import java.util.List;
+import java.util.Map;
 
 public interface KnowledgeManagerServiceI {
     public int countKnowledgeNum();
@@ -25,4 +26,13 @@ public interface KnowledgeManagerServiceI {
 
     public boolean refreshRecommend();
 
+    public int getTypeNum();
+
+    public Map<KnowledgeType, List<KnowledgeType>> getTwoLayer();
+
+    public KnowledgeType findKnowledgeById(String id);
+
+    List<KnowledgeType> getNextLayer(String typeId);
+
+    List<ExpertUser> getAllExpert();
 }

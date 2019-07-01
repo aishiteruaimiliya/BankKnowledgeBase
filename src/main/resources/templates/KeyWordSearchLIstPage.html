@@ -1,0 +1,84 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a>搜索结果如下：</a><br/>
+    <a>普通用户：</a><br/>
+    <table>
+        <tr>
+            <td>账号</td>
+            <td>姓名</td>
+            <td>密码</td>
+            <td>机构</td>
+            <td>账号状态</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="user:${normal}">
+            <td th:text="${user.account}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.department.first}+${user.department.second}
+            +${user.department.third}+${user.department.fourth}"></td>
+            <td  th:text="${user.isDisable()?'禁用':'可用'}"></td>
+            <td><a href="#">修改</a>
+                <a th:href="'/adminRequest/deleteUserFromS?userId='+${user.account}">禁用</a>
+                <a th:href="'/adminRequest/recoveryUser?userId='+${user.account}">恢复</a></td>
+        </tr>
+    </table>
+    <a> 专家用户：</a><br/>
+    <table>
+        <tr>
+            <td>账号</td>
+            <td>姓名</td>
+            <td>密码</td>
+            <td>机构</td>
+            <td>知识类别</td>
+            <td>账号状态</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="user:${expert}">
+            <td th:text="${user.account}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.department.first}+${user.department.second}
+            +${user.department.third}+${user.department.fourth}"></td>
+            <td th:text="${user.knowledgeType.typecontent}"></td>
+            <td  th:text="${user.isDisable()?'禁用':'可用'}"></td>
+            <td><a href="#">修改</a>
+                <a th:href="'/adminRequest/deleteUserFromS?userId='+${user.account}">禁用</a>
+                <a th:href="'/adminRequest/recoveryUser?userId='+${user.account}">恢复</a></td>
+        </tr>
+    </table>
+    <a>知识管理员如下：</a>
+    <table>
+        <tr>
+            <td>账号</td>
+            <td>姓名</td>
+            <td>密码</td>
+            <td>机构</td>
+            <td>账号状态</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="user:${manager}">
+            <td th:text="${user.account}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.department.first}+${user.department.second}
+            +${user.department.third}+${user.department.fourth}"></td>
+            <td  th:text="${user.isDisable()?'禁用':'可用'}"></td>
+            <td><a href="#">修改</a>
+                <a th:href="'/adminRequest/deleteUserFromS?userId='+${user.account}">禁用</a>
+                <a th:href="'/adminRequest/recoveryUser?userId='+${user.account}">恢复</a></td>
+        </tr>
+    </table>
+</body>
+</html>

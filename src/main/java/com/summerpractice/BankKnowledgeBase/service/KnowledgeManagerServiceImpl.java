@@ -10,7 +10,8 @@ import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+
 @Service
 public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     @Autowired
@@ -99,9 +100,8 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
 
     @Override
     public boolean deleteKnowledgeType(KnowledgeType knowledgeType) {
-        knowledgeType.setDisable(true);
         try{
-            knowledgeTypeDAO.save(knowledgeType);
+            bfsDelete(knowledgeType);
         }catch (Exception e){
             return false;
         }
@@ -134,7 +134,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
 
     @Override
     public boolean distribution(String expertUserID, String knowledgeTypeID) {
-        ExpertUser expertUser=expertUserDAO.findAllByDisableFalseAndAccount(expertUserID);
+        ExpertUser expertUser=expertUserDAO.findAllByDisableFalseAndId(expertUserID);
         KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(knowledgeTypeID);
         if(expertUser==null||knowledgeType==null) return false;
         return distribution(expertUser,knowledgeType);
@@ -170,4 +170,54 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
         return true;
     }
 
+    @Override
+    public int getTypeNum() {
+        return knowledgeTypeDAO.countAllByDisableFalseAndPreTypeIdIsNull();
+    }
+
+    @Override
+    public Map<KnowledgeType, List<KnowledgeType>> getTwoLayer() {
+        List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeIdIsNull();
+        Map<KnowledgeType,List<KnowledgeType>> map=new HashMap<>();
+        for(KnowledgeType knowledgeType:knowledgeTypes){
+            map.put(knowledgeType,knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(knowledgeType.getTypeid()));
+        }
+        return  map;
+    }
+
+    @Override
+    public KnowledgeType findKnowledgeById(String id) {
+        return knowledgeTypeDAO.findByDisableFalseAndTypeid(id);
+    }
+
+    @Override
+    public List<KnowledgeType> getNextLayer(String typeId) {
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(typeId);
+    }
+
+    @Override
+    public List<ExpertUser> getAllExpert() {
+        return expertUserDAO.findAllByDisableFalse();
+    }
+
+
+    public boolean bfsDelete(KnowledgeType knowledgeType){
+        Queue<KnowledgeType> queue=new LinkedList<>();
+        queue.offer(knowledgeType);
+        try{
+            while (!queue.isEmpty()){
+                KnowledgeType tmp=queue.poll();
+                List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeId(tmp.getTypeid());
+                for (KnowledgeType know:knowledgeTypes) {
+                    know.setDisable(true);
+                    if(tmp.getNextTypeId()!=null) queue.offer(know);
+                    knowledgeTypeDAO.save(know);
+                }
+            }
+        }catch (Exception e){
+            return false;
+        }
+
+        return true;
+    }
 }
