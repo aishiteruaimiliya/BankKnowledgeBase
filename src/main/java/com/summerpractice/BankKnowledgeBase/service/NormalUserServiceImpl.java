@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class NormalUserServiceImpl implements NormalUserServiceI {
@@ -39,6 +40,8 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Autowired
     RankBoardDAO rankBoardDAO;
+    @Autowired
+    ExpertUserServiceI expertUserServiceI;
     @Override
     public User login(String account, String password) {
         NormalUser normalUser=normalUserDAO.findByAccountAndPasswordAndDisable(account,password,false);
@@ -66,6 +69,12 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean addComment(Comment comment, String know_id) {
+        comment.setKnowledge(knowledgeDAO.findByDisableFalseAndKnowId(know_id));
+        return addComment(comment);
     }
 
     @Override
@@ -119,7 +128,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> getKnowledgeByType(KnowledgeType knowledgeType) {
-        return knowledgeDAO.findAllByDisableFalseAndKnowledgeType(knowledgeType);
+        return knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType,"通过");
     }
 
     @Override
@@ -207,7 +216,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> searchByKeyWord(String keyword) {
-        return knowledgeDAO.findAllByDisableFalseAndDigestLikeOrTitleLikeOrDetailLike(keyword,keyword,keyword);
+        return knowledgeDAO.findAllByDisableFalseAndStatusAndDigestLikeOrTitleLikeOrDetailLike("通过",keyword,keyword,keyword);
     }
 
     @Override
@@ -218,5 +227,61 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     @Override
     public List<RankBoard> getRankBoard() {
         return rankBoardDAO.findAll();
+    }
+
+    @Override
+    public ExpertUser findExpertUserByTypeId(String typeid) {
+        //寻找到第一个大类，借此寻找专家
+        KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(typeid);
+        while (knowledgeType.getPreTypeId()!=null){
+            knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(knowledgeType.getPreTypeId());
+        }
+        List<ExpertUser> expertUsers=expertUserDAO.findAllByDisableFalseAndKnowledgeType(knowledgeType);
+        Random random=new Random();
+        return expertUsers.get(random.nextInt(expertUsers.size()));
+    }
+
+    @Override
+    public List<Knowledge> findKnowledgeByNormalUser(String account) {
+        return knowledgeDAO.findAllByNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(account));
+    }
+
+    /**
+     * 通过标题等匹配知识
+     * 但是必须是已通过审批的知识
+     * @param keyword
+     * @return
+     */
+    @Override
+    public List<Knowledge> findKnowledgeByKeyWord(String keyword) {
+        return knowledgeDAO.findAllByDisableFalseAndStatusAndDigestLikeOrTitleLikeOrDetailLike("通过",keyword,keyword,keyword);
+    }
+
+    /**
+     * 得到用户的草稿
+     * @param userid
+     * @return
+     */
+    @Override
+    public Knowledge getCaogaoByID(String userid) {
+        return knowledgeDAO.findAllByNormalUserAndStatus(normalUserDAO.findAllByDisableFalseAndAccount(userid),"草稿");
+    }
+
+    /**
+     * 添加草稿
+     * @param userid
+     * @param knowledge
+     * @return
+     */
+    @Override
+    public boolean addCaogao(String userid, Knowledge knowledge) {
+        knowledge.setStatus("草稿");
+        knowledge.setNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(userid));
+        try{
+            knowledgeDAO.save(knowledge);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }

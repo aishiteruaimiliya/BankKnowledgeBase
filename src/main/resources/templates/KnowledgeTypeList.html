@@ -1,0 +1,42 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <a href="javascript:" onclick="self.location=document.referrer;">返回上一页</a>
+        <a th:text="${types.isEmpty()}?'此级为空':''"></a>
+        <table style="border: #9E61A3">
+            <tr>
+                <td>维度名字</td>
+                <td>操作</td>
+            </tr>
+            <tr th:each="type:${types}" >
+                <td th:text="${type.typecontent}"></td>
+                <td>
+                    <a th:href="'/knowledgeManagerRequest/nextLayer?typeId='+${type.typeid}">进入此层</a>
+                    <a href="dele"></a>
+                    <a th:href="'/knowledgeManagerRequest/deleteKnowledgeType?typeId='+${type.typeid}">删除此维度</a>
+                </td>
+            </tr>
+        </table>
+        <form action="/knowledgeManagerRequest/addLayer" method="post">
+            <label>
+                <input type="text" th:value="${preId}==null?null:${preId}" hidden="hidden" name="preId">
+            </label>
+            <label>新增维度的名字：
+                <input type="text" placeholder="请输入维度名字" name="typecontent">
+            </label>
+            <input type="submit" value="在此层新建维度">
+         </form>
+    </div>
+</body>
+</html>

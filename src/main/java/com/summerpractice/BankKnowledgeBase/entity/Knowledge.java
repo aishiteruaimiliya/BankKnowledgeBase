@@ -174,4 +174,25 @@ public class Knowledge {
 
     public Knowledge() {
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"knowId\":\"")
+                .append(knowId).append('\"');
+        sb.append(",\"title\":\"")
+                .append(title).append('\"');
+        sb.append(",\"detail\":\"")
+                .append(detail).append('\"');
+        sb.append(",\"digest\":\"")
+                .append(digest).append('\"');
+        sb.append(",\"clicked\":")
+                .append(clicked);
+        sb.append(",\"knowledgeType\":")
+                .append(knowledgeType);
+        sb.append(",\"comments\":")
+                .append(comments);
+        sb.append('}');
+        return sb.toString();
+    }
 }

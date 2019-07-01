@@ -16,4 +16,7 @@ public interface KnowledgeTypeDAO extends JpaRepository<KnowledgeType,Integer> {
     KnowledgeType findByDisableFalseAndTypeid(String typeid);
     List<KnowledgeType> findAllByDisableFalseAndPreTypeId(String typeid);
     List<KnowledgeType> findAllByDisableFalseAndNextTypeIdIsNull();
+    KnowledgeType findAllByDisableFalseAndTypeid(String typeId);
+    int countAllByDisableFalseAndPreTypeIdIsNull();
+    List<KnowledgeType> getAllByDisableFalse();
 }

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -169,9 +168,9 @@ public class AdminServiceImpl implements AdminServiceI {
     @Override
     public List<User> findUserByDepartment(Department department) {
         List<User> ans=new ArrayList<>();
-        Collections.copy(ans,normalUserDAO.findAllByDisableFalseAndDepartment(department));
-        Collections.copy(ans,expertUserDAO.findAllByDisableFalseAndDepartment(department));
-        Collections.copy(ans,knowledgeManagerDAO.findAllByDisableFalseAndDepartment(department));
+       ans.addAll(normalUserDAO.findAllByDisableFalseAndDepartment(department));
+       ans.addAll(expertUserDAO.findAllByDisableFalseAndDepartment(department));
+       ans.addAll(knowledgeManagerDAO.findAllByDisableFalseAndDepartment(department));
         return ans;
     }
 
@@ -216,18 +215,18 @@ public class AdminServiceImpl implements AdminServiceI {
                     if (user == null) {
                         return false;
                     } else {
-                        user.setDisable(false);
+                        user.setDisable(true);
                         systemManagerDAO.save((SystemManager) user);
                         return true;
                     }
                 } else {
-                    user.setDisable(false);
+                    user.setDisable(true);
                     expertUserDAO.save((ExpertUser) (user));
                     return true;
                 }
             }
             else {
-                user.setDisable(false);
+                user.setDisable(true);
                 normalUserDAO.save((NormalUser)user);
                 return true;
             }
@@ -257,4 +256,84 @@ public class AdminServiceImpl implements AdminServiceI {
 
         return true;
     }
+
+    @Override
+    public List<Department> findDepartmentsByKeyword(String first, String second, String third, String fourth) {
+        return departmentDAO.findAllByDisableFalseAndFirstLikeOrSecondLikeOrThirdLikeOrFourthLike(first,second,third,fourth);
+    }
+
+    @Override
+    public List<Department> getAllDept() {
+        return departmentDAO.getAllByDisableFalse();
+    }
+
+    @Override
+    public SystemManager login(String account, String password) {
+        SystemManager systemManager=systemManagerDAO.findAllByDisableFalseAndAccount(account);
+        return systemManager==null?null:systemManager.getPassword().equals(password)?systemManager:null;
+    }
+
+    @Override
+    public List<NormalUser> getNormalUser() {
+        return normalUserDAO.findAll();
+    }
+
+    @Override
+    public List<ExpertUser> getExpertUser() {
+        return expertUserDAO.findAll();
+    }
+
+    @Override
+    public List<KnowledgeManager> getKnowledgeManager() {
+        return knowledgeManagerDAO.findAll();
+    }
+
+    @Override
+    public List<NormalUser> findNormalUserByKeyword(String keyword) {
+        return normalUserDAO.findAllByAccountLikeOrNameLike(keyword,keyword);
+    }
+
+    @Override
+    public List<ExpertUser> findExpertUserByKeyword(String keyword) {
+        return expertUserDAO.findAllByAccountLikeOrNameLike(keyword,keyword);
+    }
+
+    @Override
+    public List<KnowledgeManager> findKnowledgeManagerByKeyword(String keyword) {
+        return knowledgeManagerDAO.findAllByAccountLikeOrNameLike(keyword,keyword);
+    }
+
+    @Override
+    public boolean recoveryUser(String account) {
+        try{
+            User user=normalUserDAO.findAllByAccount(account);
+            if(user==null) {
+                user = expertUserDAO.findAllByAccount(account);
+                if (user == null) {
+                    user = knowledgeManagerDAO.findAllByAccount(account);
+                    if (user == null) {
+                        return false;
+                    } else {
+                        user.setDisable(false);
+                        knowledgeManagerDAO.save((KnowledgeManager) user);
+                        return true;
+                    }
+                } else {
+                    user.setDisable(false);
+                    expertUserDAO.save((ExpertUser) (user));
+                    return true;
+                }
+            }
+            else {
+                user.setDisable(false);
+                normalUserDAO.save((NormalUser)user);
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 }

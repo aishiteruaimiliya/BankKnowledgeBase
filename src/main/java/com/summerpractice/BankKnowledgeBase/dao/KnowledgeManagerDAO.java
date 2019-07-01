@@ -15,4 +15,6 @@ import java.util.List;
 public interface KnowledgeManagerDAO extends JpaRepository<KnowledgeManager,Integer> {
     public KnowledgeManager findAllByDisableFalseAndAccount(String account);
     List<User> findAllByDisableFalseAndDepartment(Department department);
+    List<KnowledgeManager> findAllByAccountLikeOrNameLike(String account,String name);
+    KnowledgeManager findAllByAccount(String account);
 }

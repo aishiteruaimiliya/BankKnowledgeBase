@@ -29,11 +29,14 @@ public class KnowledgeType {
     @GeneratedValue(generator = "myuuid")
     @Column(name = "type_id",length = 50)
     private String typeid;
+
     @Column(name = "typecontent")
     private String typecontent;
     //node  content childid
+
     @Column(name = "pre_column_id")
     private String preTypeId;
+
     @Column(name = "next_type_id")
     private String nextTypeId;
     @Column(name = "disable",columnDefinition = "tinyint(1) default false")

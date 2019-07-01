@@ -23,4 +23,7 @@ public interface NormalUserDAO extends JpaRepository<NormalUser,Integer> {
     NormalUser findAllByDisableFalseAndAccount(String account);
     List<User> findAllByDisableFalseAndDepartment(Department department);
     List<NormalUser> findAllByDisableFalse();
+    NormalUser findAllByAccount(String account);
+    List<NormalUser> findAllByAccountLikeOrNameLike(String account,String name);
+
 }

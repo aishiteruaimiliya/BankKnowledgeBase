@@ -1,0 +1,36 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8" http-equiv="refresh">
+    <title>Title</title>
+</head>
+<body>
+    <a href="/admin/ShowLogin">返回上一级</a>
+    <a th:text="${msg==null}?'':${msg}"></a>
+    <a th:text="${depts.isEmpty()}?'还没有机构信息哦！':''"></a>
+    <table>
+        <tr>
+            <td>第一级</td>
+            <td>第二级</td>
+            <td>第三级</td>
+            <td>第四级</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="dept:${depts}">
+            <td th:text="${dept.first}"></td>
+            <td th:text="${dept.second}"></td>
+            <td th:text="${dept.third}"></td>
+            <td th:text="${dept.fourth}"></td>
+            <td><a th:href="'/admin/showEditDeptPage?depId='+${dept.depId}" >编辑</a>
+                <a th:href="'/adminRequest/deleteDept?depId='+${dept.depId}">删除</a></td>
+        </tr>
+
+    </table>
+</body>
+</html>

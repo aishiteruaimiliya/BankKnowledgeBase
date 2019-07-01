@@ -7,10 +7,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <title>管理员主页</title>
+    <style type="text/css"> #menu{ width: 100px; border: 1px solid #999; } #menu ul{ margin: 0px; padding: 0px; list-style: none;/* 隐藏默认列表符号*/
+                                                                           } #menu ul li{ background: #06C; height: 26px; line-height: 26px; /*行距*/
+                                                                                 text-align: center; border-bottom: 1px solid #999; position: relative; } a{ display: block; font-size: 13px; color: #FFF; text-decoration: none;/*隐藏超廉价默认下划线*/
+                                                                                                                                                          } a:hover{ color:#F00; font-size: 14px; } #menu ul li ul{ display: none;/*默认隐藏*/
+                                                                                                                                                                                                        top:0px; width: 130px; border: 1px solid #ccc; border-bottom: none; position: absolute; left: 100px; } #menu ul li:hover ul{ display: block; } #menu ul li:hover ul li a{ display: block; } </style>
 </head>
 <body>
-    <a th:text="'您好！知识管理员'+${user.name}"></a>
+<h1>管理员界面</h1>
+<label th:text="'您好管理员 '+${user.name}"></label>
+<div id="menu">
+    <ul>
+        <li><a href="#">知识维度管理</a>
+            <ul>
+                <li>
+                    <a href="/knowledgeManager/showKnlwdgeType">浏览知识维度</a>
+                </li>
+            </ul> </li>
+        <li><a href="#">专家管理</a>
+            <ul>
+                <li><a href="/knowledgeManagerRequest/showDistributePage">知识分配</a></li>
+            </ul> </li>
+        <li><a href="#">个人中心</a>
+            <ul>
+                <li><a href="/knowledgeManagerRequest/showChangePass">密码修改</a></li>
+            </ul> </li>
+        <li><a href="#">计数与刷新</a>
+            <ul>
+                <li><a href="/knowledgeManager/getCount">知识个数刷新</a></li>
+                <li><a href="/knowledgeManager/refreshRe">用户推荐刷新</a></li>
+                <li><a href="/knowledgeManager/refreshRB">知识排行榜刷新</a></li>
+            </ul> </li>
+    </ul>
+</div>
 </body>
 </html>

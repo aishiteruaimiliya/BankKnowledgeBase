@@ -1,0 +1,26 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <a href="/admin/ShowLogin">返回上一级</a><br/>
+        <a th:text="'原机构信息：'+${dept.first}+${dept.second}+${dept.third}+${dept.fourth}"></a><br/>
+        <a>请输入新的信息：</a>
+        <form action="/adminRequest/changeDept" method="get">
+            <input style="display: none" th:value="${dept.depId}" type="text" name="depId">
+            <label>第一级别<input type="text" name="first" th:placeholder="${dept.first}"></label><br/>
+            <label>第二级别<input type="text" name="second" th:placeholder="${dept.second}"></label><br/>
+            <label>第三级别<input type="text" name="third" th:placeholder="${dept.third}"></label><br/>
+            <label>第四级别<input type="text" name="fourth" th:placeholder="${dept.fourth}"></label><br/>
+            <input type="submit"  value="修改机构">
+        </form>
+</body>
+</html>
