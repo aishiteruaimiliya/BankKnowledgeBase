@@ -5,6 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.summerpractice.BankKnowledgeBase.dao.KnowledgeDAO;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
 import com.summerpractice.BankKnowledgeBase.service.KnowledgeManagerServiceI;
@@ -25,7 +26,6 @@ public class UserRequestController {
     DepartmentServiceI departmentServiceI;
     @Autowired
     NormalUserServiceI normalUserServiceI;
-
     @Autowired
     KnowledgeManagerServiceI knowledgeManagerServiceI;
     @PostMapping("/search")
@@ -38,32 +38,6 @@ public class UserRequestController {
           modelAndView.setViewName("resultPage");
           return modelAndView;
       }
-    }
-    @ResponseBody
-    @PostMapping("/addKnowledge")
-    public String addKnowLedge(@RequestParam(name = "title",required = true)String title,
-                               @RequestParam(name = "digest",required = true)String digest,
-                               @RequestParam(name = "typeid",required = true)String typeId,
-                               @RequestParam(name = "detail",required = true)String detail,
-                               HttpServletRequest request){
-                NormalUser normalUser=verifyUser(request);
-                if(normalUser==null) return "Login";
-                Knowledge knowledge=new Knowledge();
-                if((title.equals("")||detail.equals("")||typeId.equals("")||digest.equals(""))){
-                    return "信息不能为空";
-                }
-                knowledge.setStatus("未审批");
-                knowledge.setDigest(digest);
-                knowledge.setDetail(detail);
-                knowledge.setTitle(title);
-                knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeId));
-                knowledge.setNormalUser(normalUser);
-                knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeId));
-                if(normalUserServiceI.addKnowledge(knowledge)){
-                    return "success";
-                }else {
-                    return "failed";
-                }
     }
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     @ResponseBody
@@ -166,19 +140,35 @@ public class UserRequestController {
         }
         return modelAndView;
     }
+
+    /***
+     * 如果有同样的map，则会采用最大精确匹配
+     * @param knowledgeId 是否存在草稿id
+     * @param title
+     * @param digest
+     * @param detail
+     * @param typeid
+     * @param request
+     * @return
+     */
     @ResponseBody
-    @RequestMapping("/addknowledge.do")
-    public String  addKnowledge(@RequestParam(name = "title",required = true)String title,
+    @RequestMapping("/addKnowledge")
+    public String  addKnowledge(@RequestParam(name = "knowledgeId",required = false)String knowledgeId,
+                                @RequestParam(name = "title",required = true)String title,
                                 @RequestParam(name = "digest",required = true)String digest,
                                 @RequestParam(name = "detail",required = true)String detail,
                                 @RequestParam(name = "typeid",required = true)String typeid
                                 ,HttpServletRequest request){
         NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
-
+        Knowledge knowledge=new Knowledge();;
         if(normalUser==null) return "failed";
 
         try{
-            Knowledge knowledge=new Knowledge();
+            if(knowledgeId == null||knowledgeId.equals(""))
+            {
+            }else {
+                normalUserServiceI.deleteCaogao(knowledgeId);
+            }
             knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeid));
             knowledge.setNormalUser(normalUser);
             knowledge.setStatus("未审批");
@@ -186,7 +176,10 @@ public class UserRequestController {
             knowledge.setDetail(detail);
             knowledge.setDigest(digest);
             knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeid));
-            normalUserServiceI.addKnowledge(knowledge);
+
+            if(!normalUserServiceI.addKnowledge(knowledge)){
+                return "failed";
+            }
         }catch (Exception e){
             e.printStackTrace();
             return "failed";
@@ -221,6 +214,8 @@ public class UserRequestController {
                             @RequestParam(name = "typeid",required = false)String typeid,
                             HttpServletRequest request){
         NormalUser  normalUser=verifyUser(request);
+        if(normalUser == null)
+            return "failed";
         Knowledge knowledge=new Knowledge();
         knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeid));
         knowledge.setNormalUser(normalUser);

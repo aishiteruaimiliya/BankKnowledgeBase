@@ -71,7 +71,7 @@ public interface NormalUserServiceI {
 
     /***
      * 根据知识类别获取知识
-     * @param knowledgeType 知识类别
+     * @param typeid 知识类别
      * @return 下一个级别的知识类别
      */
     public List<KnowledgeType> getKnowledgeTypeByPreID(String typeid);
@@ -107,7 +107,9 @@ public interface NormalUserServiceI {
 
     public List<Knowledge> findKnowledgeByKeyWord(String keyword);
 
-    public Knowledge getCaogaoByID(String userid);
+    public Knowledge getCaogaoByID(String account);
 
     public boolean addCaogao(String userid,Knowledge knowledge);
+
+    public boolean deleteCaogao(String id);
 }

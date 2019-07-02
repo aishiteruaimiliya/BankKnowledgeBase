@@ -47,6 +47,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     @Override
     public boolean refreshRankBoard() {
         try{
+            //TODO ADD CONTRAINT STATUS='PASS'
             List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseOrderByClickedDesc();
             rankBoardDAO.deleteAll();
             if(knowledges.size()>20){
@@ -67,6 +68,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
 
@@ -95,7 +97,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
 
     @Override
     public List<KnowledgeType> getFirstLayer() {
-        return knowledgeTypeDAO.findAllByPreTypeIdIsNull();
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeIdIsNull();
     }
 
     @Override
@@ -186,7 +188,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     }
 
     @Override
-    public KnowledgeType findKnowledgeById(String id) {
+    public KnowledgeType findKnowledgeTypeById(String id) {
         return knowledgeTypeDAO.findByDisableFalseAndTypeid(id);
     }
 
@@ -200,6 +202,11 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
         return expertUserDAO.findAllByDisableFalse();
     }
 
+    @Override
+    public KnowledgeType findKnowledgeTypeByTypeID(String id) {
+        return knowledgeTypeDAO.findByDisableFalseAndTypeid(id);
+    }
+
 
     public boolean bfsDelete(KnowledgeType knowledgeType){
         Queue<KnowledgeType> queue=new LinkedList<>();
@@ -207,6 +214,8 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
         try{
             while (!queue.isEmpty()){
                 KnowledgeType tmp=queue.poll();
+                tmp.setDisable(true);
+                knowledgeTypeDAO.save(tmp);
                 List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeId(tmp.getTypeid());
                 for (KnowledgeType know:knowledgeTypes) {
                     know.setDisable(true);

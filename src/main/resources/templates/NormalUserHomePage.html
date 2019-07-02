@@ -27,11 +27,11 @@
             })
             $('#mysumbmitbtn').click(function () {
                 $('#myform').setAttribute('action','/userRequest/addKnowledge');
-                $('#myform').send();
+                $('#myform').submit();
             });
             $('#mycaogaobtn').click(function () {
                 $('#myform').setAttribute('action','/userRequest/addCaogao');
-                $('#myform').send();
+                $('#myform').submit();
             });
         });
     </script>
@@ -103,35 +103,33 @@
                     <div class="modal-body">
                         <div class="row clearfix">
                             <div class="col-md-12 column">
-                                <form role="form" id="myform" method="post">
+                                <form role="form" id="myform" method="post" action="" name="KnowledgeDetail">
                                     <div class="form-group" >
                                         <label for="exampleInputEmail1">知识维度</label>
                                         <select id="exampleInputEmail1" name="typeid" >
                                             <option th:value="${type.typeid}" th:text="${type.typecontent}" th:each="type:${types}"></option>
                                         </select>
                                     </div>
+                                    <input class="form-control" type="text" name="knowledgeId"
+                                           th:value="${caogao}==null?'':${caogao.knowId}" hidden="hidden"/>
                                     <div class="form-group" >
                                         <label for="exampleInputEmail1">标题</label>
-                                        <input class="form-control"id="exampleInputEmail1" type="text" name="title"
+                                        <input class="form-control" type="text" name="title"
                                                th:value="${caogao}==null?'':${caogao.title}" />
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">摘要</label>
-                                        <input class="form-control" id="exampleInputEmail1" type="text" name="digest"
+                                        <input class="form-control" type="text" name="digest"
                                                th:value="${caogao}==null?'':${caogao.digest}"/>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">详细输入</label><input class="form-control"
                                             id="exampleInputPassword1" type="text" name="detail"
                                              th:value="${caogao}==null?'':${caogao.detail}"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" type="submit" value="提交"/>
-                                    </div>
                                     <div class="checkbox">
                                         <label><input type="checkbox" />Check me out</label>
-                                    </div> <button class="btn btn-default" id="mysumbmitbtn" >提交</button>
-                                           <button class="btn btn-default" id="mycaogaobtn">存为草稿</button>
+                                    </div> <button class="btn btn-default" id="mysumbmitbtn" onclick="doSubmit()">提交</button>
+                                           <button class="btn btn-default" id="mycaogaobtn" onclick="doAddDraft()">存为草稿</button>
                                 </form>
                             </div>
                         </div>
@@ -489,16 +487,24 @@
         </div>
     </div>
     <script>
-        $("#mysumbmitbtn button").click(function() {
-            var writeForm=$('#myform');
-            writeForm.attr('action','/userRequest/addKnowledge');
-            writeForm.submit();
-        });
-        $("#mycaogaobtn button").click(function() {
-            var writeForm=$('#myform');
-            writeForm.attr('action','/userRequest/addCaogao');
-            writeForm.submit();
-        });
+        function doSubmit() {
+            document.KnowledgeDetail.action = "/userRequest/addKnowledge";
+            document.KnowledgeDetail.submit();
+        }
+        function doAddDraft() {
+            document.KnowledgeDetail.action = "/userRequest/addCaogao";
+            document.KnowledgeDetail.submit();
+        }
+        // $("#mysumbmitbtn button").click(function() {
+        //     var writeForm=$('#myform');
+        //     writeForm.attr('action','/userRequest/addKnowledge');
+        //     writeForm.submit();
+        // });
+        // $("#mycaogaobtn button").click(function() {
+        //     var writeForm=$('#myform');
+        //     writeForm.attr('action','/userRequest/addCaogao');
+        //     writeForm.submit();
+        // });
     </script>
 </body>
 

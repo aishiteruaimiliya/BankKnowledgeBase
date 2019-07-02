@@ -61,7 +61,7 @@ public class KnowledgeManagerController {
     @RequestMapping("/changeKnowledgeType")
     public String changeKnowledgeType(@RequestParam(name = "typeid",required = true)String typeId,
                                       @RequestParam(name = "typecontent",required = true)String typecontent){
-        KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeById(typeId);
+        KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeId);
         if(knowledgeType==null) return "failed";
         knowledgeType.setTypecontent(typecontent);
         return knowledgeManagerServiceI.changeKnowledgeType(knowledgeType)?"success":"failed";
@@ -69,7 +69,7 @@ public class KnowledgeManagerController {
     @ResponseBody
     @RequestMapping("/delete")
     public String deleteKnowledgeType(@RequestParam(name = "typeid",required = true)String typeId){
-        return knowledgeManagerServiceI.deleteKnowledgeType(knowledgeManagerServiceI.findKnowledgeById(typeId))?"success":"failed";
+        return knowledgeManagerServiceI.deleteKnowledgeType(knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeId))?"success":"failed";
     }
     @ResponseBody
     @RequestMapping("/distribute")

@@ -263,8 +263,8 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
      * @return
      */
     @Override
-    public Knowledge getCaogaoByID(String userid) {
-        return knowledgeDAO.findAllByNormalUserAndStatus(normalUserDAO.findAllByDisableFalseAndAccount(userid),"草稿");
+    public Knowledge getCaogaoByID(String account) {
+        return knowledgeDAO.findAllByNormalUserAndStatus(normalUserDAO.findAllByDisableFalseAndAccount(account),"草稿");
     }
 
     /**
@@ -276,10 +276,24 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     @Override
     public boolean addCaogao(String userid, Knowledge knowledge) {
         knowledge.setStatus("草稿");
-        knowledge.setNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(userid));
+//        knowledge.setNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(userid));
         try{
             knowledgeDAO.save(knowledge);
         }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteCaogao(String id) {
+        try {
+            Knowledge knowledge=knowledgeDAO.findAllByDisableFalseAndKnowId(id);
+            knowledgeDAO.delete(knowledge);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
             return false;
         }
         return true;
