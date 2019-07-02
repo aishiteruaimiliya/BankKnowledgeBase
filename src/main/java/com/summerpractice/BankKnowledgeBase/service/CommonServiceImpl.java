@@ -5,10 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.service;
 
-import com.summerpractice.BankKnowledgeBase.dao.ExpertUserDAO;
-import com.summerpractice.BankKnowledgeBase.dao.KnowledgeManagerDAO;
-import com.summerpractice.BankKnowledgeBase.dao.NormalUserDAO;
-import com.summerpractice.BankKnowledgeBase.dao.SystemManagerDAO;
+import com.summerpractice.BankKnowledgeBase.dao.*;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,9 @@ public class CommonServiceImpl implements CommonServiceI {
     KnowledgeManagerDAO knowledgeManagerDAO;
     @Autowired
     SystemManagerDAO systemManagerDAO;
+
+    @Autowired
+    KnowledgeTypeDAO knowledgeTypeDAO;
     @Override
     public boolean changePassword(String account, String old, String newPassword) {
 
@@ -71,5 +71,14 @@ public class CommonServiceImpl implements CommonServiceI {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public KnowledgeType findRootTypeByTypeId(String typeId) {
+        KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(typeId);
+        while(knowledgeType.getPreTypeId()!=null){
+            knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(knowledgeType.getPreTypeId());
+        }
+        return knowledgeType;
     }
 }

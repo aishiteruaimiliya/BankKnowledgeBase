@@ -45,11 +45,17 @@ public class UserRequestController {
                                @RequestParam(name = "digest",required = true)String digest,
                                @RequestParam(name = "typeid",required = true)String typeId,
                                @RequestParam(name = "detail",required = true)String detail,
+                               @RequestParam(name = "knowId",required = false)String knowId,
                                HttpServletRequest request){
                 NormalUser normalUser=verifyUser(request);
+                Knowledge knowledge=null;
                 if(normalUser==null) return "Login";
-                Knowledge knowledge=new Knowledge();
-                if((title.equals("")||detail.equals("")||typeId.equals("")||digest.equals(""))){
+                if(knowId==null||knowId.equals(""))
+                    knowledge = new Knowledge();
+                else {
+                    knowledge=normalUserServiceI.getCaogaoByID(normalUser.getAccount());
+                }
+                 if((title.equals("")||detail.equals("")||typeId.equals("")||digest.equals(""))){
                     return "信息不能为空";
                 }
                 knowledge.setStatus("未审批");

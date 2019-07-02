@@ -107,7 +107,10 @@ public interface NormalUserServiceI {
 
     public List<Knowledge> findKnowledgeByKeyWord(String keyword);
 
-    public Knowledge getCaogaoByID(String userid);
+    public Knowledge getCaogaoByID(String account);
 
     public boolean addCaogao(String userid,Knowledge knowledge);
+
+    public Knowledge getKnledgeByKnowId(String knowID,String account);
+
 }
