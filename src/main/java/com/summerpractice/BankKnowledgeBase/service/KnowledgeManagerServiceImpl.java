@@ -14,6 +14,7 @@ import java.util.*;
 
 @Service
 public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
+
     @Autowired
     KnowledgeTypeDAO knowledgeTypeDAO;
     @Autowired
@@ -95,7 +96,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
 
     @Override
     public List<KnowledgeType> getFirstLayer() {
-        return knowledgeTypeDAO.findAllByPreTypeIdIsNull();
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeIdIsNull();
     }
 
     @Override
@@ -150,8 +151,9 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
                 List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeOrderByClickedDesc(userClickType.getUserClickTypePK().getTypeId());
                 RecommendPK recommendPK=new RecommendPK();
                 recommendPK.setNormalUser(normalUser);
-                if(knowledges.size()>20){
-                    for (int i = 0; i <20 ; i++) {
+                int recommendNum = 20;
+                if(knowledges.size()> recommendNum){
+                    for (int i = 0; i < recommendNum; i++) {
                         recommendPK.getRecommend().add(knowledges.get(i));
                     }
                 }else {
@@ -207,6 +209,8 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
         try{
             while (!queue.isEmpty()){
                 KnowledgeType tmp=queue.poll();
+                tmp.setDisable(true);
+                knowledgeTypeDAO.save(tmp);
                 List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeId(tmp.getTypeid());
                 for (KnowledgeType know:knowledgeTypes) {
                     know.setDisable(true);

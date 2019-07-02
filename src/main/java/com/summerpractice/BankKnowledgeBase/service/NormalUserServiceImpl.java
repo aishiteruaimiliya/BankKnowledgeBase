@@ -42,6 +42,8 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     RankBoardDAO rankBoardDAO;
     @Autowired
     ExpertUserServiceI expertUserServiceI;
+    @Autowired
+    CommonServiceI commonServiceI;
     @Override
     public User login(String account, String password) {
         NormalUser normalUser=normalUserDAO.findByAccountAndPasswordAndDisable(account,password,false);
@@ -263,8 +265,8 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
      * @return
      */
     @Override
-    public Knowledge getCaogaoByID(String userid) {
-        return knowledgeDAO.findAllByNormalUserAndStatus(normalUserDAO.findAllByDisableFalseAndAccount(userid),"草稿");
+    public Knowledge getCaogaoByID(String account) {
+        return knowledgeDAO.findAllByNormalUserAndStatus(normalUserDAO.findAllByDisableFalseAndAccount(account),"草稿");
     }
 
     /**
@@ -276,12 +278,40 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     @Override
     public boolean addCaogao(String userid, Knowledge knowledge) {
         knowledge.setStatus("草稿");
-        knowledge.setNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(userid));
+//        knowledge.setNormalUser(normalUserDAO.findAllByDisableFalseAndAccount(userid));
         try{
             knowledgeDAO.save(knowledge);
         }catch (Exception e){
             return false;
         }
         return true;
+    }
+    //在此处，若被调用一次，则表示该知识被点击一次
+
+    /**
+     * 当普通用户使用该服务一次，则表示其点击了一次该知识
+     * @param knowID
+     * @param account
+     * @return
+     */
+    @Override
+    public Knowledge getKnledgeByKnowId(String knowID,String account) {
+        Knowledge knowledge;
+        try{
+            knowledge = knowledgeDAO.findByDisableFalseAndKnowId(knowID);
+            NormalUser normalUser=normalUserDAO.findAllByDisableFalseAndAccount(account);
+            KnowledgeType knowledgeType=knowledge.getTypeId();
+            KnowledgeType knowledgeType1=commonServiceI.findRootTypeByTypeId(knowledgeType.getTypeid());
+            UserClickType userClickType=
+                    userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdAndUserClickTypePK_TypeId(normalUser,knowledgeType1);
+            userClickType.setTimes(userClickType.getTimes()+1);
+            userClickTypeDAO.save(userClickType);
+            knowledge.setClicked(knowledge.getClicked()+1);
+            knowledgeDAO.save(knowledge);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return knowledge;
     }
 }

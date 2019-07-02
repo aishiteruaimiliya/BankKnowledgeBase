@@ -24,9 +24,12 @@ public class AdminServiceImpl implements AdminServiceI {
     KnowledgeManagerDAO knowledgeManagerDAO;
     @Autowired
     SystemManagerDAO systemManagerDAO;
-
+    @Autowired
+    KnowledgeTypeDAO knowledgeTypeDAO;
     @Autowired
     DepartmentDAO departmentDAO;
+    @Autowired
+    UserClickTypeDAO userClickTypeDAO;
     @Override
     public boolean addUser(User user,Department department) {
         try {
@@ -36,6 +39,18 @@ public class AdminServiceImpl implements AdminServiceI {
                     NormalUser normalUser=(NormalUser) user;
                     normalUser.setDepartment(department);
                     normalUserDAO.save(normalUser);
+
+                    //添加user_click_type
+
+                    UserClickTypePK userClickTypePK=new UserClickTypePK();
+                    userClickTypePK.setUserId(normalUserDAO.findAllByAccount(normalUser.getAccount()));
+                    for(KnowledgeType knowledgeType:knowledgeTypeDAO.findAllByDisableFalseAndNextTypeIdIsNull()){
+                        userClickTypePK.setTypeId(knowledgeType);
+                        UserClickType userClickType=new UserClickType();
+                        userClickType.setUserClickTypePK(userClickTypePK);
+                        userClickTypeDAO.save(userClickType);
+                    }
+
                     return true;
                 }else {
                     return false;

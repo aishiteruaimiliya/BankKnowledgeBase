@@ -38,8 +38,11 @@ public class KnowledgeManagerRequestController {
         ModelAndView modelAndView=new ModelAndView("ResultPage");
         KnowledgeType knowledgeType=new KnowledgeType();
         knowledgeType.setTypecontent(typecontent);
-        if(preId!=null&&!preId.equals(""))
+        if(preId!=null&&!preId.equals("")){
             knowledgeType.setPreTypeId(preId);
+            KnowledgeType knowledgeType1=knowledgeManagerServiceI.findKnowledgeById(preId);
+            knowledgeType.setNextTypeId("NOTLEAF");
+        }
         if(knowledgeManagerServiceI.addKnowledgeType(knowledgeType)){
             modelAndView.addObject("msg","添加知识维度成功");
             return modelAndView;
