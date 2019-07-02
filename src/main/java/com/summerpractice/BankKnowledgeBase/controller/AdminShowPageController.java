@@ -5,10 +5,11 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
-import com.summerpractice.BankKnowledgeBase.entity.Department;
-import com.summerpractice.BankKnowledgeBase.entity.SystemManager;
+import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.AdminServiceI;
 import com.summerpractice.BankKnowledgeBase.service.KnowledgeManagerServiceI;
+import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
+import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ public class AdminShowPageController {
     AdminServiceI adminServiceI;
     @Autowired
     KnowledgeManagerServiceI knowledgeManagerServiceI;
+    @Autowired
+    NormalUserServiceI normalUserServiceI;
     @GetMapping("/addUser")
     public ModelAndView showAddUser(){
       List<Department> dep=adminServiceI.getAll();
@@ -74,5 +77,23 @@ public class AdminShowPageController {
     }
     public SystemManager verify(HttpServletRequest request){
         return (SystemManager) request.getSession().getAttribute("admin");
+    }
+    @GetMapping("/showEditUserPage")
+    public ModelAndView showEditUserPage(@RequestParam(name = "userId",required = true)String userId,
+                                     ModelAndView modelAndView){
+        modelAndView.setViewName("UserEditPage");
+        User user= normalUserServiceI.getUserByAccount(userId);
+        modelAndView.addObject("user", user);
+        List<Department> departments=adminServiceI.getAllDept();
+        modelAndView.addObject("depts",departments);
+        if(user instanceof NormalUser)
+            modelAndView.addObject("usertype", "普通用户");
+        else if(user instanceof ExpertUser)
+            modelAndView.addObject("usertype", "专家用户");
+        else if(user instanceof KnowledgeManager)
+            modelAndView.addObject("usertype", "知识管理员");
+        else
+            modelAndView.addObject("usertype", "获取用户类型错误");
+        return modelAndView;
     }
 }

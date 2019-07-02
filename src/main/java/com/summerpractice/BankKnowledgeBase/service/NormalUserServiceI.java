@@ -23,6 +23,7 @@ public interface NormalUserServiceI {
      */
     public User login(String account,String password);
 
+    public User getUserByAccount(String account);
 
     /**
      * 添加评论

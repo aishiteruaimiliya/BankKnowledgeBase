@@ -60,6 +60,23 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
+    public User getUserByAccount(String account) {
+        NormalUser normalUser=normalUserDAO.findAllByDisableFalseAndAccount(account);
+        ExpertUser expertUser=expertUserDAO.findAllByDisableFalseAndAccount(account);
+        KnowledgeManager knowledgeManager=knowledgeManagerDAO.findAllByDisableFalseAndAccount(account);
+        if(normalUser!=null){
+            return normalUser;
+        }
+        if(expertUser!=null){
+            return expertUser;
+        }
+        if(knowledgeManager!=null){
+            return knowledgeManager;
+        }
+        return null;
+    }
+
+    @Override
     public boolean addComment(Comment comment){
         try{
             commentDAO.save(comment);

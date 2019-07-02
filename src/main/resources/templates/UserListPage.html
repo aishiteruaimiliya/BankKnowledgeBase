@@ -27,7 +27,7 @@
             <td th:text="${user.department.first}+${user.department.second}
             +${user.department.third}+${user.department.fourth}"></td>
             <td  th:text="${user.isDisable()?'禁用':'可用'}"></td>
-            <td><a href="#">修改</a>
+            <td><a th:href="'/admin/showEditUserPage?userId='+${user.account}">修改</a>
                 <a th:href="'/adminRequest/deleteUserFromS?userId='+${user.account}">禁用</a>
                 <a th:href="'/adminRequest/recoveryUser?userId='+${user.account}">恢复</a></td>
         </tr>
