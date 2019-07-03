@@ -19,12 +19,11 @@
        <td>操作</td>
     </tr>
     <tr th:each="know:${res}">
-        <td th:text="${know.title}">
-            <a href="knowledge.html">know1</a>
+        <td >
+            <a th:text="${know.title}" th:href="'/userRequest/showKnowledgeDetail?knowId='+${know.knowId}">know1</a>
         </td>
-        <td th:text="${know.status}">可查看</td>
         <td th:text="${know.normalUser.name}">Tom1</td>
-        <td><a th:href="">收藏</a></td>
+        <td><a th:href="'/userRequest/addMyfavorite?knowId='+${know.knowId}">收藏</a></td>
     </tr>
 </table>
 </body>

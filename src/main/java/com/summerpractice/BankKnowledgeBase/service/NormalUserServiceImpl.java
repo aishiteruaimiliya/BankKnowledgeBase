@@ -36,8 +36,6 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     @Autowired
     ExpertUserDAO expertUserDAO;
 
-    @Autowired
-    RecmmendDAO recmmendDAO;
 
     @Autowired
     RankBoardDAO rankBoardDAO;
@@ -112,9 +110,9 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     public boolean addFavorite(NormalUser normalUser, String knowId) {
         Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowId);
         if(knowledge!=null){
-            knowledge.getNormalUsers().add(normalUser);
+           normalUser.getFavorite().add(knowledge);
             try {
-                knowledgeDAO.save(knowledge);
+               normalUserDAO.save(normalUser);
             }catch (Exception e){
                 e.printStackTrace();
                 return false;
@@ -143,12 +141,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> getRecommend(NormalUser normalUser) {
-        List<Recommend> recommends= recmmendDAO.findAllByRecommendPK_NormalUser(normalUser);
-        List<Knowledge> knowledges=new ArrayList<>();
-        for(Recommend recommend:recommends){
-            knowledges.add(recommend.getRecommendPK().getKnowledge());
-        }
-        return knowledges;
+       return normalUser.getRecommends();
     }
 
     @Override

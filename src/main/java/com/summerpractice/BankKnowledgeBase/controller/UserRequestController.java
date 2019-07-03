@@ -5,7 +5,6 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
-import com.summerpractice.BankKnowledgeBase.dao.KnowledgeDAO;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.CommonServiceI;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
@@ -68,7 +67,11 @@ public class UserRequestController {
                 knowledge.setTitle(title);
                 knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeId));
                 knowledge.setNormalUser(normalUser);
-                knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeId));
+                try{
+                    knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeId));
+                }catch (Exception e) {
+                    return "灭有对应知识维度的专家";
+                }
                 if(normalUserServiceI.addKnowledge(knowledge)){
                     return "success";
                 }else {
@@ -108,12 +111,17 @@ public class UserRequestController {
        }
     }
     @RequestMapping("/addMyfavorite")
-    public String addFavorite(@RequestParam(name = "know_id",required = true)String know_id,HttpServletRequest request) {
+    public ModelAndView addFavorite(@RequestParam(name = "know_id",required = true)String know_id,HttpServletRequest request) {
         //todo 添加到数据库
         NormalUser normalUser=verifyUser(request);
-        if(normalUser==null) return "Login";
-        normalUserServiceI.addFavorite(normalUser,know_id);
-        return "";
+        ModelAndView modelAndView=new ModelAndView("Login");
+        if(normalUser==null) return modelAndView;
+        if(normalUserServiceI.addFavorite(normalUser,know_id)){
+            modelAndView.setViewName("Favorite");
+            modelAndView.addObject("knows",normalUser.getFavorite());
+            return modelAndView;
+        }
+        return modelAndView;
     }
     @RequestMapping("/showFavoriteDetail")
     public ModelAndView showDetail(HttpServletRequest request,@RequestParam(name = "knowId",required = true)String knowID,ModelAndView modelAndView){
@@ -131,9 +139,9 @@ public class UserRequestController {
         if(normalUser==null) return new ModelAndView("Login","msg","用户未登录");
         else {
             if(normalUserServiceI.deleteFavorite(normalUser,knowID)){
-                return new ModelAndView("res");
+                return new ModelAndView("ResultPage","msg","成功");
             }else {
-                return new ModelAndView("res","msg","错误");
+                return new ModelAndView("ResultPage","msg","错误");
             }
         }
     }

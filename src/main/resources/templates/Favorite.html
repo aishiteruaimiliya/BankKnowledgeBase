@@ -40,7 +40,7 @@
             <tr class="warning" th:each="know:${knows}">
                 <td>
 
-                    <a th:href="'/expertUser/showDetail?know_id='+${know.knowId}"
+                    <a th:href="'/userRequest/showKnowledgeDetail?knowId='+${know.knowId}"
                        th:text="${know.title}"> know3</a>
                 </td>
                 <td th:text="${know.typeId.typecontent}">
@@ -49,7 +49,7 @@
                 <td th:text="${know.normalUser.name}">
                     Tom3
                 </td>
-                <td><a th:text="" th:href="">取消收藏</a></td>
+                <td><a  th:href="'/userRequest/deleteFavorite?knowId='+${know.knowId}" >取消收藏</a></td>
             </tr>
             </tbody>
         </table>

@@ -79,7 +79,7 @@ public class UserShowPageController {
             modelAndView.setViewName("Login");
             return modelAndView;
         }
-        List<KnowledgeType> knowledgeTypes=normalUserServiceI.getFirstLayer();
+        List<KnowledgeType> knowledgeTypes=normalUserServiceI.getLastLayer();
         modelAndView.addObject("types",knowledgeTypes);
         modelAndView.setViewName("addKnowledge");
         Knowledge knowledge=normalUserServiceI.getCaogaoByID(user.getAccount());

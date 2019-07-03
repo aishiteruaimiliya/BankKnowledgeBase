@@ -64,6 +64,10 @@ public class Knowledge {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<NormalUser> normalUsers=new ArrayList<>();
 
+    @ManyToMany(targetEntity = NormalUser.class,mappedBy = "recommends")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<NormalUser> recommended=new ArrayList<>();
+
     public KnowledgeType getTypeId() {
         return knowledgeType;
     }
