@@ -31,8 +31,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     @Autowired
     NormalUserDAO normalUserDAO;
 
-    @Autowired
-    RecmmendDAO recmmendDAO;
+
     @Override
     public int countKnowledgeNum() {
 //        return knowledgeDAO.countAll();
@@ -149,31 +148,48 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
             for(NormalUser normalUser:normalUsers){
                 List<UserClickType> userClickTypes=userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdOrderByTimes(normalUser);
                 UserClickType userClickType=userClickTypes.get(0);
-                List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(userClickType.getUserClickTypePK().getTypeId(),"通过");
-                RecommendPK recommendPK=new RecommendPK();
-                recommendPK.setNormalUser(normalUser);
-                recmmendDAO.deleteAll();
+                List<Knowledge> knowledges=new ArrayList<>();
+                List<KnowledgeType> knowledgeTypes=bfsTravel(userClickType.getUserClickTypePK().getTypeId());
+                for(KnowledgeType knowledgeType:knowledgeTypes)
+                    knowledges.addAll(knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType,"通过"));
+                //todo 修改逻辑
+                normalUser.getRecommends().clear();
                 int recommendNum = 20;
                 if(knowledges.size()> recommendNum){
                     for (int i = 0; i < recommendNum; i++) {
-                        recommendPK.setKnowledge(knowledges.get(i));
-                        Recommend recommend=new Recommend();
-                        recommend.setRecommendPK(recommendPK);
-                        recmmendDAO.save(recommend);
+                       normalUser.getRecommends().add(knowledges.get(i));
                     }
                 }else {
                     for (Knowledge knowledge:knowledges) {
-                        recommendPK.setKnowledge(knowledge);
-                        Recommend recommend=new Recommend();
-                        recommend.setRecommendPK(recommendPK);
-                        recmmendDAO.save(recommend);
+                       normalUser.getRecommends().add(knowledge);
                     }
                 }
+                normalUserDAO.save(normalUser);
             }
         }catch (Exception e){
             return false;
         }
         return true;
+    }
+
+    private List<KnowledgeType> bfsTravel(KnowledgeType typeId) {
+        List<KnowledgeType> ans=new ArrayList<>();
+        Queue<KnowledgeType> queue=new LinkedList<>();
+        queue.offer(typeId);
+        try{
+            while (!queue.isEmpty()){
+                KnowledgeType tmp=queue.poll();
+                ans.add(tmp);
+                List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeId(tmp.getTypeid());
+                for (KnowledgeType know:knowledgeTypes) {
+                    if(tmp.getNextTypeId()!=null) queue.offer(know);
+                    ans.add(know);
+                }
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return ans;
     }
 
     @Override
