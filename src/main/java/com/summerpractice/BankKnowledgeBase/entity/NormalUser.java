@@ -24,6 +24,12 @@ public class NormalUser extends User {
             joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
             inverseJoinColumns ={@JoinColumn(name = "know_id",referencedColumnName = "know_id")})
     private List<Knowledge> favorite=new ArrayList<>();
+
+    @ManyToMany(targetEntity = Knowledge.class)
+    @JoinTable(name = "recommend",
+            joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
+            inverseJoinColumns ={@JoinColumn(name = "know_id",referencedColumnName = "know_id")})
+    private List<Knowledge> recommends=new ArrayList<>();
     public NormalUser(String name, String account, String password,int dep_id) {
         super(name, account, password);
     }
@@ -65,5 +71,13 @@ public class NormalUser extends User {
                 .append(account).append('\"');
         sb.append('}');
         return sb.toString();
+    }
+
+    public List<Knowledge> getRecommends() {
+        return recommends;
+    }
+
+    public void setRecommends(List<Knowledge> recommends) {
+        this.recommends = recommends;
     }
 }

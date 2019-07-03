@@ -121,6 +121,8 @@
             <p th:text="${knowledge.normalUser.name}">Tom1</p>
         <h3>具体内容</h3>
             <p th:text="${knowledge.detail}">know1 is the frist knowledge.</p>
+        <a th:href="'/userRequest/addMyfavorite?know_id='+${knowledge.knowId}">收藏</a>
+        <a href="/userRequest/addMyfavorite"></a>
         <form method="post" action="/userRequest/comment">
             <textarea  name="content" style="height: auto;width: auto;border: solid" ></textarea>
             <input th:value="${knowledge.knowId}" style="display: none" name="knowId">
