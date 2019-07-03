@@ -1,0 +1,31 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索到的知识进行展示</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>知识标题</td>
+        <td>知识状态</td>
+        <td>贡献者</td>
+       <td>操作</td>
+    </tr>
+    <tr th:each="know:${res}">
+        <td th:text="${know.title}">
+            <a href="knowledge.html">know1</a>
+        </td>
+        <td th:text="${know.status}">可查看</td>
+        <td th:text="${know.normalUser.name}">Tom1</td>
+        <td><a th:href="">收藏</a></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -3,22 +3,19 @@
   ~
   -->
 
-<!--
-  ~ author:huangping
-  ~
-  -->
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>用户查看自己的知识</title>
 </head>
 <body>
+
+
 <div class="row clearfix" >
     <div class="col-md-12 column" >
-        <h3 style="text-align: center;">已收藏知识如下：</h3>
+        <h3 style="text-align: center;">我发布的知识如下：</h3>
         <table class="table table-bordered table-hover" align ="center">
             <thead>
             <tr>
@@ -29,27 +26,22 @@
                     所属类型
                 </th>
                 <th>
-                    贡献者
-                </th>
-                <th>
-                操作
+                    状态
                 </th>
             </tr>
             </thead>
             <tbody>
-            <tr class="warning" th:each="know:${knows}">
+            <tr th:each="know:${res}">
                 <td>
-
-                    <a th:href="'/expertUser/showDetail?know_id='+${know.knowId}"
-                       th:text="${know.title}"> know3</a>
+                    <a th:href="'/userRequest/showKnowledgeDetail?knowId='+${know.knowId}"
+                       th:text="${know.title}">  know1 </a>
                 </td>
                 <td th:text="${know.typeId.typecontent}">
-                    money
+                    card
                 </td>
-                <td th:text="${know.normalUser.name}">
-                    Tom3
+                <td th:text="${know.status}">
+                    可查看
                 </td>
-                <td><a th:text="" th:href="">取消收藏</a></td>
             </tr>
             </tbody>
         </table>

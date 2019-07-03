@@ -99,7 +99,7 @@ public interface NormalUserServiceI {
 
     public List<KnowledgeType> getLastLayer();
 
-    public List<RankBoard> getRankBoard();
+    public List<Knowledge> getRankBoard();
 
     public ExpertUser findExpertUserByTypeId(String typeid);
 
@@ -112,5 +112,6 @@ public interface NormalUserServiceI {
     public boolean addCaogao(String userid,Knowledge knowledge);
 
     public Knowledge getKnledgeByKnowId(String knowID,String account);
+
 
 }

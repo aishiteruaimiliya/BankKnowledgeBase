@@ -99,13 +99,13 @@ public class ExpertUserServiceImpl implements ExpertUserServiceI {
         queue.offer(knowledgeType);
         while(!queue.isEmpty()){
             KnowledgeType tmp=queue.poll();
-            List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(knowledgeType.getTypeid());
+            ans.add(tmp);
+            List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(tmp.getTypeid());
             for (KnowledgeType type : knowledgeTypes) {
                 if (type.getNextTypeId() != null) {
                     queue.offer(type);
-                } else {
-                    ans.add(type);
                 }
+                ans.add(type);
             }
         }
         return ans;

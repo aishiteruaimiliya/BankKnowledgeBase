@@ -16,6 +16,7 @@ public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
     Knowledge findAllByDisableAndKnowIdOrderByClicked(boolean disable,String knowId);
 
     List<Knowledge> findAllByDisableFalseOrderByClickedDesc();
+    List<Knowledge> findAllByDisableFalseAndStatusOrderByClickedDesc(String status);
     Knowledge findByDisableFalseAndKnowId(String knowId);
     List<Knowledge> findAllByDisableFalseAndKnowledgeType(KnowledgeType knowledgeType);
 
@@ -24,6 +25,8 @@ public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
     int countAllByDisableFalse();
 
     List<Knowledge> findAllByDisableFalseAndKnowledgeTypeOrderByClickedDesc(KnowledgeType knowledgeType);
+
+    List<Knowledge> findAllByDisableFalseAndKnowledgeTypeAndStatusOrderByClickedDesc(KnowledgeType knowledgeType,String status);
 
     List<Knowledge> findAllByDisableFalseAndKnowledgeTypeAndStatus(KnowledgeType knowledgeType,String status);
 
