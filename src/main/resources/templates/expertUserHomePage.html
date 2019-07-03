@@ -9,16 +9,36 @@
 <head>
     <meta charset="UTF-8">
     <title>专家主页</title>
+    <style type="text/css">
+        #menu{ width: 150px; border: 1px solid #999; }
+        #menu ul{
+            margin: 0px; padding: 0px; list-style: none;/* 隐藏默认列表符号*/
+        }
+        #menu ul li{
+            background: #06C; height: 26px; line-height: 26px; /*行距*/
+            text-align: center; border-bottom: 1px solid #999; position: relative;
+        }
+        a{
+            display: block; font-size: 13px; color: #000; text-decoration: none;/*隐藏超廉价默认下划线*/
+        }
+        a:hover{ color:#F00; font-size: 14px; }
+        #menu ul li ul{
+            display: none;/*默认隐藏*/
+            top:0px; width: 130px; border: 1px solid #ccc; border-bottom: none; position: absolute; left: 150px;
+        }
+        #menu ul li:hover ul{ display: block; }
+        #menu ul li:hover ul li a{ display: block; }
+    </style>
 </head>
 <body>
-    <div>
-        <a th:text="'您好！专家'+${user.name}" style="margin-left: 0"></a>
-        <menu>
+    <p th:text="'您好！专家'+${user.name}" style="margin-left: 0"></p>
+    <div id="menu">
+        <ul>
             <li><a href="/expertUser/showKnowledge">未审批知识浏览</a></li>
             <li><a href="/expertUser/showJudged">已审批知识浏览</a></li>
             <li><a href="/expertUser/showchangePass">修改密码</a></li>
             <li><a href="/userRequest/logoutAll">注销</a></li>
-        </menu>
+        </ul>
     </div>
 </body>
 </html>

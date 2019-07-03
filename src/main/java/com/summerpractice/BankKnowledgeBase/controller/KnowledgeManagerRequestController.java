@@ -40,7 +40,7 @@ public class KnowledgeManagerRequestController {
         knowledgeType.setTypecontent(typecontent);
         if(preId!=null&&!preId.equals("")){
             knowledgeType.setPreTypeId(preId);
-            KnowledgeType knowledgeType1=knowledgeManagerServiceI.findKnowledgeById(preId);
+            KnowledgeType knowledgeType1=knowledgeManagerServiceI.findKnowledgeTypeById(preId);
             knowledgeType.setNextTypeId("NOTLEAF");
 
         }
