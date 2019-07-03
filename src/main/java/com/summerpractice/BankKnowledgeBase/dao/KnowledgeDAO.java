@@ -35,4 +35,6 @@ public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
     List<Knowledge> findAllByNormalUser(NormalUser normalUser);
 
     Knowledge findAllByNormalUserAndStatus(NormalUser normalUser,String status);
+
+    Knowledge findAllByDisableFalseAndKnowId(String id);
 }

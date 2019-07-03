@@ -50,7 +50,7 @@ public interface AdminServiceI {
 
     User findExpertUserByAccount(String Account);
 
-    User findKnowledgeManagerByAccount(String Account);
+    KnowledgeManager findKnowledgeManagerByAccount(String Account);
 
     boolean deleteUser(String account);
 

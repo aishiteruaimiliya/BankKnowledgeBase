@@ -215,8 +215,9 @@ public class AdminServiceImpl implements AdminServiceI {
     }
 
     @Override
-    public User findKnowledgeManagerByAccount(String Account) {
-        return systemManagerDAO.findAllByDisableFalseAndAccount(Account);
+    public KnowledgeManager findKnowledgeManagerByAccount(String Account) {
+//        return systemManagerDAO.findAllByDisableFalseAndAccount(Account);
+        return knowledgeManagerDAO.findAllByDisableFalseAndAccount(Account);
     }
 
     @Override
@@ -261,7 +262,9 @@ public class AdminServiceImpl implements AdminServiceI {
                 expertUserDAO.save((ExpertUser)user);
             }else if(user instanceof SystemManager){
                 systemManagerDAO.save((SystemManager)user);
-            }else {
+            }else if (user instanceof KnowledgeManager){
+                knowledgeManagerDAO.save((KnowledgeManager)user);
+            } else {
                 return false;
             }
         }catch (Exception e){

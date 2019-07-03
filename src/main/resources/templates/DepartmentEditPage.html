@@ -16,10 +16,10 @@
         <a>请输入新的信息：</a>
         <form action="/adminRequest/changeDept" method="get">
             <input style="display: none" th:value="${dept.depId}" type="text" name="depId">
-            <label>第一级别<input type="text" name="first" th:placeholder="${dept.first}"></label><br/>
-            <label>第二级别<input type="text" name="second" th:placeholder="${dept.second}"></label><br/>
-            <label>第三级别<input type="text" name="third" th:placeholder="${dept.third}"></label><br/>
-            <label>第四级别<input type="text" name="fourth" th:placeholder="${dept.fourth}"></label><br/>
+            <label>第一级别<input type="text" name="first" th:value="${dept.first}"></label><br/>
+            <label>第二级别<input type="text" name="second" th:value="${dept.second}"></label><br/>
+            <label>第三级别<input type="text" name="third" th:value="${dept.third}"></label><br/>
+            <label>第四级别<input type="text" name="fourth" th:value="${dept.fourth}"></label><br/>
             <input type="submit"  value="修改机构">
         </form>
 </body>

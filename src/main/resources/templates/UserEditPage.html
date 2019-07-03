@@ -1,0 +1,49 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <script th:src="@{/static/js/angu.min.js}"></script>
+    <script th:src="@{/static/js/jquery.min.js}" src="../static/js/jquery.min.js"></script>
+    <title>系统管理员-人员编辑</title>
+</head>
+<body>
+<a href="/admin/ShowLogin">返回上一级</a><br/>
+<a th:text="'原人员信息'"></a><br/>
+<a th:text="'账号：'+${user.account}"></a></br>
+<a th:text="'姓名：'+${user.name}"></a></br>
+<a th:text="'密码：'+${user.password}"></a></br>
+<a th:text="'机构：'+${user.department.first}+${user.department.second}
+            +${user.department.third}+${user.department.fourth}"></a></br>
+<a th:text="'人员类型：'"></a><a th:text="${usertype}" id="usertype_string"></a></br>
+<p> </p>
+<a>请输入新的信息：</a>
+<form id="EditUserForm" method="post">
+    <label>账号（账号不可修改）<input type="text" name="account" th:value="${user.account}" style="display: none"></label><br/>
+    <label>姓名<input type="text" name="username" th:value="${user.name}"></label><br/>
+    <label>密码<input type="text" name="password" th:value="${user.password}"></label><br/>
+    <label>机构</label>
+    <select name="selected">
+        <option th:each="dept:${depts}" th:value="${dept.depId}" th:text="${dept.first}+${dept.second==null?'':dept.second}+${dept.third==null?'':dept.third}+${dept.fourth==null?'':dept.fourth}"></option>
+    </select><br/>
+
+    <input type="submit"  value="修改人员">
+</form>
+</body>
+</html>
+
+<script>
+    if (document.getElementById("usertype_string").textContent == "普通用户")
+        document.getElementById("EditUserForm").action = "/adminRequest/modifyNormalUser";
+    else if (document.getElementById("usertype_string").textContent == "专家用户")
+        document.getElementById("EditUserForm").action = "/adminRequest/modifyExpertUser";
+    else if (document.getElementById("usertype_string").textContent == "知识管理员")
+        document.getElementById("EditUserForm").action = "/adminRequest/modifyKnowledgeManager";
+    else
+        document.getElementById("EditUserForm").action = "#";
+</script>

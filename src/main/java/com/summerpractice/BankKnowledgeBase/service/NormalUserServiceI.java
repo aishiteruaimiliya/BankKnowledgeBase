@@ -23,6 +23,7 @@ public interface NormalUserServiceI {
      */
     public User login(String account,String password);
 
+    public User getUserByAccount(String account);
 
     /**
      * 添加评论
@@ -71,7 +72,7 @@ public interface NormalUserServiceI {
 
     /***
      * 根据知识类别获取知识
-     * @param knowledgeType 知识类别
+     * @param typeid 知识类别
      * @return 下一个级别的知识类别
      */
     public List<KnowledgeType> getKnowledgeTypeByPreID(String typeid);
@@ -110,6 +111,7 @@ public interface NormalUserServiceI {
     public Knowledge getCaogaoByID(String account);
 
     public boolean addCaogao(String userid,Knowledge knowledge);
+
 
     public Knowledge getKnledgeByKnowId(String knowID,String account);
 

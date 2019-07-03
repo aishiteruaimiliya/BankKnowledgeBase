@@ -182,12 +182,15 @@ public class AdminRequestController {
         return users.toString();
     }
 
+
     @ResponseBody
     @RequestMapping("/modifyNormalUser")
-    public String modifyNormalUser(@RequestParam(name = "selected",required = false) String depid,
+    public String modifyNormalUser(@RequestParam(name = "account",required = true) String account,
                                    @RequestParam(name = "username",required = false) String username,
-                                   @RequestParam(name = "account",required = true) String account,
-                                   @RequestParam(name = "password",required = false) String password){
+                                   @RequestParam(name = "password",required = false) String password,
+                                   @RequestParam(name = "selected",required = false) String depid){
+
+
         NormalUser normalUser= (NormalUser) adminServiceI.findNormalUserByAccount(account);
         if(normalUser==null) return "failed";
         if(depid!=null)
@@ -233,7 +236,9 @@ public class AdminRequestController {
                                          @RequestParam(name = "account",required = true) String account,
                                          @RequestParam(name = "password",required = false) String password,
                                          @RequestParam(name = "typeId",required = false)String typeId){
-        KnowledgeManager knowledgeManager= (KnowledgeManager) adminServiceI.findKnowledgeManagerByAccount(account);
+//        KnowledgeManager knowledgeManager= (KnowledgeManager) adminServiceI.findKnowledgeManagerByAccount(account);
+        KnowledgeManager knowledgeManager = adminServiceI.findKnowledgeManagerByAccount(account);
+
         if (knowledgeManager==null) return "failed";
         if(depid!=null)
             knowledgeManager.setDepartment(adminServiceI.findDepartmentByID(depid));

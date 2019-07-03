@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8" />
-    <title>管理员主页</title>
+    <title>系统管理员主页</title>
     <style type="text/css"> #menu{ width: 100px; border: 1px solid #999; } #menu ul{ margin: 0px; padding: 0px; list-style: none;/* 隐藏默认列表符号*/
                                                                            } #menu ul li{ background: #06C; height: 26px; line-height: 26px; /*行距*/
                                                                                  text-align: center; border-bottom: 1px solid #999; position: relative; } a{ display: block; font-size: 13px; color: #FFF; text-decoration: none;/*隐藏超廉价默认下划线*/
@@ -11,8 +11,8 @@
                                                                                                                                                                                                         top:0px; width: 130px; border: 1px solid #ccc; border-bottom: none; position: absolute; left: 100px; } #menu ul li:hover ul{ display: block; } #menu ul li:hover ul li a{ display: block; } </style>
 </head>
 <body>
-<h1>管理员界面</h1>
-<label th:text="'您好管理员 '+${admin.name}"></label>
+<h1>系统管理员界面</h1>
+<label th:text="'您好系统管理员 '+${admin.name}"></label>
 <div id="menu">
     <ul>
         <li><a href="#">人员管理</a>

@@ -42,6 +42,7 @@ public class KnowledgeManagerRequestController {
             knowledgeType.setPreTypeId(preId);
             KnowledgeType knowledgeType1=knowledgeManagerServiceI.findKnowledgeById(preId);
             knowledgeType.setNextTypeId("NOTLEAF");
+
         }
         if(knowledgeManagerServiceI.addKnowledgeType(knowledgeType)){
             modelAndView.addObject("msg","添加知识维度成功");
@@ -54,7 +55,7 @@ public class KnowledgeManagerRequestController {
     @RequestMapping("/deleteKnowledgeType")
     public ModelAndView deleteKnowledgeType(@RequestParam(name = "typeId",required = true)String typeid){
         ModelAndView modelAndView=new ModelAndView("ResultPage");
-        KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeById(typeid);
+        KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeid);
         if(knowledgeManagerServiceI.deleteKnowledgeType(knowledgeType)){
             modelAndView.addObject("msg","删除知识维度成功");
             return modelAndView;

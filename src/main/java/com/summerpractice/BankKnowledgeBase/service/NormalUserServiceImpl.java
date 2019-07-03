@@ -63,6 +63,23 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
+    public User getUserByAccount(String account) {
+        NormalUser normalUser=normalUserDAO.findAllByDisableFalseAndAccount(account);
+        ExpertUser expertUser=expertUserDAO.findAllByDisableFalseAndAccount(account);
+        KnowledgeManager knowledgeManager=knowledgeManagerDAO.findAllByDisableFalseAndAccount(account);
+        if(normalUser!=null){
+            return normalUser;
+        }
+        if(expertUser!=null){
+            return expertUser;
+        }
+        if(knowledgeManager!=null){
+            return knowledgeManager;
+        }
+        return null;
+    }
+
+    @Override
     public boolean addComment(Comment comment){
         try{
             commentDAO.save(comment);
@@ -299,6 +316,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         }
         return true;
     }
+
     //在此处，若被调用一次，则表示该知识被点击一次
 
     /**

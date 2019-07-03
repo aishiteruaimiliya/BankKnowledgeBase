@@ -5,6 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.summerpractice.BankKnowledgeBase.dao.KnowledgeDAO;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.CommonServiceI;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
@@ -26,7 +27,6 @@ public class UserRequestController {
     DepartmentServiceI departmentServiceI;
     @Autowired
     NormalUserServiceI normalUserServiceI;
-
     @Autowired
     KnowledgeManagerServiceI knowledgeManagerServiceI;
 
@@ -75,6 +75,7 @@ public class UserRequestController {
                     return "failed";
                 }
     }
+
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     @ResponseBody
     public String comment(@RequestParam(name = "knowId",required = true)String know_id,
@@ -177,7 +178,7 @@ public class UserRequestController {
             modelAndView.addObject("user",usr);
             request.getSession().setAttribute("user",usr);
         }else {
-            modelAndView.addObject("msg","用户不存在！请重新输入！");
+            modelAndView.addObject("msg","登录信息输入有误");
         }
         return modelAndView;
     }
@@ -209,6 +210,8 @@ public class UserRequestController {
                             @RequestParam(name = "typeid",required = false)String typeid,
                             HttpServletRequest request){
         NormalUser  normalUser=verifyUser(request);
+        if(normalUser == null)
+            return "failed";
         Knowledge knowledge=new Knowledge();
         knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeid));
         knowledge.setNormalUser(normalUser);

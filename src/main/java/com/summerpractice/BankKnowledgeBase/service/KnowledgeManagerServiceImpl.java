@@ -68,6 +68,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
 
@@ -191,7 +192,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     }
 
     @Override
-    public KnowledgeType findKnowledgeById(String id) {
+    public KnowledgeType findKnowledgeTypeById(String id) {
         return knowledgeTypeDAO.findByDisableFalseAndTypeid(id);
     }
 
@@ -203,6 +204,11 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     @Override
     public List<ExpertUser> getAllExpert() {
         return expertUserDAO.findAllByDisableFalse();
+    }
+
+    @Override
+    public KnowledgeType findKnowledgeTypeByTypeID(String id) {
+        return knowledgeTypeDAO.findByDisableFalseAndTypeid(id);
     }
 
 
