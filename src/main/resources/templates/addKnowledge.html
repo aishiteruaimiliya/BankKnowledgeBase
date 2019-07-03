@@ -3,6 +3,11 @@
   ~
   -->
 
+<!--
+  ~ author:huangping
+  ~
+  -->
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
@@ -11,30 +16,32 @@
     <title>Title</title>
     <script>
         // 提交日志
-        $(".submit_btn button").click(function() {
-            var writeForm=$('#myform');
-            writeForm.attr('action','/userRequest/addKnowledge');
-            writeForm.submit();
-        });
-        $(".save_caogao button").click(function() {
-            var writeForm=$('#myform');
-            writeForm.attr('action','/userRequest/addCaogao');
-            writeForm.submit();
-        });
+       function addKnowldge() {
+           document.myform.action="/userRequest/addKnowledge";
+           document.myform.submit();
+       }
+       function addCaogao() {
+           document.myform.action="/userRequest/addCaogao";
+           document.myform.submit();
+       }
     </script>
 </head>
 <body>
     <div align="center">
-        <a href="/user/myHome">返回</a>
-        <form method="post"  id="myform">
-            <input  name="title" type="text" minlength="25" placeholder="标题"><br/>
-            <input name="digest" type="text" minlength="25" placeholder="摘要" height="50px"><br/>
-            <input name="detail" type="text" minlength="50" placeholder="详细知识" height="60px"><br/>
-            <select th:each="" name="typeid">
-                <option></option>
+        <a href="javascript:" onclick="self.location=document.referrer;">返回上一页</a>
+        <form method="post"  name="myform" action="">
+            <input name="knowId" th:value="${caogao}==null?null:${caogao.knowId}" style="display: none">
+            <input  name="title" type="text" minlength="25" placeholder="标题"
+                    th:value="${caogao}==null?null:${caogao.title}"><br/>
+            <input name="digest" type="text"
+                   minlength="25" placeholder="摘要" height="50px"  th:value="${caogao}==null?null:${caogao.digest}"><br/>
+            <input name="detail" type="text" minlength="50"
+                   placeholder="详细知识" height="60px" th:value="${caogao}==null?null:${caogao.detail}"><br/>
+            <select  name="typeid">
+                <option th:each="type:${types}" th:text="${type.typecontent}" th:value="${type.typeid}"></option>
             </select><br/>
-            <button class="submit_btn">提交</button>
-            <button class="save_caogao">存为草稿</button>
+            <button class="submit_btn" onclick="addKnowldge()" name="mysubmit">提交</button>
+            <button class="save_caogao" name="mycaogao"onclick="addCaogao()">存为草稿</button>
         </form>
     </div>
 </body>

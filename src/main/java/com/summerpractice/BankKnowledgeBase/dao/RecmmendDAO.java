@@ -9,6 +9,8 @@ import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import com.summerpractice.BankKnowledgeBase.entity.Recommend;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface RecmmendDAO extends JpaRepository<Recommend,Integer> {
-   Recommend findAllByRecommendPK_NormalUser(NormalUser normalUser);
+   List<Recommend> findAllByRecommendPK_NormalUser(NormalUser normalUser);
 }

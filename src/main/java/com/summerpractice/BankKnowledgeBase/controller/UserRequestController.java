@@ -7,6 +7,7 @@ package com.summerpractice.BankKnowledgeBase.controller;
 
 import com.summerpractice.BankKnowledgeBase.dao.KnowledgeDAO;
 import com.summerpractice.BankKnowledgeBase.entity.*;
+import com.summerpractice.BankKnowledgeBase.service.CommonServiceI;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
 import com.summerpractice.BankKnowledgeBase.service.KnowledgeManagerServiceI;
 import com.summerpractice.BankKnowledgeBase.service.NormalUserServiceI;
@@ -28,6 +29,9 @@ public class UserRequestController {
     NormalUserServiceI normalUserServiceI;
     @Autowired
     KnowledgeManagerServiceI knowledgeManagerServiceI;
+
+    @Autowired
+    CommonServiceI commonServiceI;
     @PostMapping("/search")
     public ModelAndView search(@RequestParam(name = "keyword",required = true)String keyword,HttpServletRequest request,ModelAndView modelAndView){
       modelAndView.setViewName("Login");
@@ -35,10 +39,43 @@ public class UserRequestController {
       if(normalUser==null) return modelAndView;
       else{
           modelAndView.addObject("res",normalUserServiceI.searchByKeyWord(keyword));
-          modelAndView.setViewName("resultPage");
+          modelAndView.setViewName("KnowledgeShowPage");
           return modelAndView;
       }
     }
+    @ResponseBody
+    @PostMapping("/addKnowledge")
+    public String addKnowLedge(@RequestParam(name = "title",required = true)String title,
+                               @RequestParam(name = "digest",required = true)String digest,
+                               @RequestParam(name = "typeid",required = true)String typeId,
+                               @RequestParam(name = "detail",required = true)String detail,
+                               @RequestParam(name = "knowId",required = false)String knowId,
+                               HttpServletRequest request){
+                NormalUser normalUser=verifyUser(request);
+                Knowledge knowledge=null;
+                if(normalUser==null) return "Login";
+                if(knowId==null||knowId.equals(""))
+                    knowledge = new Knowledge();
+                else {
+                    knowledge=normalUserServiceI.getCaogaoByID(normalUser.getAccount());
+                }
+                 if((title.equals("")||detail.equals("")||typeId.equals("")||digest.equals(""))){
+                    return "信息不能为空";
+                }
+                knowledge.setStatus("未审批");
+                knowledge.setDigest(digest);
+                knowledge.setDetail(detail);
+                knowledge.setTitle(title);
+                knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeId));
+                knowledge.setNormalUser(normalUser);
+                knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeId));
+                if(normalUserServiceI.addKnowledge(knowledge)){
+                    return "success";
+                }else {
+                    return "failed";
+                }
+    }
+
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     @ResponseBody
     public String comment(@RequestParam(name = "knowId",required = true)String know_id,
@@ -122,69 +159,28 @@ public class UserRequestController {
         }
         if(usr instanceof NormalUser){
             modelAndView.addObject("user",usr);
+            request.getSession().setAttribute("user",usr);
             Map<KnowledgeType,List<KnowledgeType>> map=knowledgeManagerServiceI.getTwoLayer();
             List<KnowledgeType> knowledgeTypes=normalUserServiceI.getLastLayer();
             modelAndView.addObject("map",map);
             modelAndView.addObject("types",knowledgeTypes);
             modelAndView.addObject("caogao",normalUserServiceI.getCaogaoByID(usr.getAccount()));
+            modelAndView.addObject("recommend",normalUserServiceI.getRecommend((NormalUser) usr));
+            modelAndView.addObject("rank",normalUserServiceI.getRankBoard());
             System.out.print(map.toString());
-            modelAndView.setViewName("NormalUserHomePage");
+            modelAndView.setViewName("UserHomePage2");
         }else if( usr instanceof ExpertUser) {
            modelAndView.setViewName("expertUserHomePage");
             modelAndView.addObject("user",usr);
+            request.getSession().setAttribute("user",usr);
         }else if(usr instanceof KnowledgeManager){
             modelAndView.setViewName("knowledgeHomePage");
             modelAndView.addObject("user",usr);
+            request.getSession().setAttribute("user",usr);
         }else {
             modelAndView.addObject("msg","登录信息输入有误");
         }
         return modelAndView;
-    }
-
-    /***
-     * 如果有同样的map，则会采用最大精确匹配
-     * @param knowledgeId 是否存在草稿id
-     * @param title
-     * @param digest
-     * @param detail
-     * @param typeid
-     * @param request
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/addKnowledge")
-    public String  addKnowledge(@RequestParam(name = "knowledgeId",required = false)String knowledgeId,
-                                @RequestParam(name = "title",required = true)String title,
-                                @RequestParam(name = "digest",required = true)String digest,
-                                @RequestParam(name = "detail",required = true)String detail,
-                                @RequestParam(name = "typeid",required = true)String typeid
-                                ,HttpServletRequest request){
-        NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
-        Knowledge knowledge=new Knowledge();;
-        if(normalUser==null) return "failed";
-
-        try{
-            if(knowledgeId == null||knowledgeId.equals(""))
-            {
-            }else {
-                normalUserServiceI.deleteCaogao(knowledgeId);
-            }
-            knowledge.setTypeId(normalUserServiceI.findKnowlegeTypeById(typeid));
-            knowledge.setNormalUser(normalUser);
-            knowledge.setStatus("未审批");
-            knowledge.setTitle(title);
-            knowledge.setDetail(detail);
-            knowledge.setDigest(digest);
-            knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeid));
-
-            if(!normalUserServiceI.addKnowledge(knowledge)){
-                return "failed";
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return "failed";
-        }
-        return "success";
     }
 
     @ResponseBody
@@ -225,6 +221,39 @@ public class UserRequestController {
         knowledge.setDigest(digest);
         knowledge.setExpertUser(normalUserServiceI.findExpertUserByTypeId(typeid));
         return normalUserServiceI.addCaogao(normalUser.getId(),knowledge)?"success":"failed";
+    }
+    @RequestMapping("/changePass")
+    public ModelAndView changePassword(@RequestParam(name = "old",required = true)String old,
+                                       @RequestParam(name = "new",required = true)String  newPass,
+                                       HttpServletRequest  request,
+                                       ModelAndView modelAndView){
+        NormalUser normalUser=verifyUser(request);
+        modelAndView.setViewName("ChangePassPageNormalUser");
+        if(commonServiceI.changePassword(normalUser.getAccount(),old,newPass)){
+            modelAndView.addObject("msg","修改成功");
+        }else {
+            modelAndView.addObject("msg","修改失败");
+        }
+        return modelAndView;
+    }
+    @RequestMapping("/showKnowledgeDetail")
+    public ModelAndView showDetail(@RequestParam(name = "knowId",required = true)String knowId
+                                    ,HttpServletRequest request){
+        NormalUser normalUser=verifyUser(request);
+        ModelAndView modelAndView=new ModelAndView("knowledge");
+        modelAndView.addObject("knowledge",normalUserServiceI.getKnledgeByKnowId(knowId,normalUser.getAccount()));
+        modelAndView.addObject("comments",normalUserServiceI.getCommentByKnowledgeId(knowId));
+        return modelAndView;
+    }
+    @RequestMapping("/logoutAll")
+    public String logout(HttpServletRequest request){
+        User user= (User) request.getSession().getAttribute("user");
+        if(user==null)
+            user= (User) request.getSession().getAttribute("admin");
+            if(user!=null)
+                request.getSession().removeAttribute("admin");
+        request.getSession().removeAttribute("user");
+        return "Login";
     }
 
     private NormalUser verifyUser(HttpServletRequest request){

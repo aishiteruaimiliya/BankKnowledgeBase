@@ -1,0 +1,128 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>用户主页</title>
+    <style type="text/css"> #menu{ width: 150px; border: 1px solid #999; } #menu ul{ margin: 0px; padding: 0px; list-style: none;/* 隐藏默认列表符号*/
+                                                                           } #menu ul li{ background: #06C; height: 26px; line-height: 26px; /*行距*/
+                                                                                 text-align: center; border-bottom: 1px solid #999; position: relative; } a{ display: block; font-size: 13px; color: #000; text-decoration: none;/*隐藏超廉价默认下划线*/
+                                                                                                                                                          } a:hover{ color:#F00; font-size: 14px; } #menu ul li ul{ display: none;/*默认隐藏*/
+                                                                                                                                                                                                        top:0px; width: 130px; border: 1px solid #ccc; border-bottom: none; position: absolute; left: 150px; } #menu ul li:hover ul{ display: block; } #menu ul li:hover ul li a{ display: block; } </style>
+</head>
+<body>
+<h1>用户界面</h1>
+<label th:text="'您好用户 '+${user.name}"></label>
+<div id="menu">
+
+    <ul>
+        <li><a href="/user/ShowAddKnowledge">知识录入</a></li>
+
+        <li><a href="#">知识搜索</a>
+            <ul>
+                <li>
+                    <form action="/userRequest/search" method="post">
+                        <label>
+                            <input type="text" name="keyword">
+                        </label>
+                        <input type="submit" value="知识搜索">
+                    </form>
+                </li>
+            </ul>
+        </li>
+
+        <li><a href="/user/showMyKnowledge">查看自己各类别的知识</a></li>
+
+        <li><a href="/user/favorite">收藏夹</a></li>
+
+        <li><a href="#">个人中心</a>
+            <ul>
+                <li><a href="/user/showchangePass">密码修改</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="/userRequest/logoutAll">注销</a>
+        </li>
+    </ul>
+
+</div>
+
+<div class="row clearfix" >
+    <div class="col-md-12 column" >
+        <h3 style="text-align: center;">推荐下列知识：</h3>
+        <table class="table table-bordered table-hover" align ="center">
+            <thead>
+            <tr>
+                <th>
+                    知识名
+                </th>
+                <th>
+                    所属类型
+                </th>
+                <th>
+                    贡献者
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="knowledge:${recommend}">
+                <td>
+
+                    <a th:href="'/userRequest/showKnowledgeDetail?knowId='+${knowledge.knowId}"
+                       th:text="${knowledge.title}"> know1</a>
+                </td>
+                <td th:text="${knowledge.typeId.typecontent}">
+                    card
+                </td>
+                <td th:text="${knowledge.normalUser.name}">
+                    Tom1
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row clearfix" >
+    <div class="col-md-12 column" >
+        <h3 style="text-align: center;">hot：</h3>
+        <table class="table table-bordered table-hover" align ="center">
+            <thead>
+            <tr>
+                <th>
+                    知识名
+                </th>
+                <th>
+                    所属类型
+                </th>
+                <th>
+                    贡献者
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="knowledge:${rank}">
+                <td>
+                    <span>
+                        <a th:href="'/userRequest/showKnowledgeDetail?knowId='+${knowledge.knowId}"
+                           th:text="${knowledge.title}"> know1</a>
+                    </span>
+
+                </td>
+                <td th:text="${knowledge.typeId.typecontent}">
+                    card
+                </td>
+                <td th:text="${knowledge.normalUser.name}">
+                    Tom1
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -14,6 +14,7 @@ import java.util.*;
 
 @Service
 public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
+
     @Autowired
     KnowledgeTypeDAO knowledgeTypeDAO;
     @Autowired
@@ -47,8 +48,7 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     @Override
     public boolean refreshRankBoard() {
         try{
-            //TODO ADD CONTRAINT STATUS='PASS'
-            List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseOrderByClickedDesc();
+            List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseAndStatusOrderByClickedDesc("通过");
             rankBoardDAO.deleteAll();
             if(knowledges.size()>20){
                 for (int i = 0; i <20 ; i++) {
@@ -149,22 +149,26 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
             for(NormalUser normalUser:normalUsers){
                 List<UserClickType> userClickTypes=userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdOrderByTimes(normalUser);
                 UserClickType userClickType=userClickTypes.get(0);
-                List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeOrderByClickedDesc(userClickType.getUserClickTypePK().getTypeId());
+                List<Knowledge> knowledges=knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(userClickType.getUserClickTypePK().getTypeId(),"通过");
                 RecommendPK recommendPK=new RecommendPK();
                 recommendPK.setNormalUser(normalUser);
-                if(knowledges.size()>20){
-                    for (int i = 0; i <20 ; i++) {
-                        recommendPK.getRecommend().add(knowledges.get(i));
+                recmmendDAO.deleteAll();
+                int recommendNum = 20;
+                if(knowledges.size()> recommendNum){
+                    for (int i = 0; i < recommendNum; i++) {
+                        recommendPK.setKnowledge(knowledges.get(i));
+                        Recommend recommend=new Recommend();
+                        recommend.setRecommendPK(recommendPK);
+                        recmmendDAO.save(recommend);
                     }
                 }else {
                     for (Knowledge knowledge:knowledges) {
-                        recommendPK.getRecommend().add(knowledge);
+                        recommendPK.setKnowledge(knowledge);
+                        Recommend recommend=new Recommend();
+                        recommend.setRecommendPK(recommendPK);
+                        recmmendDAO.save(recommend);
                     }
                 }
-                recmmendDAO.deleteAll();
-                Recommend recommend=new Recommend();
-                recommend.setRecommendPK(recommendPK);
-                recmmendDAO.save(recommend);
             }
         }catch (Exception e){
             return false;

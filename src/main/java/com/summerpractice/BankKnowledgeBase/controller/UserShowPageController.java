@@ -5,6 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.summerpractice.BankKnowledgeBase.entity.Knowledge;
 import com.summerpractice.BankKnowledgeBase.entity.KnowledgeType;
 import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import com.summerpractice.BankKnowledgeBase.entity.User;
@@ -51,12 +52,16 @@ public class UserShowPageController {
         return modelAndView;
     }
     @GetMapping("/showMyKnowledge")
-    public String showMyKnowledge(HttpServletRequest request){
+    public ModelAndView showMyKnowledge(HttpServletRequest request,ModelAndView modelAndView){
         User user= (User) request.getSession().getAttribute("user");
-        if(user instanceof NormalUser)
-            return "myKnowledge";
+        modelAndView.setViewName("Login");
+        if(user instanceof NormalUser){
+            modelAndView.setViewName("UserContributionKnowledgePage");
+            modelAndView.addObject("res",normalUserServiceI.findKnowledgeByNormalUser(user.getAccount()));
+            return modelAndView;
+        }
         else
-            return "Login";
+           return modelAndView;
     }
     @RequestMapping(value = "/myHome",method = RequestMethod.GET)
     public ModelAndView showHomePage(HttpServletRequest request,ModelAndView modelAndView){
@@ -67,7 +72,7 @@ public class UserShowPageController {
         modelAndView.setViewName("userHomePage");
         return modelAndView;
     }
-    @GetMapping(value = "/addKnowledge")
+    @GetMapping(value = "/ShowAddKnowledge")
     public ModelAndView showAddKnowledgePage(HttpServletRequest request,ModelAndView modelAndView){
         NormalUser user=(NormalUser)request.getSession().getAttribute("user");
         if(user==null){
@@ -76,12 +81,20 @@ public class UserShowPageController {
         }
         List<KnowledgeType> knowledgeTypes=normalUserServiceI.getFirstLayer();
         modelAndView.addObject("types",knowledgeTypes);
-        modelAndView.setViewName("addKnowledgePage");
+        modelAndView.setViewName("addKnowledge");
+        Knowledge knowledge=normalUserServiceI.getCaogaoByID(user.getAccount());
+        modelAndView.addObject("caogao",knowledge);
         return modelAndView;
     }
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         request.getSession().removeAttribute("user");
         return "redirect:/user/login";
+    }
+    @RequestMapping("/showchangePass")
+    public String showChangePass(HttpServletRequest request){
+        NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
+        if(normalUser==null) return "Login";
+        return "ChangePassPageNormalUser";
     }
 }

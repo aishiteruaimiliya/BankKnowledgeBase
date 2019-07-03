@@ -388,6 +388,8 @@ public class AdminRequestController {
         }
         return  modelAndView;
     }
+
+
     public SystemManager verify(HttpServletRequest request){
         return (SystemManager) request.getSession().getAttribute("admin");
     }
