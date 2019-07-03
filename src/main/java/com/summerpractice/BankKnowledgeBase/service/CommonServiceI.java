@@ -16,4 +16,5 @@ public interface CommonServiceI {
      * @return
      */
     public KnowledgeType findRootTypeByTypeId(String typeId);
+
 }

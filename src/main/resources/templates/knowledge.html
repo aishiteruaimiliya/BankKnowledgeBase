@@ -3,3 +3,196 @@
   ~
   -->
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>知识详细页面</title>
+<!--    <script th:src="@{/static/js/star.js}"></script>-->
+<!--    <link th:href="@{/static/css/start.css}">-->
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font: 15px "微软雅黑";
+            color: darkslategrey;
+        }
+        #score{
+            width: 60px;
+            border: 3px  solid #FFFFFF;
+            height: 15px;
+            margin: 10px auto;
+            position: relative;
+        }
+        #score>span{
+            display: inline-block;
+            width:150px;
+            height: 50px;
+
+            line-height: 50px;
+            text-align: center;
+        }
+        #score ul{
+            width: 87px;
+            position: absolute;
+            top: 0px;
+            left: 16px;
+        }
+        #score ul.clearfix:after{
+            content: '';
+            display: table;
+            clear: both;
+
+        }
+        #score  ul li{
+            float: left;
+            list-style: none;
+            cursor: pointer;
+            width: 15px;
+            height: 15px;
+            background:url(/static/image/star_outline.png);
+        }
+        #score p{
+            float:right;
+            width:180px;
+            height: 50px;
+            line-height: 50px;
+
+            text-align: center;
+        }
+        #tip{
+            position: absolute;
+            background: #94e24f;
+            border: 1px solid #FFA07A;
+            width: 60px;
+            height:15px;
+            left:160px;
+            top: 70px;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 3px;
+            display: none;
+        }
+        #tip .triangle{
+            width:0px;
+            height:0px;
+            border-width:14px;
+            border-style:solid;
+            border-color:transparent transparent #94e24f transparent;
+            position: absolute;
+            left: 10px;
+            top: -28px;
+            z-index: 1;
+        }
+        #tip .triangle_outer{
+            width:0px;
+            height:0px;
+            border-width:14px;
+            border-style:solid;
+            border-color:transparent transparent #FFFFFF transparent;
+            position: absolute;
+            left: 10px;
+            top: -29px;
+        }
+        strong{
+            color: crimson;
+            margin: 2px;
+        }
+        #score li.current{
+            background: url(/static/image/star.png);
+        }
+
+    </style>
+
+
+</head>
+    <body >
+        <a href="javascript:" onclick="self.location=document.referrer;">返回上一页</a>
+        <h3 >知识标题</h3>
+            <p th:text="${knowledge.title}">know1</p>
+        <h3>知识类型</h3>
+            <p th:text="${knowledge.typeId.typecontent}">card</p>
+        <h3>知识状态</h3>
+            <p th:text="${knowledge.status}">可查看</p>
+        <h3>贡献者</h3>
+            <p th:text="${knowledge.normalUser.name}">Tom1</p>
+        <h3>具体内容</h3>
+            <p th:text="${knowledge.detail}">know1 is the frist knowledge.</p>
+        <form method="post" action="/userRequest/comment">
+            <textarea  name="content" style="height: auto;width: auto;border: solid" ></textarea>
+            <input th:value="${knowledge.knowId}" style="display: none" name="knowId">
+            <input name="star"  id="star" style="display: none">
+            <div id="score" style="height: inherit;width: inherit;" >
+                <span ></span>
+                <ul class="clearfix" >
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <p><strong></strong></p>
+            </div>
+            <script type="text/javascript">
+                var oScore = document.getElementById("score");
+                var oTip   = document.getElementById("tip");
+                var oLi    =   oScore.getElementsByTagName('li');
+                var oStrong=   oScore.getElementsByTagName('strong');
+                var star    = document.getElementById("star");
+                var oSpan  =   oScore.getElementsByTagName('span')[0];
+                var iScore = iPoint = 0;
+                for(var i=0;i<oLi.length;i++){
+                    oLi[i].index=i;
+                    oLi[i].onmouseover = function(){
+                        iScore = this.index+1;             //记录下索引值
+                        fnPoint(iScore);                   //鼠标移过显示评分
+                        oTip.style.display='block';        //让提示框显示在对应的位置
+                        oTip.style.left = 160+this.index*48+'px';
+                        oStrong[1].innerHTML = msg[this.index];  //移过不同的星星显示对应的文字
+                        console.log(this.index)
+                    };
+                    oLi[i].onclick = function(){
+                        oStrong[0].innerHTML = review[this.index]; //右上角评价结果显示
+                        iPoint = this.index+1;//鼠标点击事件，记录下索引，并返回索引值
+
+                        return iPoint;
+
+                    };
+                    oLi[i].onmouseout = function(){  //接收点击的索引，鼠标移出后，恢复上次的评分
+                        fnPoint(iPoint);
+                        oTip.style.display='none';     //鼠标移出隐藏提示框
+
+                    }
+
+                }
+                function fnPoint(arg){
+                    iScore = arg? arg:iScore;        //接收一个参数，如果没传进参数就用iScore
+                    star.value=iScore;
+                    for(var i=0;i<oLi.length;i++){   //遍历oLi,对点击的和之前的都亮起来，之后的不亮
+                        oLi[i].className = i<iScore? 'current':'';
+                    }
+                }
+            </script>
+            <input type="submit" value="发表评论">
+        </form>
+        <ul>
+            <span>
+                <li th:each="comment:${comments}" style="border:solid">
+                        <ul>
+                            <li >
+                                <a style="text-align: left" th:text="${comment.normaluser.name}">zdy100</a>
+                                <a style="text-align: right" th:text="${comment.star}+'分'">5</a>
+                            </li>
+                            <li>
+                                <p th:text="${comment.content}">laji</p>
+                            </li>
+                        </ul>
+                    <p>&nbsp;</p>
+                </li>
+            </span>
+        </ul>
+        </body>
+</html>

@@ -15,6 +15,7 @@ import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -125,7 +126,12 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<Knowledge> getRecommend(NormalUser normalUser) {
-        return recmmendDAO.findAllByRecommendPK_NormalUser(normalUser).getRecommendPK().getRecommend();
+        List<Recommend> recommends= recmmendDAO.findAllByRecommendPK_NormalUser(normalUser);
+        List<Knowledge> knowledges=new ArrayList<>();
+        for(Recommend recommend:recommends){
+            knowledges.add(recommend.getRecommendPK().getKnowledge());
+        }
+        return knowledges;
     }
 
     @Override
@@ -227,16 +233,23 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
-    public List<RankBoard> getRankBoard() {
-        return rankBoardDAO.findAll();
+    public List<Knowledge> getRankBoard() {
+       List<RankBoard> rankBoards= rankBoardDAO.findAll();
+       List<Knowledge> knowledges=new ArrayList<>();
+       for(RankBoard rankBoard:rankBoards){
+           knowledges.add(rankBoard.getRankBoardPK().getKnowledge());
+       }
+       return knowledges;
     }
 
     @Override
     public ExpertUser findExpertUserByTypeId(String typeid) {
         //寻找到第一个大类，借此寻找专家
         KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(typeid);
-        while (knowledgeType.getPreTypeId()!=null){
+
+        while (knowledgeType!=null&&knowledgeType.getPreTypeId()!=null){
             knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(knowledgeType.getPreTypeId());
+            if(knowledgeType.getPreTypeId()==null) break;
         }
         List<ExpertUser> expertUsers=expertUserDAO.findAllByDisableFalseAndKnowledgeType(knowledgeType);
         Random random=new Random();
@@ -304,8 +317,16 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
             KnowledgeType knowledgeType1=commonServiceI.findRootTypeByTypeId(knowledgeType.getTypeid());
             UserClickType userClickType=
                     userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdAndUserClickTypePK_TypeId(normalUser,knowledgeType1);
-            userClickType.setTimes(userClickType.getTimes()+1);
-            userClickTypeDAO.save(userClickType);
+            if(userClickType==null){
+                UserClickTypePK userClickTypePK=new UserClickTypePK(normalUser,knowledgeType1);
+                userClickType=new UserClickType();
+                userClickType.setUserClickTypePK(userClickTypePK);
+                userClickType.setTimes(1);
+                userClickTypeDAO.save(userClickType);
+            }else {
+                userClickType.setTimes(userClickType.getTimes()+1);
+                userClickTypeDAO.save(userClickType);
+            }
             knowledge.setClicked(knowledge.getClicked()+1);
             knowledgeDAO.save(knowledge);
         }catch (Exception e){

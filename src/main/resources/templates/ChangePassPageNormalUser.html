@@ -1,0 +1,23 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="javascript:" onclick="self.location=document.referrer;">返回上一页</a>
+<a th:text="${msg}==null?'':${msg}"></a>
+<form action="/userRequest/changePass" method="post">
+    <input type="password" name="old" placeholder="请输入旧密码"><br/>
+    <input type="password" name="new" placeholder="请输入新密码"><br/>
+    <input type="password" name="repeat" placeholder="确认密码"><br/>
+    <input type="submit" value="确认修改">
+</form>
+</body>
+</html>
