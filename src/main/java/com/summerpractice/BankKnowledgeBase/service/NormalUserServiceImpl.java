@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class NormalUserServiceImpl implements NormalUserServiceI {
@@ -140,7 +141,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     }
 
     @Override
-    public List<Knowledge> getRecommend(NormalUser normalUser) {
+    public Set<Knowledge> getRecommend(NormalUser normalUser) {
        return normalUser.getRecommends();
     }
 
@@ -322,7 +323,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
     public Knowledge getKnledgeByKnowId(String knowID,String account) {
         Knowledge knowledge;
         try{
-            knowledge = knowledgeDAO.findByDisableFalseAndKnowId(knowID);
+            knowledge = knowledgeDAO.findByKnowId(knowID);
             NormalUser normalUser=normalUserDAO.findAllByDisableFalseAndAccount(account);
             KnowledgeType knowledgeType=knowledge.getTypeId();
             KnowledgeType knowledgeType1=commonServiceI.findRootTypeByTypeId(knowledgeType.getTypeid());

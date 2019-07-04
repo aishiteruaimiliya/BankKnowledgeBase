@@ -22,6 +22,7 @@ public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
 
     List<Knowledge> findAllByDisableFalseAndStatusAndDigestLikeOrTitleLikeOrDetailLike(String status,String digest,String title,String detail);
 
+    Knowledge findByKnowId(String knowId);
     int countAllByDisableFalse();
 
     List<Knowledge> findAllByDisableFalseAndKnowledgeTypeOrderByClickedDesc(KnowledgeType knowledgeType);
