@@ -1,0 +1,25 @@
+<!--
+  ~ author:huangping
+  ~
+  -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <ul >
+        <li th:each="type:${types}">
+            <a th:href="'/user/LookUpByType?typeId='+${type.typeid}" th:text="${type.typecontent}"></a>
+        </li>
+    </ul>
+    <ul th:each="know:${knowledges}">
+        <li>
+            <a th:href="'/user/LookUpByType?knowId='+${know.knowId}" th:text="${know.title}"></a>
+        </li>
+    </ul>
+</body>
+</html>

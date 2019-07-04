@@ -15,9 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -96,5 +98,33 @@ public class UserShowPageController {
         NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
         if(normalUser==null) return "Login";
         return "ChangePassPageNormalUser";
+    }
+    @RequestMapping("/LookUpByType")
+    public ModelAndView lookup(@RequestParam(name = "typeId",required = false)String typeid,
+                               @RequestParam(name = "knowId",required = false)String knowid,
+                               HttpServletRequest request){
+        ModelAndView modelAndView=new ModelAndView("ReadKnowledgeByType");
+        NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
+        List<Knowledge> knowledges=new ArrayList<>();
+        List<KnowledgeType> types=new ArrayList<>();
+        if(typeid==null&&knowid==null){
+            types.addAll(normalUserServiceI.getFirstLayer());
+            modelAndView.addObject("types",types);
+        }
+        if(typeid!=null){
+            List<KnowledgeType> knowledgeTypes=normalUserServiceI.findnextKnowlegeTypeByPreId(typeid);
+            for(KnowledgeType knowledgeType:knowledgeTypes){
+                knowledges.addAll(normalUserServiceI.getKnowledgeByType(knowledgeType));
+            }
+            modelAndView.addObject("types", knowledgeTypes);
+            modelAndView.addObject("knowledges",knowledges);
+            return modelAndView;
+        }
+        if(knowid!=null){
+            modelAndView.setViewName("knowledge");
+            modelAndView.addObject("knowledge",
+                    normalUserServiceI.getKnledgeByKnowId(knowid,normalUser.getAccount()));
+        }
+        return modelAndView;
     }
 }
