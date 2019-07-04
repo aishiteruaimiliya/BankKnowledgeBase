@@ -11,6 +11,7 @@ import com.summerpractice.BankKnowledgeBase.entity.NormalUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
     Knowledge findAllByDisableAndKnowIdOrderByClicked(boolean disable,String knowId);
@@ -38,4 +39,5 @@ public interface KnowledgeDAO extends JpaRepository<Knowledge,Integer> {
     Knowledge findAllByNormalUserAndStatus(NormalUser normalUser,String status);
 
     Knowledge findAllByDisableFalseAndKnowId(String id);
+
 }

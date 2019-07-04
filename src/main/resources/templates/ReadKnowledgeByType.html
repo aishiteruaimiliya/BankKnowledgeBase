@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
+    <a href="javascript:" onclick="self.location=document.referrer;">返回上一页</a>
+    <h1 th:text="${msg}==null?'':${msg}"></h1>
     <ul >
         <li th:each="type:${types}">
             <a th:href="'/user/LookUpByType?typeId='+${type.typeid}" th:text="${type.typecontent}"></a>

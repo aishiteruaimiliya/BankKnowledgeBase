@@ -15,10 +15,7 @@ import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class NormalUserServiceImpl implements NormalUserServiceI {
@@ -285,7 +282,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     /**
      * 得到用户的草稿
-     * @param userid
+     * @param
      * @return
      */
     @Override
@@ -346,5 +343,13 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
             return null;
         }
         return knowledge;
+    }
+
+    @Override
+    public Set<Knowledge> getKnowledgeByTypeId(String typeid) {
+        KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(typeid);
+        Set<Knowledge> knowledges=new HashSet<>();
+        knowledges.addAll(knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType,"通过"));
+        return knowledges;
     }
 }

@@ -43,7 +43,6 @@ public class KnowledgeManagerRequestController {
             KnowledgeType knowledgeType1=knowledgeManagerServiceI.findKnowledgeTypeById(preId);
             knowledgeType1.setNextTypeId("NOTLEAF");
             knowledgeManagerServiceI.changeKnowledgeType(knowledgeType1);
-
         }
         if(knowledgeManagerServiceI.addKnowledgeType(knowledgeType)){
             modelAndView.addObject("msg","添加知识维度成功");

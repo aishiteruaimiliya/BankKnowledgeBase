@@ -45,11 +45,11 @@
         </div>
         <form action="/userRequest/doLogin" method="post">
             <li>
-                <input type="text" class="text" name="account" value="用户名" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}"><a href="#" class=" icon user"></a>
+                <input type="text" class="text" name="account" value="用户名" placeholder="用户名"><a href="#" class=" icon user"></a>
             </li>
             <div class="clear"> </div>
             <li>
-                <input type="password" name="password" value="密码" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"> <a href="#" class="icon lock"></a>
+                <input type="password" name="password" value="密码"  placeholder="密码"> <a href="#" class="icon lock"></a>
             </li>
             <a th:text="${msg!=null?msg:''}"></a>
             <div class="clear"> </div>
@@ -64,7 +64,10 @@
 </div>
 <div class="clear"> </div>
 <!--- footer --->
-<div class="footer">
+<div style="text-align: center">
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
     <p>Copyright &copy; 山东大学软件学院银行知识库一组.</p>
 </div>
 </body>

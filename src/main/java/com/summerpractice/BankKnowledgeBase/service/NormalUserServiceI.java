@@ -43,7 +43,7 @@ public interface NormalUserServiceI {
 
     /**
      * 添加收藏
-     * @param userid 用户id
+     * @param
      * @param knowId 知识id
      * @return 是否添加成功
      */
@@ -51,7 +51,7 @@ public interface NormalUserServiceI {
 
     /***
      * 删除收藏夹
-     * @param userid 用户id
+     * @param
      * @param knowid 知识id
      * @return 是否删除成功
      */
@@ -81,7 +81,7 @@ public interface NormalUserServiceI {
 
     /***
      *
-     * @param normalUser 用户
+     * @param
      * @return 用户的收藏夹的知识
      */
     public List<Knowledge> getFavorite(String id);
@@ -116,5 +116,6 @@ public interface NormalUserServiceI {
 
     public Knowledge getKnledgeByKnowId(String knowID,String account);
 
+    public Set<Knowledge> getKnowledgeByTypeId(String typeid);
 
 }
