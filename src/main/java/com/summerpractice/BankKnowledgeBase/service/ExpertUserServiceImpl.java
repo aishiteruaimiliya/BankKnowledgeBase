@@ -31,6 +31,7 @@ public class ExpertUserServiceImpl implements ExpertUserServiceI {
     @Override
     public boolean deleteKnowledge(Knowledge knowledge) {
         knowledge.setDisable(true);
+        knowledge.setStatus("已失效");
         try{
             knowledgeDAO.save(knowledge);
         }catch (Exception e){
@@ -44,6 +45,7 @@ public class ExpertUserServiceImpl implements ExpertUserServiceI {
         Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowledgeID);
         if(knowledge==null) return false;
         knowledge.setDisable(true);
+        knowledge.setStatus("已失效");
         try{
             knowledgeDAO.save(knowledge);
         }catch (Exception e){

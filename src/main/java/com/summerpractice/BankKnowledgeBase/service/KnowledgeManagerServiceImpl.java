@@ -143,25 +143,20 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
 
     @Override
     public boolean refreshRecommend() {
+        //修改推荐算法
+        //根据用户点击的知识维度的次数，采取4:3:2:1的比例进行取值推荐，避免全部推荐为一个知识维度的知识的情况
         try{
             List<NormalUser> normalUsers=normalUserDAO.findAllByDisableFalse();
-            for(NormalUser normalUser:normalUsers){
-                List<UserClickType> userClickTypes=userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdOrderByTimes(normalUser);
-                UserClickType userClickType=userClickTypes.get(0);
-                List<Knowledge> knowledges=new ArrayList<>();
-                List<KnowledgeType> knowledgeTypes=bfsTravel(userClickType.getUserClickTypePK().getTypeId());
-                for(KnowledgeType knowledgeType:knowledgeTypes)
-                    knowledges.addAll(knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType,"通过"));
-                //todo 修改逻辑
+            for(NormalUser normalUser:normalUsers) {
+                List<UserClickType> userClickTypes = userClickTypeDAO.findAllByDisableFalseAndUserClickTypePK_UserIdOrderByTimes(normalUser);
                 normalUser.getRecommends().clear();
-                int recommendNum = 20;
-                if(knowledges.size()> recommendNum){
-                    for (int i = 0; i < recommendNum; i++) {
-                       normalUser.getRecommends().add(knowledges.get(i));
+                if (userClickTypes.size() > 4) {
+                    for (int i = 0; i < 4; i++) {
+                        recommendHelper(normalUser, userClickTypes, i);
                     }
                 }else {
-                    for (Knowledge knowledge:knowledges) {
-                       normalUser.getRecommends().add(knowledge);
+                    for (int i = 0; i <userClickTypes.size() ; i++) {
+                        recommendHelper(normalUser, userClickTypes, i);
                     }
                 }
                 normalUserDAO.save(normalUser);
@@ -170,6 +165,15 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
             return false;
         }
         return true;
+    }
+
+    private void recommendHelper(NormalUser normalUser, List<UserClickType> userClickTypes, int i) {
+        UserClickType userClickType = userClickTypes.get(i);
+        List<Knowledge> knowledges = new ArrayList<>();
+        List<KnowledgeType> knowledgeTypes = bfsTravel(userClickType.getUserClickTypePK().getTypeId());
+        for (KnowledgeType knowledgeType : knowledgeTypes)
+            knowledges.addAll(knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType, "通过"));
+        normalUser.getRecommends().addAll(knowledges.size() > 4 - i ? knowledges.subList(0, 4 - i - 1) : knowledges);
     }
 
     private List<KnowledgeType> bfsTravel(KnowledgeType typeId) {

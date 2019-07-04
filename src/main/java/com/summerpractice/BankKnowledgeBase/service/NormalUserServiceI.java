@@ -13,6 +13,7 @@ package com.summerpractice.BankKnowledgeBase.service;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface NormalUserServiceI {
     /**
@@ -61,7 +62,7 @@ public interface NormalUserServiceI {
      * @param normalUser 用户
      * @return 推荐的知识条目
      */
-    public List<Knowledge> getRecommend(NormalUser normalUser);
+    public Set<Knowledge> getRecommend(NormalUser normalUser);
 
     /***
      * 根据知识类别获取知识

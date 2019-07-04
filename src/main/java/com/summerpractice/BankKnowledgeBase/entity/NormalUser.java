@@ -12,7 +12,10 @@ package com.summerpractice.BankKnowledgeBase.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "normal_user")
 public class NormalUser extends User {
@@ -29,7 +32,7 @@ public class NormalUser extends User {
     @JoinTable(name = "recommend",
             joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
             inverseJoinColumns ={@JoinColumn(name = "know_id",referencedColumnName = "know_id")})
-    private List<Knowledge> recommends=new ArrayList<>();
+    private Set<Knowledge> recommends=new HashSet<>();
     public NormalUser(String name, String account, String password,int dep_id) {
         super(name, account, password);
     }
@@ -73,11 +76,11 @@ public class NormalUser extends User {
         return sb.toString();
     }
 
-    public List<Knowledge> getRecommends() {
+    public Set<Knowledge> getRecommends() {
         return recommends;
     }
 
-    public void setRecommends(List<Knowledge> recommends) {
+    public void setRecommends(Set<Knowledge> recommends) {
         this.recommends = recommends;
     }
 }
