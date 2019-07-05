@@ -47,9 +47,9 @@ public class User implements Serializable {
     @GeneratedValue(generator = "myuuid")
     @Column(name = "id",length = 50)
     protected String id;
-    @Column(name = "name",columnDefinition = "varchar(50) unique not null")
+    @Column(name = "name")
     protected String name;
-    @Column(name = "account")
+    @Column(name = "account",columnDefinition = "varchar(50) unique not null")
     protected String account;
     @Column(name = "password")
     protected String password;

@@ -202,13 +202,13 @@ public class KnowledgeManagerServiceImpl implements KnowledgeManagerServiceI {
     }
 
     @Override
-    public Map<KnowledgeType, List<KnowledgeType>> getTwoLayer() {
+    public List<TypeNode> getTwoLayer() {
         List<KnowledgeType> knowledgeTypes=knowledgeTypeDAO.findAllByPreTypeIdIsNull();
-        Map<KnowledgeType,List<KnowledgeType>> map=new HashMap<>();
+        List<TypeNode> typeNodes=new ArrayList<>();
         for(KnowledgeType knowledgeType:knowledgeTypes){
-            map.put(knowledgeType,knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(knowledgeType.getTypeid()));
+            typeNodes.add(new TypeNode(knowledgeType,knowledgeTypeDAO.findAllByDisableFalseAndPreTypeId(knowledgeType.getTypeid())));
         }
-        return  map;
+        return  typeNodes;
     }
 
     @Override

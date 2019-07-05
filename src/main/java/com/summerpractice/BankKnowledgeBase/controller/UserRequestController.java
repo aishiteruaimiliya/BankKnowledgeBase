@@ -5,6 +5,7 @@
 
 package com.summerpractice.BankKnowledgeBase.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.summerpractice.BankKnowledgeBase.entity.*;
 import com.summerpractice.BankKnowledgeBase.service.CommonServiceI;
 import com.summerpractice.BankKnowledgeBase.service.DepartmentServiceI;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/userRequest")
@@ -168,14 +168,15 @@ public class UserRequestController {
         if(usr instanceof NormalUser){
             modelAndView.addObject("user",usr);
             request.getSession().setAttribute("user",usr);
-            Map<KnowledgeType,List<KnowledgeType>> map=knowledgeManagerServiceI.getTwoLayer();
+//            Map<KnowledgeType,List<KnowledgeType>> map=knowledgeManagerServiceI.getTwoLayer();
+            List<TypeNode>  map=knowledgeManagerServiceI.getTwoLayer();
             List<KnowledgeType> knowledgeTypes=normalUserServiceI.getLastLayer();
             modelAndView.addObject("map",map);
             modelAndView.addObject("types",knowledgeTypes);
             modelAndView.addObject("caogao",normalUserServiceI.getCaogaoByID(usr.getAccount()));
             modelAndView.addObject("recommend",normalUserServiceI.getRecommend((NormalUser) usr));
             modelAndView.addObject("rank",normalUserServiceI.getRankBoard());
-            System.out.print(map.toString());
+            System.out.println(JSON.toJSONString(map,true));
             modelAndView.setViewName("UserHomePage2");
         }else if( usr instanceof ExpertUser) {
            modelAndView.setViewName("expertUserHomePage");

@@ -15,10 +15,7 @@ import com.summerpractice.BankKnowledgeBase.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class NormalUserServiceImpl implements NormalUserServiceI {
@@ -126,10 +123,12 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public boolean deleteFavorite(NormalUser normalUser, String knowid) {
-        Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowid);
+        Knowledge knowledge=knowledgeDAO.findByKnowId(knowid);
         if(knowledge!=null){
             try{
-                knowledge.getNormalUsers().remove(normalUser);
+                normalUser.getFavorite().remove(knowledge);
+                normalUserDAO.save(normalUser);
+                return true;
             }catch (Exception e){
                 e.printStackTrace();
                 return false;
@@ -137,7 +136,6 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         }else {
             return false;
         }
-        return true;
     }
 
     @Override
@@ -346,5 +344,15 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
             return null;
         }
         return knowledge;
+    }
+
+    @Override
+    public Set<Knowledge> findKnowledgeByTypeId(String typeId) {
+        Set<Knowledge> knowledges=new HashSet<>();
+        knowledges.addAll(
+                knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus
+                        (knowledgeTypeDAO.findByDisableFalseAndTypeid(typeId),"通过"));
+
+        return knowledges;
     }
 }
