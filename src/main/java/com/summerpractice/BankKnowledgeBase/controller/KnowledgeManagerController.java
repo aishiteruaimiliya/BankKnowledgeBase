@@ -30,7 +30,11 @@ public class KnowledgeManagerController {
     @ResponseBody
     @RequestMapping("/addKnowledgeType")
     public String addKnowledgeType(@RequestParam(name = "preid")String preID,
-                                 @RequestParam(name = "typecontent")String typecontent){
+                                   @RequestParam(name = "typecontent")String typecontent,
+                                   HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         KnowledgeType knowledgeType=new KnowledgeType();
         knowledgeType.setTypecontent(typecontent);
         knowledgeType.setPreTypeId(preID);
@@ -43,6 +47,9 @@ public class KnowledgeManagerController {
                                        @RequestParam(name = "new",required = true)String  newPass,
                                        HttpServletRequest request,
                                        ModelAndView modelAndView){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         KnowledgeManager knowledgeManager=verify(request);
         modelAndView.setViewName("ChangePasswordPage");
         if(commonServiceI.changePassword(knowledgeManager.getAccount(),old,newPass)){
@@ -60,7 +67,11 @@ public class KnowledgeManagerController {
     @ResponseBody
     @RequestMapping("/changeKnowledgeType")
     public String changeKnowledgeType(@RequestParam(name = "typeid",required = true)String typeId,
-                                      @RequestParam(name = "typecontent",required = true)String typecontent){
+                                      @RequestParam(name = "typecontent",required = true)String typecontent,
+                                      HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeId);
         if(knowledgeType==null) return "failed";
         knowledgeType.setTypecontent(typecontent);
@@ -68,13 +79,21 @@ public class KnowledgeManagerController {
     }
     @ResponseBody
     @RequestMapping("/delete")
-    public String deleteKnowledgeType(@RequestParam(name = "typeid",required = true)String typeId){
+    public String deleteKnowledgeType(@RequestParam(name = "typeid",required = true)String typeId,
+                                      HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         return knowledgeManagerServiceI.deleteKnowledgeType(knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeId))?"success":"failed";
     }
     @ResponseBody
     @RequestMapping("/distribute")
     public String distribution(@RequestParam(name = "typeId",required = true)String typeid,
-                               @RequestParam(name = "expertId",required = true)String expertId){
+                               @RequestParam(name = "expertId",required = true)String expertId,
+                               HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         return knowledgeManagerServiceI.distribution(expertId,typeid)?"success":"failed";
     }
     @ResponseBody
@@ -84,17 +103,26 @@ public class KnowledgeManagerController {
     }
     @ResponseBody
     @RequestMapping("/refreshRe")
-    public String refreshReconmmend(){
+    public String refreshReconmmend(HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         return knowledgeManagerServiceI.refreshRecommend()?"success":"failed";
     }
     @ResponseBody
     @RequestMapping("/refreshRB")
-    public String refreshRankBoard(){
+    public String refreshRankBoard(HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         return knowledgeManagerServiceI.refreshRankBoard()?"success":"failed";
     }
 
     @RequestMapping("/showKnlwdgeType")
-    public ModelAndView showKnowledgeType(){
+    public ModelAndView showKnowledgeType(HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("user");
+        }
         return new ModelAndView("KnowledgeTypeList","types",knowledgeManagerServiceI.getFirstLayer());
     }
 }

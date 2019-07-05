@@ -264,10 +264,14 @@ public class UserRequestController {
     @RequestMapping("/logoutAll")
     public String logout(HttpServletRequest request){
         User user= (User) request.getSession().getAttribute("user");
-        if(user==null)
+        if(user==null) {//获取不到除管理员外的另外三种用户
             user= (User) request.getSession().getAttribute("admin");
-            if(user!=null)
+            if(user!=null){//是管理员
                 request.getSession().removeAttribute("admin");
+                return "AdminLoginPage";
+            }
+        }
+        //能获取到除管理员外的另外三种用户，是一个除管理员外的另外三种用户
         request.getSession().removeAttribute("user");
         return "Login";
     }

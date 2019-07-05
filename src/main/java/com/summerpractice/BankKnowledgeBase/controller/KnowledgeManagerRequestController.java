@@ -6,6 +6,7 @@
 package com.summerpractice.BankKnowledgeBase.controller;
 
 import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
+import com.summerpractice.BankKnowledgeBase.entity.KnowledgeManager;
 import com.summerpractice.BankKnowledgeBase.entity.KnowledgeType;
 import com.summerpractice.BankKnowledgeBase.service.CommonServiceI;
 import com.summerpractice.BankKnowledgeBase.service.KnowledgeManagerServiceI;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -25,7 +27,11 @@ public class KnowledgeManagerRequestController {
     @Autowired
     CommonServiceI commonServiceI;
     @RequestMapping("/nextLayer")
-    public ModelAndView showNextLayer(@RequestParam(name = "typeId",required = true)String typeId){
+    public ModelAndView showNextLayer(@RequestParam(name = "typeId",required = true)String typeId,
+                                      HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         List<KnowledgeType> knowledgeTypes=knowledgeManagerServiceI.getNextLayer(typeId);
         ModelAndView modelAndView=
                 new ModelAndView("KnowledgeTypeList","types",knowledgeTypes);
@@ -34,7 +40,11 @@ public class KnowledgeManagerRequestController {
     }
     @RequestMapping("/addLayer")
     public ModelAndView addLayer(@RequestParam(name = "preId",required = false)String preId,
-                                 @RequestParam(name = "typecontent",required = true)String typecontent){
+                                 @RequestParam(name = "typecontent",required = true)String typecontent,
+                                 HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         ModelAndView modelAndView=new ModelAndView("ResultPage");
         KnowledgeType knowledgeType=new KnowledgeType();
         knowledgeType.setTypecontent(typecontent);
@@ -53,7 +63,11 @@ public class KnowledgeManagerRequestController {
     }
 
     @RequestMapping("/deleteKnowledgeType")
-    public ModelAndView deleteKnowledgeType(@RequestParam(name = "typeId",required = true)String typeid){
+    public ModelAndView deleteKnowledgeType(@RequestParam(name = "typeId",required = true)String typeid,
+                                            HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         ModelAndView modelAndView=new ModelAndView("ResultPage");
         KnowledgeType knowledgeType=knowledgeManagerServiceI.findKnowledgeTypeByTypeID(typeid);
         if(knowledgeManagerServiceI.deleteKnowledgeType(knowledgeType)){
@@ -66,7 +80,10 @@ public class KnowledgeManagerRequestController {
     }
 
     @RequestMapping("/showDistributePage")
-    public ModelAndView showdistibute(){
+    public ModelAndView showdistibute(HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         List<ExpertUser> expertUsers=knowledgeManagerServiceI.getAllExpert();
         List<KnowledgeType> knowledgeTypes=knowledgeManagerServiceI.getFirstLayer();
         ModelAndView modelAndView=new ModelAndView("KnowledgeTypeDistributePage");
@@ -75,7 +92,10 @@ public class KnowledgeManagerRequestController {
         return modelAndView;
     }
     @RequestMapping("/showChangePass")
-    public ModelAndView modelAndView(){
+    public ModelAndView modelAndView(HttpServletRequest request){
+        if ((KnowledgeManager)request.getSession().getAttribute("user") == null){
+            return new ModelAndView("Login");
+        }
         return new ModelAndView("ChangePasswordPageKnowledeManager");
     }
 }

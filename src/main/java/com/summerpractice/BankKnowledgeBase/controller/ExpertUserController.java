@@ -26,6 +26,10 @@ public class ExpertUserController {
     @RequestMapping("/showKnowledge")
    public ModelAndView showUnjudge(ModelAndView modelAndView, HttpServletRequest request){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
+        if (expertUser == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         List<Knowledge> knowledges=expertUserServiceI.findKnowledgeByStatusAndType("未审批",expertUser.getId());
         modelAndView.setViewName("knowledgePage");
         modelAndView.addObject("knows",knowledges);
@@ -34,6 +38,10 @@ public class ExpertUserController {
     @RequestMapping("/showJudged")
    public ModelAndView showJudged(ModelAndView modelAndView,HttpServletRequest request){
        ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
+        if (expertUser == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
        List<Knowledge> knowledges=expertUserServiceI.findKnowledgeByStatusAndType("通过",expertUser.getId());
        modelAndView.setViewName("knowledgePage");
        modelAndView.addObject("knows",knowledges);
@@ -42,6 +50,10 @@ public class ExpertUserController {
     @RequestMapping("/showDetail")
     public ModelAndView showDetail(@RequestParam(name = "know_id",required = true)String knowId, HttpServletRequest request, ModelAndView modelAndView){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
+        if (expertUser == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         Knowledge knowledge=expertUserServiceI.findKnowledgeById(knowId);
         modelAndView.setViewName("knowledgeDetail");
         modelAndView.addObject("knowledge",knowledge);

@@ -29,7 +29,11 @@ public class ExpertUserRequestController {
     CommonServiceI commonServiceI;
     @ResponseBody
     @RequestMapping("/getKD")
-    public String getKnowledgeDetail(@RequestParam(name = "knowId",required = true) String know_id){
+    public String getKnowledgeDetail(@RequestParam(name = "knowId",required = true) String know_id,
+                                     HttpServletRequest request){
+        if ((ExpertUser)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         Knowledge knowledge=expertUserServiceI.findKnowledgeById(know_id);
         return knowledge.toString();
     }
@@ -37,33 +41,36 @@ public class ExpertUserRequestController {
     @RequestMapping("/getToJudge")
     public String getNeedJudge(HttpServletRequest request){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
-//        if(expertUser==null)  return "未登录";
+        if(expertUser==null)  return "未登录";
         return expertUserServiceI.findKnowledgeByStatusAndType("未审批",expertUser.getId()).toString();
     }
     @ResponseBody
     @RequestMapping("/getJudged")
     public String getJudged(HttpServletRequest request){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
-//        if(expertUser==null)  return "未登录";
+        if(expertUser==null)  return "未登录";
         return expertUserServiceI.findKnowledgeByStatusAndType("已审批",expertUser.getId()).toString();
     }
     @ResponseBody
     @RequestMapping("/rejectK")
     public String reject(@RequestParam(name = "know_id") String knowId,HttpServletRequest request){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
-//        if(expertUser==null)  return "未登录";
+        if(expertUser==null)  return "未登录";
         return expertUserServiceI.judgeKnowledge(expertUserServiceI.findKnowledgeById(knowId),"驳回")?"success":"failed";
     }
     @ResponseBody
     @RequestMapping("/accept.do")
     public String accept(@RequestParam(name = "know_id") String knowId,HttpServletRequest request){
         ExpertUser expertUser= (ExpertUser) request.getSession().getAttribute("user");
-//        if(expertUser==null)  return "未登录";
+        if(expertUser==null)  return "未登录";
         return expertUserServiceI.judgeKnowledge(expertUserServiceI.findKnowledgeById(knowId),"通过")?"success":"failed";
     }
     @ResponseBody
     @RequestMapping("/batch.do")
     public String batch(HttpServletRequest request){
+        if ((ExpertUser)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         List<String> params=null;
         if(request.getMethod().equals("POST")){
            params=Arrays.asList(request.getParameterValues("select"));
@@ -73,6 +80,9 @@ public class ExpertUserRequestController {
     @ResponseBody
     @RequestMapping("/reject.do")
     public String batchReject(HttpServletRequest request){
+        if ((ExpertUser)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         List<String> params=null;
         if(request.getMethod().equals("POST")){
             params=Arrays.asList(request.getParameterValues("select"));
@@ -81,7 +91,11 @@ public class ExpertUserRequestController {
     }
     @ResponseBody
     @RequestMapping("/delete")
-    public String delete(@RequestParam(name = "know_id",required = true)String knowId){
+    public String delete(@RequestParam(name = "know_id",required = true)String knowId,
+                         HttpServletRequest request){
+        if ((ExpertUser)request.getSession().getAttribute("user") == null){
+            return "未登录";
+        }
         return expertUserServiceI.deleteKnowledge(knowId)?"success":"failed";
     }
     @RequestMapping("/changePass")
@@ -90,6 +104,10 @@ public class ExpertUserRequestController {
                                        HttpServletRequest  request,
                                        ModelAndView modelAndView){
         ExpertUser expertUser=verify(request);
+        if ((ExpertUser)request.getSession().getAttribute("user") == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         modelAndView.setViewName("ChangePasswordPage");
         if(commonServiceI.changePassword(expertUser.getAccount(),old,newPass)){
             modelAndView.addObject("msg","修改成功");
