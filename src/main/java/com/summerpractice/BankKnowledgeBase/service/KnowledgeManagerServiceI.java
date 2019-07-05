@@ -7,8 +7,9 @@ package com.summerpractice.BankKnowledgeBase.service;
 
 import com.summerpractice.BankKnowledgeBase.entity.ExpertUser;
 import com.summerpractice.BankKnowledgeBase.entity.KnowledgeType;
+import com.summerpractice.BankKnowledgeBase.entity.TypeNode;
+
 import java.util.List;
-import java.util.Map;
 
 public interface KnowledgeManagerServiceI {
 
@@ -36,7 +37,7 @@ public interface KnowledgeManagerServiceI {
 
     public int getTypeNum();
 
-    public Map<KnowledgeType, List<KnowledgeType>> getTwoLayer();
+    public List<TypeNode> getTwoLayer();
 
     public KnowledgeType findKnowledgeTypeById(String id);
 

@@ -123,10 +123,12 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public boolean deleteFavorite(NormalUser normalUser, String knowid) {
-        Knowledge knowledge=knowledgeDAO.findByDisableFalseAndKnowId(knowid);
+        Knowledge knowledge=knowledgeDAO.findByKnowId(knowid);
         if(knowledge!=null){
             try{
-                knowledge.getNormalUsers().remove(normalUser);
+                normalUser.getFavorite().remove(knowledge);
+                normalUserDAO.save(normalUser);
+                return true;
             }catch (Exception e){
                 e.printStackTrace();
                 return false;
@@ -134,7 +136,6 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         }else {
             return false;
         }
-        return true;
     }
 
     @Override
@@ -345,11 +346,13 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         return knowledge;
     }
 
-    @Override
-    public Set<Knowledge> getKnowledgeByTypeId(String typeid) {
-        KnowledgeType knowledgeType=knowledgeTypeDAO.findByDisableFalseAndTypeid(typeid);
+
+    public Set<Knowledge> findKnowledgeByTypeId(String typeId) {
         Set<Knowledge> knowledges=new HashSet<>();
-        knowledges.addAll(knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus(knowledgeType,"通过"));
+        knowledges.addAll(
+                knowledgeDAO.findAllByDisableFalseAndKnowledgeTypeAndStatus
+                        (knowledgeTypeDAO.findByDisableFalseAndTypeid(typeId),"通过"));
+
         return knowledges;
     }
 }
