@@ -107,6 +107,10 @@ public class UserShowPageController {
                                HttpServletRequest request){
         ModelAndView modelAndView=new ModelAndView("ReadKnowledgeByType");
         NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
+        if(normalUser==null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         Set<Knowledge> knowledges=new HashSet<>();
         List<KnowledgeType> types=new ArrayList<>();
         if(typeid==null&&knowid==null){
