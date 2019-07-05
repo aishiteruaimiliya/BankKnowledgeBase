@@ -283,7 +283,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     /**
      * 得到用户的草稿
-     * @param userid
+     * @param
      * @return
      */
     @Override
@@ -346,7 +346,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
         return knowledge;
     }
 
-    @Override
+
     public Set<Knowledge> findKnowledgeByTypeId(String typeId) {
         Set<Knowledge> knowledges=new HashSet<>();
         knowledges.addAll(

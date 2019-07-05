@@ -23,7 +23,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>用户登录</title>
+    <title>系统管理员登录</title>
     <link th:href="@{/static/css/style.css}" href="../static/css/style.css" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -45,7 +45,7 @@
 <div class="message warning">
     <div class="inset">
         <div class="login-head">
-            <h1>用户登录</h1>
+            <h1>系统管理员登录</h1>
             <div class="alert-close"> </div>
         </div>
         <form action="/adminRequest/DoLogin" method="post">
@@ -69,7 +69,10 @@
 </div>
 <div class="clear"> </div>
 <!--- footer --->
-<div class="footer">
+<div style="text-align: center">
+    <p>&nbsp;</p>
+    <p>&nbsp; </p>
+    <p>&nbsp; </p>
     <p>Copyright &copy; 山东大学软件学院银行知识库一组.</p>
 </div>
 </body>

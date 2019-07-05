@@ -99,10 +99,15 @@ public class AdminRequestController {
     }
     @RequestMapping("/addDept")
     public ModelAndView addDepartment(@RequestParam(name = "first",required = true)String first,
-                                @RequestParam(name = "second",required = true)String second,
-                                @RequestParam(name = "third",required = true)String third,
-                                @RequestParam(name = "fourth",required = true)String fourth,
-                                      ModelAndView modelAndView){
+                                      @RequestParam(name = "second",required = true)String second,
+                                      @RequestParam(name = "third",required = true)String third,
+                                      @RequestParam(name = "fourth",required = true)String fourth,
+                                      ModelAndView modelAndView,
+                                      HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         Department department=new Department();
         department.setFirst(first);
         department.setSecond(second);
@@ -123,7 +128,11 @@ public class AdminRequestController {
                                    @RequestParam(name = "second",required = false)String second,
                                    @RequestParam(name = "third",required = false)String third,
                                    @RequestParam(name = "fourth",required = false)String fourth,
-                                   @RequestParam(name = "dep_id",required = true)String depId){
+                                   @RequestParam(name = "dep_id",required = true)String depId,
+                                   HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return "未登录";
+        }
         Department department=adminServiceI.findDepartmentByID(depId);
         if(department==null) return "failed";
         if(first!=null)
@@ -176,7 +185,11 @@ public class AdminRequestController {
 
     @ResponseBody
     @RequestMapping("/searchUserByDept")
-    public String findUserByDept(@RequestParam(name = "depid")String depId){
+    public String findUserByDept(@RequestParam(name = "depid")String depId,
+                                 HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return "未登录";
+        }
         Department department=adminServiceI.findDepartmentByID(depId);
         List<User> users=adminServiceI.findUserByDepartment(department);
         return users.toString();
@@ -188,8 +201,12 @@ public class AdminRequestController {
     public String modifyNormalUser(@RequestParam(name = "account",required = true) String account,
                                    @RequestParam(name = "username",required = false) String username,
                                    @RequestParam(name = "password",required = false) String password,
-                                   @RequestParam(name = "selected",required = false) String depid){
-
+                                   @RequestParam(name = "selected",required = false) String depid,
+                                   HttpServletRequest request){
+        SystemManager systemManager=verify(request);
+        if (systemManager == null){
+            return "未登录";
+        }
 
         NormalUser normalUser= (NormalUser) adminServiceI.findNormalUserByAccount(account);
         if(normalUser==null) return "failed";
@@ -213,7 +230,12 @@ public class AdminRequestController {
                                    @RequestParam(name = "username",required = true) String username,
                                    @RequestParam(name = "account",required = false) String account,
                                    @RequestParam(name = "password",required = false) String password,
-                                   @RequestParam(name = "typeId",required = false)String typeId){
+                                   @RequestParam(name = "typeId",required = false)String typeId,
+                                   HttpServletRequest request){
+        SystemManager systemManager=verify(request);
+        if (systemManager == null){
+            return "未登录";
+        }
         ExpertUser expertUser= (ExpertUser) adminServiceI.findExpertUserByAccount(account);
         if (expertUser==null) return "failed";
         if(username!=null) expertUser.setName(username);
@@ -235,8 +257,12 @@ public class AdminRequestController {
                                          @RequestParam(name = "username",required = true) String username,
                                          @RequestParam(name = "account",required = true) String account,
                                          @RequestParam(name = "password",required = false) String password,
-                                         @RequestParam(name = "typeId",required = false)String typeId){
-//        KnowledgeManager knowledgeManager= (KnowledgeManager) adminServiceI.findKnowledgeManagerByAccount(account);
+                                         @RequestParam(name = "typeId",required = false)String typeId,
+                                         HttpServletRequest request){
+        SystemManager systemManager=verify(request);
+        if (systemManager == null){
+            return "未登录";
+        }
         KnowledgeManager knowledgeManager = adminServiceI.findKnowledgeManagerByAccount(account);
 
         if (knowledgeManager==null) return "failed";
@@ -255,9 +281,14 @@ public class AdminRequestController {
     }
     @ResponseBody
     @RequestMapping("/fetchDept")
-    public String getAllDept(){
+    public String getAllDept(HttpServletRequest request){
+        SystemManager systemManager=verify(request);
+        if (systemManager == null){
+            return "未登录";
+        }
         return adminServiceI.getAllDept().toString();
     }
+
     @RequestMapping(value = "/DoLogin",method = RequestMethod.POST)
     public ModelAndView doLogin(@RequestParam(name = "account",required = true)String account,
                                 @RequestParam(name = "password",required = true)String password,
@@ -279,6 +310,10 @@ public class AdminRequestController {
                                         HttpServletRequest  request,
                                        ModelAndView modelAndView){
         SystemManager systemManager=verify(request);
+        if (systemManager == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("ChangePasswordPageAdmin");
         if(commonServiceI.changePassword(systemManager.getAccount(),old,newPass)){
             modelAndView.addObject("msg","修改成功");
@@ -287,6 +322,7 @@ public class AdminRequestController {
         }
         return modelAndView;
     }
+
     @ResponseBody
     @RequestMapping(value = "/changeDept",method = RequestMethod.GET)
     public ModelAndView changeDept(@RequestParam(name = "first",required = true)String first,
@@ -294,7 +330,12 @@ public class AdminRequestController {
                                    @RequestParam(name = "third",required = true)String third,
                                    @RequestParam(name = "fourth",required = true)String fourth,
                                    @RequestParam(name = "depId",required = true) String depid,
-                                   ModelAndView modelAndView){
+                                   ModelAndView modelAndView,
+                                   HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         Department department=adminServiceI.findDepartmentByID(depid);
         if(first!=null&&!first.equals(""))
         department.setFirst(first);
@@ -313,9 +354,15 @@ public class AdminRequestController {
         modelAndView.addObject("depts",adminServiceI.getAllDept());
         return modelAndView;
     }
+
     @RequestMapping(value = "/deleteDept",method = RequestMethod.GET)
     public ModelAndView deleteDept(@RequestParam(name = "depId",required = true)String depId,
-                                   ModelAndView modelAndView){
+                                   ModelAndView modelAndView,
+                                   HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("DepartmentListPage");
         if(adminServiceI.deleteDepartment(depId)){
             modelAndView.addObject("msg","删除成功");
@@ -328,48 +375,83 @@ public class AdminRequestController {
 
     @RequestMapping("/searchDept")
     public ModelAndView searchDepartment(@RequestParam(name = "keyword",required = false)String keyword,
-                                   ModelAndView modelAndView){
+                                         ModelAndView modelAndView,
+                                         HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("DepartmentListPage");
         List<Department> departments=adminServiceI.findDepartmentsByKeyword(keyword,keyword,keyword,keyword);
         modelAndView.addObject("depts",departments);
         return modelAndView;
     }
+
     @RequestMapping("/showNormalUser")
     public ModelAndView showNormalUsers(HttpServletRequest request,ModelAndView modelAndView){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("UserListPage");
         List<NormalUser> users=adminServiceI.getNormalUser();
         modelAndView.addObject("users",users);
         return modelAndView;
     }
+
     @RequestMapping("/showExpertUser")
     public ModelAndView showExpertUser(HttpServletRequest request,ModelAndView modelAndView){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("UserListPage");
         List<ExpertUser> users=adminServiceI.getExpertUser();
         modelAndView.addObject("users",users);
         return modelAndView;
     }
+
     @RequestMapping("/showKnowledgeManager")
     public ModelAndView showUsers(HttpServletRequest request,ModelAndView modelAndView){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("UserListPage");
         List<KnowledgeManager> users=adminServiceI.getKnowledgeManager();
         modelAndView.addObject("users",users);
         return modelAndView;
     }
+
     @RequestMapping("/showUserByDept")
-    public ModelAndView showByDept(@RequestParam(name = "depId",required = true)String depID){
+    public ModelAndView showByDept(@RequestParam(name = "depId",required = true)String depID,
+                                   HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return new ModelAndView("AdminLoginPage");
+        }
         return new ModelAndView("UserListPage","users",
                 adminServiceI.findUserByDepartment(adminServiceI.findDepartmentByID(depID)));
     }
+
     @RequestMapping("/showSearchResult")
-    public ModelAndView showByKeyword(@RequestParam(name = "keyword",required = true)String keyword){
+    public ModelAndView showByKeyword(@RequestParam(name = "keyword",required = true)String keyword,
+                                      HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return new ModelAndView("AdminLoginPage");
+        }
         ModelAndView modelAndView=new ModelAndView("KeyWordSearchLIstPage");
         modelAndView.addObject("normal",adminServiceI.findNormalUserByKeyword(keyword));
         modelAndView.addObject("expert",adminServiceI.findExpertUserByKeyword(keyword));
         modelAndView.addObject("manager",adminServiceI.findKnowledgeManagerByKeyword(keyword));
         return modelAndView;
     }
+
     @RequestMapping("/deleteUserFromS")
-    public ModelAndView deleteUser(@RequestParam(name = "userId",required = true)String userId){
+    public ModelAndView deleteUser(@RequestParam(name = "userId",required = true)String userId,
+                                   HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return new ModelAndView("AdminLoginPage");
+        }
         ModelAndView modelAndView=new ModelAndView("ResultPage");
         if(adminServiceI.deleteUser(userId)){
             modelAndView.addObject("msg","删除成功");
@@ -378,8 +460,13 @@ public class AdminRequestController {
         }
         return  modelAndView;
     }
+
     @RequestMapping("/recoveryUser")
-    public ModelAndView recovery(@RequestParam(name = "userId",required = true)String userId){
+    public ModelAndView recovery(@RequestParam(name = "userId",required = true)String userId,
+                                 HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            return new ModelAndView("AdminLoginPage");
+        }
         ModelAndView modelAndView=new ModelAndView("ResultPage");
         if(adminServiceI.recoveryUser(userId)){
             modelAndView.addObject("msg","恢复成功");

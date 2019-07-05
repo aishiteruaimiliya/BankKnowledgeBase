@@ -196,7 +196,7 @@ public class UserRequestController {
     @RequestMapping("/firstLayer")
     public String getFirstLayer(HttpServletRequest request){
         NormalUser normalUser=verifyUser(request);
-//        if(normalUser==null) return "404";
+        if(normalUser==null) return "未登录";
 
         return normalUserServiceI.getFirstLayer().toString();
 
@@ -204,10 +204,10 @@ public class UserRequestController {
     @ResponseBody
     @RequestMapping(value = "/getTypeByType",method = RequestMethod.GET)
     public String getTypeByType(@RequestParam(name = "typeId",required = true) String typeid,HttpServletRequest request){
-//        NormalUser normalUser=verifyUser(request);
-//        if (normalUser == null) {
-//            return "404";
-//        }
+        NormalUser normalUser=verifyUser(request);
+        if (normalUser == null) {
+            return "未登录";
+        }
         return normalUserServiceI.findnextKnowlegeTypeByPreId(typeid).toString();
 
     }
@@ -237,6 +237,10 @@ public class UserRequestController {
                                        HttpServletRequest  request,
                                        ModelAndView modelAndView){
         NormalUser normalUser=verifyUser(request);
+        if (normalUser == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         modelAndView.setViewName("ChangePassPageNormalUser");
         if(commonServiceI.changePassword(normalUser.getAccount(),old,newPass)){
             modelAndView.addObject("msg","修改成功");
@@ -250,6 +254,10 @@ public class UserRequestController {
                                     ,HttpServletRequest request){
         NormalUser normalUser=verifyUser(request);
         ModelAndView modelAndView=new ModelAndView("knowledge");
+        if (normalUser == null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
         modelAndView.addObject("knowledge",normalUserServiceI.getKnledgeByKnowId(knowId,normalUser.getAccount()));
         modelAndView.addObject("comments",normalUserServiceI.getCommentByKnowledgeId(knowId));
         return modelAndView;
@@ -257,10 +265,14 @@ public class UserRequestController {
     @RequestMapping("/logoutAll")
     public String logout(HttpServletRequest request){
         User user= (User) request.getSession().getAttribute("user");
-        if(user==null)
+        if(user==null) {//获取不到除管理员外的另外三种用户
             user= (User) request.getSession().getAttribute("admin");
-            if(user!=null)
+            if(user!=null){//是管理员
                 request.getSession().removeAttribute("admin");
+                return "AdminLoginPage";
+            }
+        }
+        //能获取到除管理员外的另外三种用户，是一个除管理员外的另外三种用户
         request.getSession().removeAttribute("user");
         return "Login";
     }

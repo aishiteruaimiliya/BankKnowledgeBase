@@ -30,7 +30,10 @@ public class AdminShowPageController {
     @Autowired
     NormalUserServiceI normalUserServiceI;
     @GetMapping("/addUser")
-    public ModelAndView showAddUser(){
+    public ModelAndView showAddUser(HttpServletRequest request){
+        if ((SystemManager)request.getSession().getAttribute("admin") == null){
+            return new ModelAndView("AdminLoginPage");
+        }
       List<Department> dep=adminServiceI.getAll();
 //        System.out.print(dep.toString());
         ModelAndView modelAndView= new ModelAndView("AddUser","departments",dep);
@@ -57,11 +60,18 @@ public class AdminShowPageController {
     }
     @GetMapping("/showAddDeptPage")
     public String showAddDeptPage(HttpServletRequest request){
-        //todo  后期添加身份拦截
+        if (request.getSession().getAttribute("admin") == null){
+            return "未登录";
+        }
         return "Department";
     }
     @GetMapping("/showDepartmentList")
-    public ModelAndView showList(ModelAndView modelAndView){
+    public ModelAndView showList(ModelAndView modelAndView,
+                                 HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("DepartmentListPage");
         List<Department> departments=adminServiceI.getAllDept();
         modelAndView.addObject("depts",departments);
@@ -69,7 +79,12 @@ public class AdminShowPageController {
     }
     @GetMapping("/showEditDeptPage")
     public ModelAndView showEDitPAge(@RequestParam(name = "depId",required = true)String depId,
-                                     ModelAndView modelAndView){
+                                     ModelAndView modelAndView,
+                                     HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("DepartmentEditPage");
         Department department=adminServiceI.findDepartmentByID(depId);
         modelAndView.addObject("dept",department);
@@ -80,7 +95,12 @@ public class AdminShowPageController {
     }
     @GetMapping("/showEditUserPage")
     public ModelAndView showEditUserPage(@RequestParam(name = "userId",required = true)String userId,
-                                     ModelAndView modelAndView){
+                                     ModelAndView modelAndView,
+                                         HttpServletRequest request){
+        if (request.getSession().getAttribute("admin") == null){
+            modelAndView.setViewName("AdminLoginPage");
+            return modelAndView;
+        }
         modelAndView.setViewName("UserEditPage");
         User user= normalUserServiceI.getUserByAccount(userId);
         modelAndView.addObject("user", user);

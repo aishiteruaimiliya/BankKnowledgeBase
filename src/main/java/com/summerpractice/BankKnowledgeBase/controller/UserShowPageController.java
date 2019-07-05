@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -105,7 +107,11 @@ public class UserShowPageController {
                                HttpServletRequest request){
         ModelAndView modelAndView=new ModelAndView("ReadKnowledgeByType");
         NormalUser normalUser= (NormalUser) request.getSession().getAttribute("user");
-        List<Knowledge> knowledges=new ArrayList<>();
+        if(normalUser==null){
+            modelAndView.setViewName("Login");
+            return modelAndView;
+        }
+        Set<Knowledge> knowledges=new HashSet<>();
         List<KnowledgeType> types=new ArrayList<>();
         if(typeid==null&&knowid==null){
             types.addAll(normalUserServiceI.getFirstLayer());
@@ -113,16 +119,22 @@ public class UserShowPageController {
         }
         if(typeid!=null){
             List<KnowledgeType> knowledgeTypes=normalUserServiceI.findnextKnowlegeTypeByPreId(typeid);
-
             knowledges.addAll(normalUserServiceI.findKnowledgeByTypeId(typeid));
             modelAndView.addObject("types", knowledgeTypes);
             modelAndView.addObject("knowledges",knowledges);
+            StringBuilder sb=new StringBuilder();
+            if (knowledgeTypes.size()==0)
+                sb.append("当前知识维度子维度下为空！");
+            if (knowledges.size()==0)
+               sb.append("当前知识维度下知识为空！");
+            modelAndView.addObject("msg",sb.toString());
             return modelAndView;
         }
         if(knowid!=null){
+            Knowledge knowledge=normalUserServiceI.getKnledgeByKnowId(knowid,normalUser.getAccount());
             modelAndView.setViewName("knowledge");
-            modelAndView.addObject("knowledge",
-                    normalUserServiceI.getKnledgeByKnowId(knowid,normalUser.getAccount()));
+            modelAndView.addObject("knowledge", knowledge);
+            modelAndView.addObject("comments",normalUserServiceI.getCommentByKnowledgeId(knowid));
         }
         return modelAndView;
     }
