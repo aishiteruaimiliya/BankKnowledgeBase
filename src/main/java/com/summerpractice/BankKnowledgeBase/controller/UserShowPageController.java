@@ -113,9 +113,8 @@ public class UserShowPageController {
         }
         if(typeid!=null){
             List<KnowledgeType> knowledgeTypes=normalUserServiceI.findnextKnowlegeTypeByPreId(typeid);
-            for(KnowledgeType knowledgeType:knowledgeTypes){
-                knowledges.addAll(normalUserServiceI.getKnowledgeByType(knowledgeType));
-            }
+
+            knowledges.addAll(normalUserServiceI.findKnowledgeByTypeId(typeid));
             modelAndView.addObject("types", knowledgeTypes);
             modelAndView.addObject("knowledges",knowledges);
             return modelAndView;

@@ -116,5 +116,6 @@ public interface NormalUserServiceI {
 
     public Knowledge getKnledgeByKnowId(String knowID,String account);
 
+    public Set<Knowledge> findKnowledgeByTypeId(String typeId);
 
 }

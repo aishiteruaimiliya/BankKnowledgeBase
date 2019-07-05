@@ -199,4 +199,13 @@ public class Knowledge {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Knowledge)) return false;
+        else {
+            Knowledge knowledge=(Knowledge)obj;
+            return knowledge.getKnowId().equals(this.knowId);
+        }
+    }
 }
