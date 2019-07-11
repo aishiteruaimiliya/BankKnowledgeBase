@@ -187,7 +187,7 @@ public class NormalUserServiceImpl implements NormalUserServiceI {
 
     @Override
     public List<KnowledgeType> getFirstLayer() {
-        return knowledgeTypeDAO.findAllByPreTypeIdIsNull();
+        return knowledgeTypeDAO.findAllByDisableFalseAndPreTypeIdIsNull();
     }
 
     @Override

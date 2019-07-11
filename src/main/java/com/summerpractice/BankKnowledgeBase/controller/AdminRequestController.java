@@ -342,7 +342,7 @@ public class AdminRequestController {
         if(second!=null&&!second.equals(""))
         department.setSecond(second);
         if(third!=null&&!third.equals(""))
-        department.setSecond(third);
+        department.setThird(third);
         if(fourth!=null&&!fourth.equals(""))
         department.setFourth(fourth);
         modelAndView.setViewName("DepartmentListPage");
